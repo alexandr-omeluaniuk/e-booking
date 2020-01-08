@@ -18,15 +18,16 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import i18n from './config/i18next-config';
 
 const mainListItems = [{
         icon: 'dashboard',
-        label: 'Dashboard'
+        label: 'dashboard'
 }];
 
 const secondaryListItems = [{
         icon: 'dashboard',
-        label: 'Dashboard'
+        label: 'dashboard'
 }];
 
 const drawerWidth = 240;
@@ -115,7 +116,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                Pavel Vakulchik
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -132,7 +133,6 @@ function App() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const createToolbar = () => {
         return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -162,7 +162,7 @@ function App() {
                                 <ListItemIcon>
                                     <Icon>{item.icon}</Icon>
                                 </ListItemIcon>
-                                <ListItemText primary={item.label} />
+                                <ListItemText primary={i18n.t('menu.' + item.label)} />
                             </ListItem>
                         );
                     })}
@@ -179,7 +179,7 @@ function App() {
                                 <ListItemIcon>
                                     <Icon>{item.icon}</Icon>
                                 </ListItemIcon>
-                                <ListItemText primary={item.label} />
+                                <ListItemText primary={i18n.t('menu.' + item.label)} />
                             </ListItem>
                         );
                     })}
