@@ -14,21 +14,12 @@ import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import i18n from './config/i18next-config';
-
-const mainListItems = [{
-        icon: 'dashboard',
-        label: 'dashboard'
-}];
-
-const secondaryListItems = [{
-        icon: 'dashboard',
-        label: 'dashboard'
-}];
+import { initRouting, mainListItems } from './config/router-config';
+import { NavLink, BrowserRouter as Router } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const drawerWidth = 240;
 
@@ -108,6 +99,10 @@ const useStyles = makeStyles(theme => ({
   },
   fixedHeight: {
     height: 240
+  },
+  navLink: {
+      textDecoration: 'none',
+      color: 'inherit'
   }
 }));
 
@@ -125,24 +120,22 @@ function Copyright() {
 }
 
 function App() {
+    let currentRoute = mainListItems.filter(item => { return window.location.pathname === item.path; });
     const classes = useStyles();
+    const { t } = useTranslation();
+    let defaultTitle = currentRoute.length > 0 ? t('menu.' + currentRoute[0].label) : '';
     const [open, setOpen] = React.useState(true);
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const [title, setTitle] = React.useState(defaultTitle);
     const createToolbar = () => {
         return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
-                    <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={handleDrawerOpen}
+                    <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={() => {setOpen(true);}}
                         className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
                         <Icon>menu</Icon>
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
+                        { title }
                     </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -158,29 +151,16 @@ function App() {
                 <div>
                     {mainListItems.map((item, i) => {
                         return (
-                            <ListItem button key={i}>
-                                <ListItemIcon>
-                                    <Icon>{item.icon}</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={i18n.t('menu.' + item.label)} />
-                            </ListItem>
-                        );
-                    })}
-                </div>
-        );
-    };
-    const createSecondaryListItems = () => {
-        return (
-                <div>
-                    <ListSubheader inset>Saved reports</ListSubheader>
-                    {secondaryListItems.map((item, i) => {
-                        return (
-                            <ListItem button key={i}>
-                                <ListItemIcon>
-                                    <Icon>{item.icon}</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={i18n.t('menu.' + item.label)} />
-                            </ListItem>
+                            <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
+                                setTitle(t('menu.' + item.label));
+                            }}>
+                                <ListItem button selected={window.location.pathname === item.path}>
+                                    <ListItemIcon>
+                                        <Icon>{item.icon}</Icon>
+                                    </ListItemIcon>
+                                    <ListItemText primary={t('menu.' + item.label)} />
+                                </ListItem>
+                            </NavLink>
                         );
                     })}
                 </div>
@@ -193,14 +173,12 @@ function App() {
                     paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
                 }} open={open}>
                 <div className={classes.toolbarIcon}>
-                    <IconButton onClick={handleDrawerClose}>
+                    <IconButton onClick={() => {setOpen(false);}}>
                         <Icon>chevron_left</Icon>
                     </IconButton>
                 </div>
                 <Divider />
                 <List>{createMainListItems()}</List>
-                <Divider />
-                <List>{createSecondaryListItems()}</List>
             </Drawer>
         );
     };
@@ -209,20 +187,23 @@ function App() {
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                         <Container maxWidth="lg" className={classes.container}>
-                        <Box pt={4}>
-                            <Copyright />
-                        </Box>
+                            { initRouting() }
+                            <Box pt={4}>
+                                <Copyright />
+                            </Box>
                         </Container>
                 </main>
         );
     };
     return (
-        <div className={classes.root}>
-            <CssBaseline />
-            { createToolbar() }
-            { createDrawer() }
-            { createMain() }
-        </div>
+            <Router>
+                <div className={classes.root}>
+                    <CssBaseline />
+                    { createToolbar() }
+                    { createDrawer() }
+                    { createMain() }
+                </div>
+            </Router>
     );
 }
 

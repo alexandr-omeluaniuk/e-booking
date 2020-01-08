@@ -12,7 +12,8 @@ i18n.use(initReactI18next).init({
         ru: {
             translation: {
                 menu: {
-                    dashboard: "Обзор"
+                    dashboard: "Обзор",
+                    clients: 'Клиенты'
                 }
             }
         }
