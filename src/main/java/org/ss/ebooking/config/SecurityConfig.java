@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API).authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginPage(AppURLs.APP_ADMIN_LOGIN_PAGE).permitAll().and()
-                .logout().logoutUrl(AppURLs.APP_ADMIN_LOGOUT).logoutSuccessHandler(logoutSuccesshandler)
+                .formLogin().loginPage(AppURLs.APP_LOGIN_PAGE).permitAll().and()
+                .logout().logoutUrl(AppURLs.APP_LOGOUT).logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true).and().exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);
     }
@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private Filter authFilter() {
         AuthUsernamePasswordFilter filter = new AuthUsernamePasswordFilter();
-        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AppURLs.APP_ADMIN_LOGIN, "POST"));
+        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AppURLs.APP_LOGIN, "POST"));
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
         filter.setAuthenticationManager(authManager);

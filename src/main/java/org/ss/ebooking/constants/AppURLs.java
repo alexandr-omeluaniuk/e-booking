@@ -10,14 +10,14 @@ package org.ss.ebooking.constants;
  * @author ss
  */
 public class AppURLs {
+    /** Administrator application login. */
+    public static final String APP_LOGIN = "/login";
+    /** Administrator application logout. */
+    public static final String APP_LOGOUT = "/logout";
+    /** Administrator application login page. */
+    public static final String APP_LOGIN_PAGE = "/welcome";
     /** Administrator application. */
     public static final String APP_ADMIN = "/admin";
-    /** Administrator application login. */
-    public static final String APP_ADMIN_LOGIN = APP_ADMIN + "/login";
-    /** Administrator application logout. */
-    public static final String APP_ADMIN_LOGOUT = APP_ADMIN + "/logout";
-    /** Administrator application login page. */
-    public static final String APP_ADMIN_LOGIN_PAGE = APP_ADMIN + "/welcome";
     /** Administrator application REST API. */
     public static final String APP_ADMIN_REST_API = APP_ADMIN + "/api";
     /** Administrator application views. */

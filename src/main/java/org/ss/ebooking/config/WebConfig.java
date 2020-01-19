@@ -38,6 +38,8 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
+                registry.addViewController(AppURLs.APP_LOGIN_PAGE)
+                        .setViewName("forward:" + AppURLs.APP_ADMIN + "/index.html");
                 for (String app : APPLICATIONS) {
                     registry.addViewController(app).setViewName("forward:" + app + "/index.html");
                     registry.addViewController(app + "/view/**").setViewName("forward:" + app + "/index.html");
