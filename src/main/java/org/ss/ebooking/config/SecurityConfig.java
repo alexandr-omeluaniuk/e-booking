@@ -5,11 +5,13 @@
  */
 package org.ss.ebooking.config;
 
+import java.util.concurrent.TimeUnit;
 import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,6 +31,7 @@ import org.ss.ebooking.constants.AppURLs;
  * @author Alexandr Omeluaniuk
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableWebSecurity/*(debug = true)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** Authentication entry point. */
@@ -46,15 +49,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** Logout success handler. */
     @Autowired
     private LogoutSuccessHandler logoutSuccesshandler;
+    /** E-Booking configuration. */
+    @Autowired
+    private EBookingConfig config;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API).authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginPage(AppURLs.APP_LOGIN_PAGE).permitAll().and()
-                .logout().logoutUrl(AppURLs.APP_LOGOUT).logoutSuccessHandler(logoutSuccesshandler)
-                .invalidateHttpSession(true).and().exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint);
+                .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_LOGOUT)
+                .logoutSuccessHandler(logoutSuccesshandler)
+                .invalidateHttpSession(true)
+                .and().exceptionHandling().authenticationEntryPoint(authEntryPoint)
+                .and().rememberMe().key(config.getRememberMeKey()).tokenValiditySeconds(
+                        Integer.valueOf(String.valueOf(TimeUnit.DAYS.toMillis(1))));
     }
     @Override
     public void configure(WebSecurity web) throws Exception {

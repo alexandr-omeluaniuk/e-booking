@@ -18,3 +18,5 @@ logging:
   level:
     org:
       ss: DEBUG
+ebooking:
+  rememberMeKey: 80wfj23nf0g03hgjasdf98h3fljs
