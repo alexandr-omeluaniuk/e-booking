@@ -16,11 +16,11 @@
  */
 package org.ss.ebooking.dao;
 
-import org.ss.ebooking.entity.User;
+import org.ss.ebooking.entity.SystemUser;
 
 
 /**
- * User DAO.
+ * SystemUser DAO.
  * @author Alexandr Omeluaniuk.
  */
 public interface UserDAO {
@@ -29,5 +29,5 @@ public interface UserDAO {
      * @param username username (we use email).
      * @return user.
      */
-    User findByUsername(String username);
+    SystemUser findByUsername(String username);
 }

@@ -26,11 +26,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.ss.ebooking.dao.UserDAO;
-import org.ss.ebooking.entity.User;
-import org.ss.ebooking.entity.User_;
+import org.ss.ebooking.entity.SystemUser;
+import org.ss.ebooking.entity.SystemUser_;
 
 /**
- * User DAO implementation.
+ * SystemUser DAO implementation.
  * @author Alexandr Omeluaniuk
  */
 @Repository
@@ -40,12 +40,12 @@ class UserDAOImpl implements UserDAO {
     private EntityManager em;
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public User findByUsername(String username) {
+    public SystemUser findByUsername(String username) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = cb.createQuery(User.class);
-        Root<User> c = criteria.from(User.class);
-        criteria.select(c).where(cb.equal(c.get(User_.email), username));
-        List<User> users = em.createQuery(criteria).getResultList();
+        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
+        Root<SystemUser> c = criteria.from(SystemUser.class);
+        criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
+        List<SystemUser> users = em.createQuery(criteria).getResultList();
         return users.isEmpty() ? null : users.get(0);
     }
 }

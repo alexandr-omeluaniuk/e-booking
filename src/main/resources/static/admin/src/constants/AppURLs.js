@@ -27,9 +27,9 @@ const context = '/admin';
 const AppURLs = {
     context: context,
     links: {
-        welcome: context + '/welcome',
-        logout: context + '/logout',
-        login: context + '/login',
+        welcome: '/welcome',
+        logout: '/logout',
+        login: '/login',
         rest: context + '/rest',
         view: context + '/view'
     }

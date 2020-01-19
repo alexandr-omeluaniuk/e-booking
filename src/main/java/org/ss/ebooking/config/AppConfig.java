@@ -6,6 +6,7 @@
 package org.ss.ebooking.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -14,5 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @EnableAutoConfiguration
 @ComponentScan("org.ss.ebooking")
+@EntityScan("org.ss.ebooking.entity")
 public class AppConfig {
 }

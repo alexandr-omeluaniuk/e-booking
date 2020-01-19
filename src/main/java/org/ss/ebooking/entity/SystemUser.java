@@ -38,12 +38,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 /**
- * User.
+ * SystemUser.
  * @author Alexandr Omeluaniuk
  */
 @Entity
-@Table(name = "user")
-public class User implements Serializable {
+@Table(name = "system_user")
+public class SystemUser implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
@@ -75,10 +75,10 @@ public class User implements Serializable {
     /** Is active. */
     @Column(name = "is_active", nullable = false)
     private boolean active;
-    /** Role. */
+    /** UserRole. */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    private Role role;
+    private UserRole role;
 // ==================================== SET & GET =================================================
     /**
      * @return the id
@@ -155,13 +155,13 @@ public class User implements Serializable {
     /**
      * @return the role
      */
-    public Role getRole() {
+    public UserRole getRole() {
         return role;
     }
     /**
      * @param role the role to set
      */
-    public void setRole(Role role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 // ================================================================================================
@@ -173,10 +173,10 @@ public class User implements Serializable {
     }
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof User)) {
+        if (!(object instanceof SystemUser)) {
             return false;
         }
-        User other = (User) object;
+        SystemUser other = (SystemUser) object;
         return !((this.id == null && other.id != null)
                 || (this.id != null && !this.id.equals(other.id)));
     }

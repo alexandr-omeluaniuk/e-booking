@@ -19,15 +19,15 @@ package org.ss.ebooking.config.security;
 import java.util.Collection;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.ss.ebooking.entity.User;
+import org.ss.ebooking.entity.SystemUser;
 
 /**
- * User principal.
+ * SystemUser principal.
  * @author Alexandr Omeluaniuk
  */
 public class UserPrincipal extends UsernamePasswordAuthenticationToken {
-    /** User. */
-    private User user;
+    /** SystemUser. */
+    private SystemUser user;
     /**
      * Constructor.
      * @param username - username.
@@ -41,13 +41,13 @@ public class UserPrincipal extends UsernamePasswordAuthenticationToken {
     /**
      * @return the user
      */
-    public User getUser() {
+    public SystemUser getUser() {
         return user;
     }
     /**
      * @param user the user to set
      */
-    public void setUser(User user) {
+    public void setUser(SystemUser user) {
         this.user = user;
     }
 }

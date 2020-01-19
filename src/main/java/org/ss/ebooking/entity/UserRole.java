@@ -37,8 +37,8 @@ import javax.validation.constraints.NotEmpty;
  * @author Alexandr Omeluaniuk 
  */
 @Entity
-@Table(name = "role")
-public class Role implements Serializable {
+@Table(name = "user_role")
+public class UserRole implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================= FIELDS ===============================================
@@ -46,7 +46,7 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /** Role name */
+    /** UserRole name */
     @NotEmpty
     @Column(name = "name", nullable = false)
     private String name;
@@ -85,10 +85,10 @@ public class Role implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Role)) {
+        if (!(object instanceof UserRole)) {
             return false;
         }
-        Role other = (Role) object;
+        UserRole other = (UserRole) object;
         return !((this.id == null && other.id != null)
                 || (this.id != null && !this.id.equals(other.id)));
     }

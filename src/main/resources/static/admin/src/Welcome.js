@@ -37,6 +37,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from './component/Copyright';
+import DataService from './service/DataService';
 
 const useStyles = makeStyles(theme => ({
         paper: {
@@ -76,7 +77,7 @@ export default function Welcome() {
                         <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password"
                             id="password" autoComplete="current-password" />
                         <FormControlLabel control={ < Checkbox value = "remember" color = "primary" / > } label="Remember me" />
-                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                        <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit}>
                             Sign In
                         </Button>
                         <Grid container>

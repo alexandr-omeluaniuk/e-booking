@@ -32,7 +32,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.ss.ebooking.dao.UserDAO;
-import org.ss.ebooking.entity.User;
+import org.ss.ebooking.entity.SystemUser;
 
 /**
  * Authentication provider.
@@ -44,14 +44,14 @@ class AuthManager implements AuthenticationManager {
     /** Password encoder. */
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    /** User DAO. */
+    /** SystemUser DAO. */
     @Autowired
     private UserDAO userDAO;
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
         String username = auth.getPrincipal() + "";
         String password = auth.getCredentials() + "";
-        User user = userDAO.findByUsername(username);
+        SystemUser user = userDAO.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
