@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,9 +33,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -42,7 +45,7 @@ import javax.validation.constraints.Size;
  * @author Alexandr Omeluaniuk
  */
 @Entity
-@Table(name = "system_user")
+@Table(name = "users")
 public class SystemUser implements Serializable {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
@@ -76,9 +79,16 @@ public class SystemUser implements Serializable {
     @Column(name = "is_active", nullable = false)
     private boolean active;
     /** UserRole. */
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
+    @JsonIgnore
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
     private UserRole role;
+    /** Subscription. */
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id")
+    private Subscription subscription;
 // ==================================== SET & GET =================================================
     /**
      * @return the id
@@ -163,6 +173,18 @@ public class SystemUser implements Serializable {
      */
     public void setRole(UserRole role) {
         this.role = role;
+    }
+    /**
+     * @return the subscription
+     */
+    public Subscription getSubscription() {
+        return subscription;
+    }
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 // ================================================================================================
     @Override

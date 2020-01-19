@@ -22,17 +22,24 @@
  * THE SOFTWARE.
  */
 
-const context = '/admin';
+import React, { useState, useEffect } from 'react';
+import DataService from '../service/DataService';
 
-const AppURLs = {
-    context: context,
-    links: {
-        welcome: '/welcome',
-        logout: '/logout',
-        login: '/login',
-        rest: context + '/api',
-        view: context + '/view'
-    }
-};
+function Subscriptions() {
+    const [subsriptions, setSubscriptions] = useState(null);
+    const updateSubscriptions = () => {
+        DataService.requestGet('/subscription?page=1&pageSize=1').then(resp => {
+            console.log(resp);
+        });
+    };
+    useEffect(() => {
+        if (subsriptions === null) {
+            updateSubscriptions();
+        }
+    });
+    return (
+            <div>Subscriptions</div>
+    );
+}
 
-export default AppURLs;
+export default Subscriptions;

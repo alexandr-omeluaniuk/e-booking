@@ -8,6 +8,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 import Dashboard from '../view/Dashboard';
 import Clients from '../view/Clients';
+import Subscriptions from '../view/Subscriptions';
 import AppURLs from '../constants/AppURLs';
 
 export const mainListItems = [{
@@ -20,6 +21,11 @@ export const mainListItems = [{
         label: 'clients',
         path: AppURLs.links.view + '/clients',
         component: Clients
+    }, {
+        icon: 'shop',
+        label: 'subscriptions',
+        path: AppURLs.links.view + '/subscriptions',
+        component: Subscriptions
     }];
 
 export function initRouting() {

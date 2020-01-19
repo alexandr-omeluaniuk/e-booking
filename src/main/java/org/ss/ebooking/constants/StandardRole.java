@@ -27,9 +27,9 @@ package org.ss.ebooking.constants;
  * Standard user role.
  * @author ss
  */
-public enum StandardRole {
+public class StandardRole {
     /** Super administrator. */
-    SUPER_ADMIN,
+    public static final String SUPER_ADMIN = "ROLE_SUPER_ADMIN";
     /** Subscription administrator. */
-    SUBSCRIPTION_ADMINISTRATOR
+    public static final String SUBSCRIPTION_ADMINISTRATOR = "ROLE_SUBSCRIPTION_ADMINISTRATOR";
 }

@@ -51,13 +51,13 @@ public interface CoreDAO {
     <T> List<T> getAll(Class<T> cl);
     /**
      * Get portion of entities.
-     * @param <T>           entity type.
-     * @param cl            entity class.
-     * @param startPosition start select position.
-     * @param portionSize   portion size.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @param page page.
+     * @param pageSize page size.
      * @return all entities.
      */
-    <T> List<T> getPortion(Class<T> cl, int startPosition, int portionSize);
+    <T> List<T> getPortion(Class<T> cl, int page, int pageSize);
     /**
      * Get count of records.
      * @param <T> record type.

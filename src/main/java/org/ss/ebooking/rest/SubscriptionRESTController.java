@@ -23,20 +23,40 @@
  */
 package org.ss.ebooking.rest;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.ss.ebooking.constants.AppURLs;
+import org.ss.ebooking.constants.StandardRole;
 import org.ss.ebooking.dao.CoreDAO;
+import org.ss.ebooking.entity.Subscription;
 
 /**
- * System user REST controller.
+ * Subscription REST controller.
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/user")
-class SystemUserRESTController {
+@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/subscription")
+class SubscriptionRESTController {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /**
+     * Get all subscriptions.
+     * @param page page number.
+     * @param pageSize page size.
+     * @return all subscriptions.
+     * @throws Exception error.
+     */
+    @Secured({StandardRole.SUPER_ADMIN})
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Subscription> getCurrentUser(@RequestParam("page") Integer page,
+            @RequestParam("pageSize") Integer pageSize) throws Exception {
+        return coreDAO.getPortion(Subscription.class, page, pageSize);
+    }
 }

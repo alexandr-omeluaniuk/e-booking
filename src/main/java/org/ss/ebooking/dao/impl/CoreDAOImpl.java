@@ -70,13 +70,13 @@ class CoreDAOImpl implements CoreDAO {
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
-    public <T> List<T> getPortion(Class<T> cl, int startPosition, int portionSize) {
+    public <T> List<T> getPortion(Class<T> cl, int page, int pageSize) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
         criteria.select(c);
-        return em.createQuery(criteria).setFirstResult(startPosition)
-                .setMaxResults(portionSize).getResultList();
+        return em.createQuery(criteria).setFirstResult((page - 1) * pageSize)
+                .setMaxResults(pageSize).getResultList();
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)

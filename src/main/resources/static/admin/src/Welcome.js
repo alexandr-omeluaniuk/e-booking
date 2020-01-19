@@ -101,15 +101,17 @@ export default function Welcome() {
                 console.error('HTTP error occurred: ' + error);
             });
             promise.then(rsp => {
-                let msg;
-                if (rsp.code === '1') {
-                    msg = t('loginPage.err.userNotFound');
-                } else if (rsp.code === '2') {
-                    msg = t('loginPage.err.badPassword');
-                } else if (rsp.code === '3') {
-                    msg = t('loginPage.err.userDeactivated');
+                if (rsp) {
+                    let msg;
+                    if (rsp.code === '1') {
+                        msg = t('loginPage.err.userNotFound');
+                    } else if (rsp.code === '2') {
+                        msg = t('loginPage.err.badPassword');
+                    } else if (rsp.code === '3') {
+                        msg = t('loginPage.err.userDeactivated');
+                    }
+                    setLoginError(msg);
                 }
-                setLoginError(msg);
             });
         }
     };

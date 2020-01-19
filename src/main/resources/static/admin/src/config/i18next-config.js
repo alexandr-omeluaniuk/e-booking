@@ -13,7 +13,8 @@ i18n.use(initReactI18next).init({
             translation: {
                 menu: {
                     dashboard: "Обзор",
-                    clients: 'Клиенты'
+                    clients: 'Клиенты',
+                    subscriptions: 'Подписки'
                 },
                 loginPage: {
                     signIn: 'Войти в систему',
