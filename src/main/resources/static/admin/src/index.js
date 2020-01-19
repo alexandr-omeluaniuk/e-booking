@@ -1,10 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import Welcome from './Welcome';
 import * as serviceWorker from './serviceWorker';
 import './config/i18next-config';
+import { createBrowserHistory } from "history";
+import { Router, Route, Switch } from "react-router-dom";
+import AppURLs from './constants/AppURLs';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const hist = createBrowserHistory();
+
+const indexRoutes = [{
+        path: AppURLs.links.welcome,
+        component: Welcome
+    }, {
+        path: AppURLs.context,
+        component: App
+    }];
+
+ReactDOM.render(
+    <Router history={hist}>
+        <Switch>
+        {indexRoutes.map((prop, key) => {
+            return <Route path={prop.path} component={prop.component} key={key} />;
+        })}
+        </Switch>
+    </Router>,
+   document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

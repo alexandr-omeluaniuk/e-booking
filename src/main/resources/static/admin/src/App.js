@@ -14,12 +14,12 @@ import List from '@material-ui/core/List';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { initRouting, mainListItems } from './config/router-config';
 import { NavLink, BrowserRouter as Router } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import Copyright from './component/Copyright';
 
 const drawerWidth = 240;
 
@@ -106,18 +106,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Copyright() {
-  return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Pavel Vakulchik
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-  );
-}
 
 function App() {
     let currentRoute = mainListItems.filter(item => { return window.location.pathname === item.path; });
