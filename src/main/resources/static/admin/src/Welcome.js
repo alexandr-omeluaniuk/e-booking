@@ -22,7 +22,9 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+/* global fetch */
+
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -37,7 +39,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Copyright from './component/Copyright';
-import DataService from './service/DataService';
+import { useTranslation } from 'react-i18next';
+import AppURLs from './constants/AppURLs';
 
 const useStyles = makeStyles(theme => ({
         paper: {
@@ -60,7 +63,56 @@ const useStyles = makeStyles(theme => ({
     }));
 
 export default function Welcome() {
+    const EMAIL_REGEX = /\S+@\S+\.\S+/;
     const classes = useStyles();
+    const { t } = useTranslation();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailValid, setEmailValid] = useState(true);
+    const [passwordValid, setPasswordValid] = useState(true);
+    const [loginError, setLoginError] = useState('');
+    const validate = (e, p) => {
+        let isPasswordValid = p && p.length >= 8;
+        let isEmailValid = EMAIL_REGEX.test(e);
+        setEmailValid(isEmailValid);
+        setPasswordValid(isPasswordValid);
+        setLoginError('');
+        return isPasswordValid && isEmailValid;
+    };
+    const login = () => {
+        if (validate(email, password)) {
+            let promise = fetch(AppURLs.links.login, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: email,
+                    password: password
+                })
+            }).then(function(response) {
+                if (response.ok) {
+                    window.location.href = AppURLs.context;
+                } else if (response.status === 401) {
+                    return response.json();
+                }
+            }).catch(error => {
+                console.error('HTTP error occurred: ' + error);
+            });
+            promise.then(rsp => {
+                let msg;
+                if (rsp.code === '1') {
+                    msg = t('loginPage.err.userNotFound');
+                } else if (rsp.code === '2') {
+                    msg = t('loginPage.err.badPassword');
+                } else if (rsp.code === '3') {
+                    msg = t('loginPage.err.userDeactivated');
+                }
+                setLoginError(msg);
+            });
+        }
+    };
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -69,26 +121,32 @@ export default function Welcome() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        { t('loginPage.signIn') }
+                    </Typography>
+                    <Typography component="h1" variant="h6" align="center" color="error">
+                        {loginError}
                     </Typography>
                     <form className={classes.form} noValidate>
-                        <TextField variant="outlined" margin="normal" required fullWidth id="email" label="Email Address"
-                            name="email" autoComplete="email" autoFocus />
-                        <TextField variant="outlined" margin="normal" required fullWidth name="password" label="Password" type="password"
-                            id="password" autoComplete="current-password" />
-                        <FormControlLabel control={ < Checkbox value = "remember" color = "primary" / > } label="Remember me" />
-                        <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit}>
-                            Sign In
+                        <TextField variant="outlined" margin="normal" required fullWidth id="email" label={t('loginPage.emailAddress')}
+                            name="email" autoComplete="email" autoFocus value={email} onChange={(e) => {
+                                setEmail(e.target.value);
+                                validate(e.target.value, password);
+                            }} helperText={emailValid ? null : t('validation.email')} error={!emailValid}/>
+                        <TextField variant="outlined" margin="normal" required fullWidth name="password" label={t('loginPage.password')}
+                            type="password" id="password" autoComplete="current-password" value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                validate(email, e.target.value);
+                            }} helperText={passwordValid ? null : t('validation.minLength', {length: 8})} error={!passwordValid}/>
+                        <FormControlLabel control={ < Checkbox value = "remember" color = "primary" / > }
+                            label={t('loginPage.rememberMe')} />
+                        <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
+                            { t('loginPage.signIn') }
                         </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    { t('loginPage.forgotPassword') }
                                 </Link>
                             </Grid>
                         </Grid>

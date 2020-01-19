@@ -14,6 +14,22 @@ i18n.use(initReactI18next).init({
                 menu: {
                     dashboard: "Обзор",
                     clients: 'Клиенты'
+                },
+                loginPage: {
+                    signIn: 'Войти в систему',
+                    forgotPassword: 'Забыли пароль?',
+                    emailAddress: 'Адрес электронной почты',
+                    password: 'Пароль',
+                    rememberMe: 'Запомнить меня',
+                    err: {
+                        userNotFound: 'Данный адрес электронной почты не зарегистрирован',
+                        badPassword: 'Неверный пароль',
+                        userDeactivated: 'Учетная запись деактивирована'
+                    }
+                },
+                validation: {
+                    email: 'Неверный формат адреса электронной почты',
+                    minLength: 'Не короче {{length}} символов'
                 }
             }
         }

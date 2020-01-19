@@ -20,19 +20,19 @@
 import AppURLs from '../constants/AppURLs';
 
 class DataService {
-    requestGet = function (url) {
+    static requestGet = function (url) {
         return this._request('GET', url);
     };
-    requestPut = function (url, data) {
+    static requestPut = function (url, data) {
         return this._request('PUT', url, data);
     };
-    requestPost = function (url, data) {
+    static requestPost = function (url, data) {
         return this._request('POST', url, data);
     };
-    requestDelete = function (url) {
+    static requestDelete = function (url) {
         return this._request('DELETE', url);
     };
-    _request = function (method, url, payload) {
+    static _request = function (method, url, payload) {
         return fetch(AppURLs.links.rest + url, {
             method: method,
             headers: {
@@ -47,8 +47,6 @@ class DataService {
                 window.location.href = AppURLs.links.welcome;
                 return;
             }
-//            console.log('Print response: ');
-//            console.log(response);
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);
         });
