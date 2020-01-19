@@ -24,6 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
     };
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(AppURLs.APP_LOGIN_PAGE)
+                .addResourceLocations("classpath:/static" + AppURLs.APP_ADMIN + "/build/");
         for (String app : APPLICATIONS) {
             registry.addResourceHandler(app + "/**").addResourceLocations("classpath:/static/" + app + "/build/");
         }
