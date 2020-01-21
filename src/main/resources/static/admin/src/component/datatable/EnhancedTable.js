@@ -49,9 +49,11 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
+    const dataService = new DataService();
     const {headCells, title, restURL } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
-    const [rows, setRows] = React.useState(null);
+    const [rows, setRows] = React.useState([]);
+    const [load, setLoad] = React.useState(true);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(headCells[0].id);
     const [selected, setSelected] = React.useState([]);
@@ -59,11 +61,6 @@ function EnhancedTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
-    const updateRows = () => {
-        DataService.requestGet(restURL + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
-            setRows(resp);
-        });
-    };
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -100,7 +97,6 @@ function EnhancedTable(props) {
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-        updateRows();
     };
     const handleChangeDense = event => {
         setDense(event.target.checked);
@@ -128,18 +124,23 @@ function EnhancedTable(props) {
         return stabilizedThis.map(el => el[0]);
     };
     const isSelected = name => selected.indexOf(name) !== -1;
-    
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
-        if (rows === null) {
-            updateRows();
+        if (load) {
+            dataService.requestGet(restURL + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
+                setLoad(false);
+                setRows(resp);
+            });
         }
-    });
+    }, [load, restURL, page, rowsPerPage, dataService]);
+    useEffect(() => {
+        return () => {
+            dataService.abort();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     // --------------------------------------------------- RENDER -------------------------------------------------------------------------
-    if (rows === null) {
-        return null;
-    }
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>

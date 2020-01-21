@@ -18,23 +18,32 @@
 /* global fetch */
 
 import AppURLs from '../constants/AppURLs';
+import { history } from '../index';
 
 class DataService {
-    static requestGet = function (url) {
+    constructor() {
+        this.abortController = new AbortController();
+    }
+    requestGet = (url) => {
         return this._request('GET', url);
     };
-    static requestPut = function (url, data) {
+    requestPut = (url, data) => {
         return this._request('PUT', url, data);
     };
-    static requestPost = function (url, data) {
+    requestPost = (url, data) => {
         return this._request('POST', url, data);
     };
-    static requestDelete = function (url) {
+    requestDelete = (url) => {
         return this._request('DELETE', url);
     };
-    static _request = function (method, url, payload) {
+    abort = () => {
+        this.abortController.abort();
+    }
+    _request = (method, url, payload) => {
+        let signal = this.abortController.signal;
         return fetch(AppURLs.links.rest + url, {
             method: method,
+            signal: signal,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -44,7 +53,7 @@ class DataService {
             if (response.ok) {
                 return response.json();         
             } else if (response.status === 401) {
-                window.location.href = AppURLs.links.welcome;
+                history.push(AppURLs.links.welcome);
                 return;
             }
         }).catch(error => {

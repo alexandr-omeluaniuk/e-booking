@@ -8,7 +8,7 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import AppURLs from './constants/AppURLs';
 
-const hist = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const indexRoutes = [{
         path: AppURLs.links.welcome,
@@ -19,7 +19,7 @@ const indexRoutes = [{
     }];
 
 ReactDOM.render(
-    <Router history={hist}>
+    <Router history={history}>
         <Switch>
         {indexRoutes.map((prop, key) => {
             return <Route path={prop.path} component={prop.component} key={key} />;
