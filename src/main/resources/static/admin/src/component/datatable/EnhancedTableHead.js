@@ -24,7 +24,7 @@ function EnhancedTableHead(props) {
                             onChange={onSelectAllClick} inputProps={{ 'aria-label': 'select all desserts' }}/>
                     </TableCell>
                     {headCells.map(headCell => (
-                        <TableCell key={headCell.id} align={headCell.numeric ? 'right' : 'left'}
+                        <TableCell key={headCell.id} align={headCell.align}
                             padding={headCell.disablePadding ? 'none' : 'default'} sortDirection={orderBy === headCell.id ? order : false}>
                             <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'}
                                 onClick={createSortHandler(headCell.id)}>
@@ -50,7 +50,7 @@ EnhancedTableHead.propTypes = {
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
-    headCells: PropTypes.array.isRequired
+    headCells: PropTypes.array.isRequired   // 'right', 'left' allowed
 };
 
 export default EnhancedTableHead;

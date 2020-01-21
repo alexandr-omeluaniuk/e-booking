@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
 
 function EnhancedTable(props) {
     const classes = useStyles();
-    const { rows, headCells } = props;
+    const { rows, headCells, title } = props;
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -131,7 +131,7 @@ function EnhancedTable(props) {
     return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.length} />
+                    <EnhancedTableToolbar numSelected={selected.length} title={title}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">
@@ -147,16 +147,16 @@ function EnhancedTable(props) {
                                         <TableCell padding="checkbox">
                                             <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}/>
                                         </TableCell>
-                                        {row.map((column, i) => {
+                                        {headCells.map((column, i) => {
                                             if (i === 0) {
                                                 return (
                                                     <TableCell component="th" scope="row" padding="none" key={i} id={labelId}>
-                                                        {column}
+                                                        {row[column.id]}
                                                     </TableCell> 
                                                 );
                                             } else {
                                                 return (
-                                                    <TableCell align="right" key={i}>{column}</TableCell>
+                                                    <TableCell align="right" key={i}>{row[column.id]}</TableCell>
                                                 );
                                             }
                                         })}
@@ -181,7 +181,8 @@ function EnhancedTable(props) {
 
 EnhancedTable.propTypes = {
     rows: PropTypes.array.isRequired,
-    headCells: PropTypes.array.isRequired
+    headCells: PropTypes.array.isRequired,
+    title: PropTypes.string
 };
 
 export default EnhancedTable;

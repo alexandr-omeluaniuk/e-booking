@@ -24,22 +24,37 @@
 
 import React, { useState, useEffect } from 'react';
 import DataService from '../service/DataService';
+import EnhancedTable from './../component/datatable/EnhancedTable';
+import { useTranslation } from 'react-i18next';
 
 function Subscriptions() {
-    const [subsriptions, setSubscriptions] = useState(null);
+    const { t } = useTranslation();
+    const headCells = [
+        {id: 'organizationName', align: 'left', disablePadding: true},
+        {id: 'started', align: 'right', disablePadding: false},
+        {id: 'expirationDate', align: 'right', disablePadding: false}
+    ];
+    headCells.forEach(hc => {
+        hc.label = t('models.subscription.' + hc.id);
+    });
+    const [subscriptions, setSubscriptions] = useState(null);
     const updateSubscriptions = () => {
         DataService.requestGet('/subscription?page=1&pageSize=1').then(resp => {
-            console.log(resp);
+            setSubscriptions(resp);
         });
     };
     useEffect(() => {
-        if (subsriptions === null) {
+        if (subscriptions === null) {
             updateSubscriptions();
         }
     });
-    return (
-            <div>Subscriptions</div>
-    );
+    if (subscriptions === null) {
+        return null;
+    } else {
+        return (
+                <EnhancedTable headCells={headCells} rows={subscriptions} title={t('subscriptions.title')}></EnhancedTable>
+        );
+    }
 }
 
 export default Subscriptions;

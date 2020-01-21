@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
-    const { numSelected } = props;
+    const { numSelected, title } = props;
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
             {numSelected > 0 ? (
@@ -42,7 +42,7 @@ function EnhancedTableToolbar(props) {
                 </Typography>
             ) : (
                 <Typography className={classes.title} variant="h6" id="tableTitle">
-                    Nutrition
+                    {title ? title : ''}
                 </Typography>
             )}
             {numSelected > 0 ? (
@@ -63,7 +63,8 @@ function EnhancedTableToolbar(props) {
 }
 
 EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired
+    numSelected: PropTypes.number.isRequired,
+    title: PropTypes.string
 };
 
 export default EnhancedTableToolbar;
