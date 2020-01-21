@@ -49,6 +49,9 @@ i18n.use(initReactI18next).init({
                             filter: 'Фильтр',
                             add: 'Новая запись'
                         }
+                    },
+                    window: {
+                        save: 'Сохранить'
                     }
                 }
             }

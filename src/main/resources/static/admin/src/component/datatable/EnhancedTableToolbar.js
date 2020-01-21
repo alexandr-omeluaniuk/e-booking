@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -15,6 +15,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
+import FormDialog from '../window/FormDialog';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -40,37 +41,41 @@ function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
     const { numSelected, title } = props;
+    const [formOpen, setFormOpen] = React.useState(false);
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
-            {numSelected > 0 ? (
-                <Typography className={classes.title} color="inherit" variant="subtitle1">
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography className={classes.title} variant="h6" id="tableTitle">
-                    {title ? title : ''}
-                </Typography>
-            )}
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton aria-label="delete">
-                        <Icon>delete</Icon>
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <React.Fragment>
-                    <Tooltip title={t('components.datatable.toolbar.add')}>
-                        <IconButton aria-label="add record" className={classes.greenButton}>
-                            <Icon>add</Icon>
+                {numSelected > 0 ? (
+                    <Typography className={classes.title} color="inherit" variant="subtitle1">
+                        {numSelected} selected
+                    </Typography>
+                ) : (
+                    <Typography className={classes.title} variant="h6" id="tableTitle">
+                        {title ? title : ''}
+                    </Typography>
+                )}
+                {numSelected > 0 ? (
+                    <Tooltip title="Delete">
+                        <IconButton aria-label="delete">
+                            <Icon>delete</Icon>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title={t('components.datatable.toolbar.filter')}>
-                        <IconButton aria-label="filter list" color="secondary">
-                            <Icon>filter_list</Icon>
-                        </IconButton>
-                    </Tooltip>
-                </React.Fragment>
-            )}
+                ) : (
+                    <React.Fragment>
+                        <Tooltip title={t('components.datatable.toolbar.add')}>
+                            <IconButton aria-label="add record" className={classes.greenButton} onClick={() => {setFormOpen(true)}}>
+                                <Icon>add</Icon>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title={t('components.datatable.toolbar.filter')}>
+                            <IconButton aria-label="filter list" color="secondary">
+                                <Icon>filter_list</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    </React.Fragment>
+                )}
+                <FormDialog title="Новая запись" open={formOpen} handleClose={() => {setFormOpen(false)}}>
+                        TODO
+                </FormDialog>
             </Toolbar>
     );
 }
