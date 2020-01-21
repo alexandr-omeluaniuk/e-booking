@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-import React, { useState, useEffect } from 'react';
-import DataService from '../service/DataService';
+import React from 'react';
 import EnhancedTable from './../component/datatable/EnhancedTable';
 import { useTranslation } from 'react-i18next';
 
@@ -37,24 +36,9 @@ function Subscriptions() {
     headCells.forEach(hc => {
         hc.label = t('models.subscription.' + hc.id);
     });
-    const [subscriptions, setSubscriptions] = useState(null);
-    const updateSubscriptions = () => {
-        DataService.requestGet('/subscription?page=1&pageSize=1').then(resp => {
-            setSubscriptions(resp);
-        });
-    };
-    useEffect(() => {
-        if (subscriptions === null) {
-            updateSubscriptions();
-        }
-    });
-    if (subscriptions === null) {
-        return null;
-    } else {
-        return (
-                <EnhancedTable headCells={headCells} rows={subscriptions} title={t('subscriptions.title')}></EnhancedTable>
-        );
-    }
+    return (
+            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} restURL={'/subscription'}></EnhancedTable>
+    );
 }
 
 export default Subscriptions;

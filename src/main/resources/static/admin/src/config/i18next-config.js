@@ -41,6 +41,15 @@ i18n.use(initReactI18next).init({
                         started: 'Начало подписки',
                         expirationDate: 'Окончание подписки'
                     }
+                },
+                components: {
+                    datatable: {
+                        densePadding: 'Компактная таблица',
+                        toolbar: {
+                            filter: 'Фильтр',
+                            add: 'Новая запись'
+                        }
+                    }
                 }
             }
         }

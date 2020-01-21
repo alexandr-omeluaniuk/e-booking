@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -19,6 +19,8 @@ import Switch from '@material-ui/core/Switch';
 import { makeStyles } from '@material-ui/core/styles';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
+import DataService from '../../service/DataService';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -46,20 +48,27 @@ const useStyles = makeStyles(theme => ({
 
 function EnhancedTable(props) {
     const classes = useStyles();
-    const { rows, headCells, title } = props;
+    const { t } = useTranslation();
+    const {headCells, title, restURL } = props;
+    // ----------------------------------------------- STATE ------------------------------------------------------------------------------
+    const [rows, setRows] = React.useState(null);
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState(headCells[0].id);
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+    // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
+    const updateRows = () => {
+        DataService.requestGet(restURL + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
+            setRows(resp);
+        });
+    };
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
-
     const handleSelectAllClick = event => {
         if (event.target.checked) {
             const newSelecteds = rows.map(n => n.name);
@@ -68,11 +77,9 @@ function EnhancedTable(props) {
         }
         setSelected([]);
     };
-
     const handleClick = (event, name) => {
         const selectedIndex = selected.indexOf(name);
         let newSelected = [];
-
         if (selectedIndex === -1) {
             newSelected = newSelected.concat(selected, name);
         } else if (selectedIndex === 0) {
@@ -85,27 +92,22 @@ function EnhancedTable(props) {
                     selected.slice(selectedIndex + 1),
                     );
         }
-
         setSelected(newSelected);
     };
-
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        updateRows();
     };
-
     const handleChangeDense = event => {
         setDense(event.target.checked);
     };
-
     const getSorting = (order, orderBy) => {
         return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
     };
-    
     const desc = (a, b, orderBy) => {
         if (b[orderBy] < a[orderBy]) {
             return -1;
@@ -115,7 +117,6 @@ function EnhancedTable(props) {
         }
         return 0;
     };
-
     const stableSort = (array, cmp) => {
         const stabilizedThis = array.map((el, index) => [el, index]);
         stabilizedThis.sort((a, b) => {
@@ -127,6 +128,17 @@ function EnhancedTable(props) {
         return stabilizedThis.map(el => el[0]);
     };
     const isSelected = name => selected.indexOf(name) !== -1;
+    
+    // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
+    useEffect(() => {
+        if (rows === null) {
+            updateRows();
+        }
+    });
+    // --------------------------------------------------- RENDER -------------------------------------------------------------------------
+    if (rows === null) {
+        return null;
+    }
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
     return (
             <div className={classes.root}>
@@ -174,13 +186,13 @@ function EnhancedTable(props) {
                     <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length} rowsPerPage={rowsPerPage}
                         page={page} onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage}/> 
                 </Paper>
-                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('components.datatable.densePadding')} />
             </div>
     );
 }
 
 EnhancedTable.propTypes = {
-    rows: PropTypes.array.isRequired,
+    restURL: PropTypes.string.isRequired,
     headCells: PropTypes.array.isRequired,
     title: PropTypes.string
 };
