@@ -35,11 +35,11 @@ function FormDialog(props) {
     return (
             <Dialog open={open} onClose={handleClose} scroll={'paper'} maxWidth={'md'} fullWidth={true}>
                 <MuiDialogTitle disableTypography className={classes.root}>
-                <Typography variant="h6">{title}</Typography>
-                <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
-                    <Icon>close</Icon>
-                </IconButton>
-            </MuiDialogTitle>
+                    <Typography variant="h6">{title}</Typography>
+                    <IconButton aria-label="close" className={classes.closeButton} onClick={handleClose}>
+                        <Icon>close</Icon>
+                    </IconButton>
+                </MuiDialogTitle>
                 <DialogContent dividers={true}>
                     {children}
                 </DialogContent>
