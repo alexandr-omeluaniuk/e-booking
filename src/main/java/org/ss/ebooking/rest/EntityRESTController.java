@@ -23,6 +23,8 @@
  */
 package org.ss.ebooking.rest;
 
+import java.io.Serializable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,7 @@ import org.ss.ebooking.service.EntityService;
 @RequestMapping(AppURLs.APP_ADMIN_REST_API + "/entity")
 public class EntityRESTController {
     /** Entity service. */
+    @Autowired
     private EntityService entityService;
     /**
      * Get entity layout.
@@ -49,6 +52,7 @@ public class EntityRESTController {
      */
     @RequestMapping(value = "/layout/{entity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EntityLayout getEntityLayout(@PathVariable("entity") String entityName) throws Exception {
-        return entityService.getEntityLayout(entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName("org.ss.ebooking.entity." + entityName);
+        return entityService.getEntityLayout(entityClass);
     }
 }

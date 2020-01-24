@@ -34,7 +34,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.UIHidden;
 
 /**
  * Subscription.
@@ -47,6 +49,7 @@ public class Subscription implements Serializable {
     private static final long serialVersionUID = 1L;
     // =========================================== FIELDS =============================================================
     /** ID. */
+    @UIHidden
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,12 +59,14 @@ public class Subscription implements Serializable {
     @Column(name = "organization_name")
     private String organizationName;
     /** Started. */
+    @NotNull
     @Temporal(TemporalType.DATE)
-    @Column(name = "started")
+    @Column(name = "started", nullable = false)
     private Date started;
     /** Expiration date. */
+    @NotNull
     @Temporal(TemporalType.DATE)
-    @Column(name = "expiration_date")
+    @Column(name = "expiration_date", nullable = false)
     private Date expirationDate;
     /** Is active. */
     @Column(name = "active")

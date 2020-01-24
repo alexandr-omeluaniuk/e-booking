@@ -30,60 +30,32 @@ import java.util.List;
  * @author ss
  */
 public class EntityLayout {
-    /** Field sets. */
-    private List<FieldSet> fieldSets;
+    /** Fields. */
+    private List<Field> fields;
     // ====================================== SET & GET ===============================================================
     /**
-     * @return the fieldSets
+     * @return the fields
      */
-    public List<FieldSet> getFieldSets() {
-        return fieldSets;
+    public List<Field> getFields() {
+        return fields;
     }
     /**
-     * @param fieldSets the fieldSets to set
+     * @param fields the fields to set
      */
-    public void setFieldSets(List<FieldSet> fieldSets) {
-        this.fieldSets = fieldSets;
+    public void setFields(List<Field> fields) {
+        this.fields = fields;
     }
     // ====================================== PRIVATE CLASSES =========================================================
-    public class FieldSet {
-        /** Fieldset legend. */
-        private String legend;
-        /** Fields. */
-        private List<Field> fields;
-        /**
-         * @return the legend
-         */
-        public String getLegend() {
-            return legend;
-        }
-        /**
-         * @param legend the legend to set
-         */
-        public void setLegend(String legend) {
-            this.legend = legend;
-        }
-        /**
-         * @return the fields
-         */
-        public List<Field> getFields() {
-            return fields;
-        }
-        /**
-         * @param fields the fields to set
-         */
-        public void setFields(List<Field> fields) {
-            this.fields = fields;
-        }
-    }
     /**
      * Layout field.
      */
-    public class Field {
+    public static class Field {
         /** Field name. */
         private String name;
         /** Field type. */
         private String fieldType;
+        /** Hidden. */
+        private boolean hidden;
         /**
          * @return the name
          */
@@ -107,6 +79,18 @@ public class EntityLayout {
          */
         public void setFieldType(String fieldType) {
             this.fieldType = fieldType;
+        }
+        /**
+         * @return the hidden
+         */
+        public boolean isHidden() {
+            return hidden;
+        }
+        /**
+         * @param hidden the hidden to set
+         */
+        public void setHidden(boolean hidden) {
+            this.hidden = hidden;
         }
     }
 }

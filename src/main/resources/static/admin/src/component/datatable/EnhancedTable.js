@@ -50,7 +50,7 @@ function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
     const dataService = new DataService();
-    const {headCells, title, restURL } = props;
+    const {headCells, title, entity } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
     const [load, setLoad] = React.useState(true);
@@ -128,12 +128,12 @@ function EnhancedTable(props) {
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
-            dataService.requestGet(restURL + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
+            dataService.requestGet('/' + entity + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
                 setLoad(false);
                 setRows(resp);
             });
         }
-    }, [load, restURL, page, rowsPerPage, dataService]);
+    }, [load, entity, page, rowsPerPage, dataService]);
     useEffect(() => {
         return () => {
             dataService.abort();
@@ -144,7 +144,7 @@ function EnhancedTable(props) {
     return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.length} title={title}/>
+                    <EnhancedTableToolbar numSelected={selected.length} title={title} entity={entity}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">
@@ -193,7 +193,7 @@ function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
-    restURL: PropTypes.string.isRequired,
+    entity: PropTypes.string.isRequired,
     headCells: PropTypes.array.isRequired,
     title: PropTypes.string
 };

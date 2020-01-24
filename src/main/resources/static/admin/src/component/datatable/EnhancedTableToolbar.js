@@ -16,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
 import FormDialog from '../window/FormDialog';
+import StandardForm from '../form/StandardForm';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title } = props;
+    const { numSelected, title, entity } = props;
     const [formOpen, setFormOpen] = React.useState(false);
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
@@ -74,13 +75,14 @@ function EnhancedTableToolbar(props) {
                     </React.Fragment>
                 )}
                 <FormDialog title="Новая запись" open={formOpen} handleClose={() => {setFormOpen(false)}}>
-                        TODO
+                    <StandardForm entity={entity}/>
                 </FormDialog>
             </Toolbar>
     );
 }
 
 EnhancedTableToolbar.propTypes = {
+    entity: PropTypes.string.isRequired,
     numSelected: PropTypes.number.isRequired,
     title: PropTypes.string
 };

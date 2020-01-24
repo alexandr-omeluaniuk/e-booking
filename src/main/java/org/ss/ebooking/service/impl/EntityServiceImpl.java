@@ -23,11 +23,18 @@
  */
 package org.ss.ebooking.service.impl;
 
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 
@@ -40,8 +47,47 @@ import org.ss.ebooking.service.EntityService;
 class EntityServiceImpl implements EntityService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
+    /** Excluded fields. */
+    private static final Set<String> EXCLUDED_FIELDS = new HashSet<>();
+    /**
+     * Static initialization.
+     */
+    static {
+        EXCLUDED_FIELDS.add("serialVersionUID");
+    }
     @Override
-    public EntityLayout getEntityLayout(String entityTableName) throws Exception {
-        return null;
+    public EntityLayout getEntityLayout(Class<? extends Serializable> clazz) throws Exception {
+        LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
+        EntityLayout layout = new EntityLayout();
+        layout.setFields(new ArrayList<>());
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (!EXCLUDED_FIELDS.contains(field.getName())) {
+                layout.getFields().add(getLayoutField(field));
+            }
+        }
+        return layout;
+    }
+    // ==================================== PRIVATE ===================================================================
+    /**
+     * Get layout field from entity field.
+     * @param field entity field.
+     * @return layout field.
+     * @throws Exception error.
+     */
+    private EntityLayout.Field getLayoutField(Field field) throws Exception {
+        Annotation[] annotations = field.getAnnotations();
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("field [" + field.getName() + "], annotations [" + annotations.length + "]");
+        }
+        EntityLayout.Field layoutField = new EntityLayout.Field();
+        layoutField.setName(field.getName());
+        layoutField.setFieldType(field.getType().getSimpleName());
+        for (Annotation annotation : annotations) {
+            if (UIHidden.class.equals(annotation.annotationType())) {
+                layoutField.setHidden(true);
+            }
+        }
+        return layoutField;
     }
 }

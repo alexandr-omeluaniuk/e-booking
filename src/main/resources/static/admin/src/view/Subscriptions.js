@@ -37,7 +37,7 @@ function Subscriptions() {
         hc.label = t('models.subscription.' + hc.id);
     });
     return (
-            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} restURL={'/subscription'}></EnhancedTable>
+            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} entity={'subscription'}></EnhancedTable>
     );
 }
 

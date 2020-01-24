@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.service;
 
+import java.io.Serializable;
 import org.ss.ebooking.wrapper.EntityLayout;
 
 /**
@@ -32,9 +33,9 @@ import org.ss.ebooking.wrapper.EntityLayout;
 public interface EntityService {
     /**
      * Get entity layout.
-     * @param entityTableName entity table name.
+     * @param clazz entity class.
      * @return entity layout.
      * @throws Exception layout can not be created.
      */
-    EntityLayout getEntityLayout(String entityTableName) throws Exception;
+    EntityLayout getEntityLayout(Class<? extends Serializable> clazz) throws Exception;
 }
