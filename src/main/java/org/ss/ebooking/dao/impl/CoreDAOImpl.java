@@ -17,9 +17,12 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ss.ebooking.dao.CoreDAO;
+import org.ss.ebooking.wrapper.EntitySearchRequest;
+import org.ss.ebooking.wrapper.EntitySearchResponse;
 
 /**
  * Core DAO implementation.
@@ -89,5 +92,33 @@ class CoreDAOImpl implements CoreDAO {
         List<Integer> maxList = em.createQuery(criteria).getResultList();
         Integer count = maxList.iterator().next();
         return count == null ? 0 : count;
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public <T> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest) throws Exception {
+        EntitySearchResponse response = new EntitySearchResponse();
+        // entities data
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = cb.createQuery(cl);
+        Root<T> c = criteria.from(cl);
+        criteria.select(c);
+        List<T> entities = em.createQuery(criteria)
+                .setFirstResult((searchRequest.getPage() - 1) * searchRequest.getPageSize())
+                .setMaxResults(searchRequest.getPageSize()).getResultList();
+        response.setData(entities);
+        // entities count
+        CriteriaQuery<Integer> criteriaCount = cb.createQuery(Integer.class);
+        Root<T> cCount = criteriaCount.from(cl);
+        Expression<Integer> sum = cb.max(cCount.get("id").as(Integer.class));
+        criteriaCount.select(sum);
+        List<Integer> maxList = em.createQuery(criteriaCount).getResultList();
+        Integer count = maxList.iterator().next();
+        response.setTotal(count == null ? 0 : count);
+        return response;
+    }
+    // =========================================== PRIVATE ============================================================
+    private List<Predicate> createSearchCriteria() {
+        // TODO
+        return null;
     }
 }

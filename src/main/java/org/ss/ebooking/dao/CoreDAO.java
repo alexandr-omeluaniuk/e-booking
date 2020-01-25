@@ -7,6 +7,8 @@ package org.ss.ebooking.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import org.ss.ebooking.wrapper.EntitySearchRequest;
+import org.ss.ebooking.wrapper.EntitySearchResponse;
 
 /**
  * Core DAO API.
@@ -15,14 +17,14 @@ import java.util.List;
 public interface CoreDAO {
     /**
      * Create entity.
-     * @param <T>    entity class.
+     * @param <T> entity class.
      * @param entity entity.
      * @return created entity.
      */
     <T> T create(T entity);
     /**
      * Update entity.
-     * @param <T>    entity class.
+     * @param <T> entity class.
      * @param entity entity.
      * @return updated entity.
      */
@@ -30,22 +32,22 @@ public interface CoreDAO {
     /**
      * Find entity by ID.
      * @param <T> entity type.
-     * @param id  entity ID.
-     * @param cl  entity class.
+     * @param id entity ID.
+     * @param cl entity class.
      * @return entity.
      */
     <T> T findById(Serializable id, Class<T> cl);
     /**
      * Delete entity.
      * @param <T> entity type.
-     * @param id  entity ID.
-     * @param cl  entity class.
+     * @param id entity ID.
+     * @param cl entity class.
      */
     <T> void delete(Serializable id, Class<T> cl);
     /**
      * Get all entities.
      * @param <T> entity type.
-     * @param cl  entity class.
+     * @param cl entity class.
      * @return all entities.
      */
     <T> List<T> getAll(Class<T> cl);
@@ -61,8 +63,17 @@ public interface CoreDAO {
     /**
      * Get count of records.
      * @param <T> record type.
-     * @param cl  record class.
+     * @param cl record class.
      * @return count of records.
      */
     <T> Integer count(Class<T> cl);
+    /**
+     * Search entities.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @param searchRequest search request.
+     * @return search response.
+     * @throws Exception error.
+     */
+    <T> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest) throws Exception;
 }

@@ -42,7 +42,7 @@ function StandardForm(props) {
     // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
-            dataService.requestGet('/entity/layout/' + 'Subscription').then(resp => {
+            dataService.requestGet('/entity/layout/' + entity).then(resp => {
                 setLoad(false);
                 setLayout(resp);
             });

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,24 +21,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.ss.ebooking.wrapper;
 
-import React from 'react';
-import EnhancedTable from './../component/datatable/EnhancedTable';
-import { useTranslation } from 'react-i18next';
+import java.io.Serializable;
+import java.util.List;
 
-function Subscriptions() {
-    const { t } = useTranslation();
-    const headCells = [
-        {id: 'organizationName', align: 'left', disablePadding: true},
-        {id: 'started', align: 'right', disablePadding: false},
-        {id: 'expirationDate', align: 'right', disablePadding: false}
-    ];
-    headCells.forEach(hc => {
-        hc.label = t('models.subscription.' + hc.id);
-    });
-    return (
-            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} entity={'Subscription'}></EnhancedTable>
-    );
+/**
+ * Entity search response.
+ * @author ss
+ * @param <T>  entity type.
+ */
+public class EntitySearchResponse <T extends Serializable> {
+    // ================================================== FIELDS ======================================================
+    /** Total records. */
+    private int total;
+    /** Page data. */
+    private List<T> data;
+    // ================================================== SET & GET ===================================================
+    /**
+     * @return the total
+     */
+    public int getTotal() {
+        return total;
+    }
+    /**
+     * @param total the total to set
+     */
+    public void setTotal(int total) {
+        this.total = total;
+    }
+    /**
+     * @return the data
+     */
+    public List<T> getData() {
+        return data;
+    }
+    /**
+     * @param data the data to set
+     */
+    public void setData(List<T> data) {
+        this.data = data;
+    }
 }
-
-export default Subscriptions;

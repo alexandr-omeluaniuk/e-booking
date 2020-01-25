@@ -27,12 +27,15 @@ import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.wrapper.EntitySearchRequest;
+import org.ss.ebooking.wrapper.EntitySearchResponse;
 
 /**
  * Entity REST controller.
@@ -52,7 +55,20 @@ public class EntityRESTController {
      */
     @RequestMapping(value = "/layout/{entity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public EntityLayout getEntityLayout(@PathVariable("entity") String entityName) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName("org.ss.ebooking.entity." + entityName);
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         return entityService.getEntityLayout(entityClass);
+    }
+    /**
+     * Search entities.
+     * @param entityName entity name.
+     * @param searchRequest search request.
+     * @return search response.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EntitySearchResponse searchEntities(@PathVariable("entity") String entityName,
+            @RequestBody EntitySearchRequest searchRequest) throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        return entityService.searchEntities(entityClass, searchRequest);
     }
 }

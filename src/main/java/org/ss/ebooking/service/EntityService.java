@@ -25,12 +25,16 @@ package org.ss.ebooking.service;
 
 import java.io.Serializable;
 import org.ss.ebooking.wrapper.EntityLayout;
+import org.ss.ebooking.wrapper.EntitySearchRequest;
+import org.ss.ebooking.wrapper.EntitySearchResponse;
 
 /**
  * Entity service.
  * @author ss
  */
 public interface EntityService {
+    /** Entity package. */
+    static final String ENTITY_PACKAGE = "org.ss.ebooking.entity.";
     /**
      * Get entity layout.
      * @param clazz entity class.
@@ -38,4 +42,14 @@ public interface EntityService {
      * @throws Exception layout can not be created.
      */
     EntityLayout getEntityLayout(Class<? extends Serializable> clazz) throws Exception;
+    /**
+     * Search entities.
+     * @param clazz entity class.
+     * @param searchRequest search request.
+     * @return search response.
+     * @throws Exception error.
+     */
+    EntitySearchResponse searchEntities(Class<? extends Serializable> clazz, EntitySearchRequest searchRequest)
+            throws Exception;
+    
 }

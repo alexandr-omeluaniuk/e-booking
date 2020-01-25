@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,24 +21,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.ss.ebooking.wrapper;
 
-import React from 'react';
-import EnhancedTable from './../component/datatable/EnhancedTable';
-import { useTranslation } from 'react-i18next';
-
-function Subscriptions() {
-    const { t } = useTranslation();
-    const headCells = [
-        {id: 'organizationName', align: 'left', disablePadding: true},
-        {id: 'started', align: 'right', disablePadding: false},
-        {id: 'expirationDate', align: 'right', disablePadding: false}
-    ];
-    headCells.forEach(hc => {
-        hc.label = t('models.subscription.' + hc.id);
-    });
-    return (
-            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} entity={'Subscription'}></EnhancedTable>
-    );
+/**
+ * Entity search request.
+ * @author ss
+ */
+public class EntitySearchRequest {
+    // =========================================== FIELDS =============================================================
+    /** Page number. Required. */
+    private Integer page;
+    /** Page size. Required. */
+    private Integer pageSize;
+    // =========================================== SET & GET ==========================================================
+    /**
+     * @return the page
+     */
+    public Integer getPage() {
+        return page;
+    }
+    /**
+     * @param page the page to set
+     */
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+    /**
+     * @return the pageSize
+     */
+    public Integer getPageSize() {
+        return pageSize;
+    }
+    /**
+     * @param pageSize the pageSize to set
+     */
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
 }
-
-export default Subscriptions;

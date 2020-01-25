@@ -31,12 +31,16 @@ import java.util.HashSet;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import org.ss.ebooking.anno.UIHidden;
+import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.wrapper.EntitySearchRequest;
+import org.ss.ebooking.wrapper.EntitySearchResponse;
 
 /**
  * Entity service implementation.
@@ -55,8 +59,11 @@ class EntityServiceImpl implements EntityService {
     static {
         EXCLUDED_FIELDS.add("serialVersionUID");
     }
+    /** Core DAO. */
+    @Autowired
+    private CoreDAO coreDAO;
     @Override
-    public EntityLayout getEntityLayout(Class<? extends Serializable> clazz) throws Exception {
+    public EntityLayout getEntityLayout(final Class<? extends Serializable> clazz) throws Exception {
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         EntityLayout layout = new EntityLayout();
         layout.setFields(new ArrayList<>());
@@ -67,6 +74,11 @@ class EntityServiceImpl implements EntityService {
             }
         }
         return layout;
+    }
+    @Override
+    public EntitySearchResponse searchEntities(final Class<? extends Serializable> clazz,
+            final EntitySearchRequest searchRequest) throws Exception {
+        return coreDAO.searchEntities(clazz, searchRequest);
     }
     // ==================================== PRIVATE ===================================================================
     /**

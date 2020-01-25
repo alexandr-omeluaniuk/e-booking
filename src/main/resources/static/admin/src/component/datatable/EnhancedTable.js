@@ -128,9 +128,12 @@ function EnhancedTable(props) {
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
-            dataService.requestGet('/' + entity + '?page=' + (page + 1) + '&pageSize=' + rowsPerPage).then(resp => {
+            dataService.requestPost('/entity/' + entity, {
+                page: page + 1,
+                pageSize: rowsPerPage
+            }).then(resp => {
                 setLoad(false);
-                setRows(resp);
+                setRows(resp.data);
             });
         }
     }, [load, entity, page, rowsPerPage, dataService]);
