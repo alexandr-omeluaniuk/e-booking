@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API).authenticated()
+                .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API + "/**").authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin().loginPage(AppURLs.APP_LOGIN_PAGE).permitAll().and()
                 .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_LOGOUT)

@@ -132,8 +132,10 @@ function EnhancedTable(props) {
                 page: page + 1,
                 pageSize: rowsPerPage
             }).then(resp => {
-                setLoad(false);
-                setRows(resp.data);
+                if (resp) {
+                    setLoad(false);
+                    setRows(resp.data);
+                }
             });
         }
     }, [load, entity, page, rowsPerPage, dataService]);
@@ -152,7 +154,7 @@ function EnhancedTable(props) {
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">
                             <EnhancedTableHead classes={classes} numSelected={selected.length} order={order} orderBy={orderBy} headCells={headCells}
-                                onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length}/>
+                                onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length} entity={entity}/>
                             <TableBody>
                             {stableSort(rows, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                                 const isItemSelected = isSelected(row[0]);

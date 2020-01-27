@@ -11,6 +11,9 @@ i18n.use(initReactI18next).init({
     resources: {
         ru: {
             translation: {
+                constants: {
+                    momentJsDateFormat: 'DD.MM.YYYY'
+                },
                 menu: {
                     dashboard: "Обзор",
                     clients: 'Клиенты',
@@ -36,7 +39,7 @@ i18n.use(initReactI18next).init({
                     title: 'Обзор подписок'
                 },
                 models: {
-                    'subscription': {
+                    'Subscription': {
                         organizationName: 'Название организации',
                         started: 'Начало подписки',
                         expirationDate: 'Окончание подписки'

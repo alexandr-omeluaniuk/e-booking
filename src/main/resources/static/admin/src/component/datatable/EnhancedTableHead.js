@@ -10,12 +10,17 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { useTranslation } from 'react-i18next';
 
 function EnhancedTableHead(props) {
-    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
+    const { t } = useTranslation();
+    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells, entity } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };
+    headCells.forEach(hc => {
+        hc.label = t('models.' + entity + '.'+ hc.id);
+    });
     return (
             <TableHead>
                 <TableRow>
@@ -49,6 +54,7 @@ EnhancedTableHead.propTypes = {
     onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
+    entity: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
     headCells: PropTypes.array.isRequired   // 'right', 'left' allowed
 };

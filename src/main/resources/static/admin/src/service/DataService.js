@@ -54,7 +54,7 @@ class DataService {
                 return response.json();         
             } else if (response.status === 401) {
                 history.push(AppURLs.links.welcome);
-                return;
+                throw new Error('Unauthorized request!');
             }
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);

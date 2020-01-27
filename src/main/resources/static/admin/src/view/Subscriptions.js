@@ -33,9 +33,6 @@ function Subscriptions() {
         {id: 'started', align: 'right', disablePadding: false},
         {id: 'expirationDate', align: 'right', disablePadding: false}
     ];
-    headCells.forEach(hc => {
-        hc.label = t('models.subscription.' + hc.id);
-    });
     return (
             <EnhancedTable headCells={headCells} title={t('subscriptions.title')} entity={'Subscription'}></EnhancedTable>
     );
