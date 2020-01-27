@@ -36,6 +36,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
 
 /**
@@ -57,16 +58,19 @@ public class Subscription implements Serializable {
     @NotEmpty
     @Size(max = 255)
     @Column(name = "organization_name")
+    @UIGrid(xs = "12")
     private String organizationName;
     /** Started. */
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
+    @UIGrid(xs = "6")
     private Date started;
     /** Expiration date. */
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
+    @UIGrid(xs = "6")
     private Date expirationDate;
     /** Is active. */
     @Column(name = "active")

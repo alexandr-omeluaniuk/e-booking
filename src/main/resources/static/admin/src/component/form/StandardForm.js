@@ -34,7 +34,6 @@ import moment from 'moment';
 import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 
-console.log(i18n.language);
 moment.locale(i18n.language);
 
 const useStyles = makeStyles(theme => ({
@@ -54,6 +53,17 @@ function StandardForm(props) {
     const [formData, setFormData] = React.useState({});
     const [formChanged, setFormChanged] = React.useState(false);
     // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
+    const sizeOf = (val) => {
+        if (val === "false") {
+            return false;
+        } else if (val === "true") {
+            return true;
+        } else if (val === "auto") {
+            return val;
+        } else {
+            return parseInt(val);
+        }
+    };
     const onChangeFieldValue = (name, value) => {
         formData[name] = value;
         setFormData(formData);
@@ -95,10 +105,11 @@ function StandardForm(props) {
         return null;
     }
     return (
-            <Grid container>
+            <Grid container spacing={2}>
                 {layout.fields.map((field, idx) => {
                     return (
-                            <Grid item xs={12} key={idx}>
+                            <Grid item xs={sizeOf(field.grid.xs)} lg={sizeOf(field.grid.lg)} md={sizeOf(field.grid.md)}
+                                        sm={sizeOf(field.grid.sm)} key={idx}>
                                 {createFormField(field)}
                             </Grid>
                     );

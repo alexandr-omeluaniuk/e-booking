@@ -47,6 +47,81 @@ public class EntityLayout {
     }
     // ====================================== PRIVATE CLASSES =========================================================
     /**
+     * Layout grid system settings.
+     */
+    public static class Grid {
+        /** LG breakpoint value. */
+        private String lg = "false";
+        /** MD breakpoint value. */
+        private String md = "false";
+        /** SM breakpoint value. */
+        private String sm = "false";
+        /** XS breakpoint value. */
+        private String xs = "false";
+        /** Direction. */
+        private String direction = "row";
+        /**
+         * @return the lg
+         */
+        public String getLg() {
+            return lg;
+        }
+        /**
+         * @param lg the lg to set
+         */
+        public void setLg(String lg) {
+            this.lg = lg;
+        }
+        /**
+         * @return the md
+         */
+        public String getMd() {
+            return md;
+        }
+        /**
+         * @param md the md to set
+         */
+        public void setMd(String md) {
+            this.md = md;
+        }
+        /**
+         * @return the sm
+         */
+        public String getSm() {
+            return sm;
+        }
+        /**
+         * @param sm the sm to set
+         */
+        public void setSm(String sm) {
+            this.sm = sm;
+        }
+        /**
+         * @return the xs
+         */
+        public String getXs() {
+            return xs;
+        }
+        /**
+         * @param xs the xs to set
+         */
+        public void setXs(String xs) {
+            this.xs = xs;
+        }
+        /**
+         * @return the direction
+         */
+        public String getDirection() {
+            return direction;
+        }
+        /**
+         * @param direction the direction to set
+         */
+        public void setDirection(String direction) {
+            this.direction = direction;
+        }
+    }
+    /**
      * Layout field.
      */
     public static class Field {
@@ -56,6 +131,8 @@ public class EntityLayout {
         private String fieldType;
         /** Hidden. */
         private boolean hidden;
+        /** Grid system. */
+        private Grid grid;
         /**
          * @return the name
          */
@@ -91,6 +168,18 @@ public class EntityLayout {
          */
         public void setHidden(boolean hidden) {
             this.hidden = hidden;
+        }
+        /**
+         * @return the grid
+         */
+        public Grid getGrid() {
+            return grid;
+        }
+        /**
+         * @param grid the grid to set
+         */
+        public void setGrid(Grid grid) {
+            this.grid = grid;
         }
     }
 }

@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.wrapper.EntityLayout;
@@ -95,11 +96,17 @@ class EntityServiceImpl implements EntityService {
         EntityLayout.Field layoutField = new EntityLayout.Field();
         layoutField.setName(field.getName());
         layoutField.setFieldType(field.getType().getSimpleName());
-        for (Annotation annotation : annotations) {
-            if (UIHidden.class.equals(annotation.annotationType())) {
-                layoutField.setHidden(true);
-            }
+        UIGrid grid = field.getAnnotation(UIGrid.class);
+        EntityLayout.Grid fieldGridSystem = new EntityLayout.Grid();
+        if (grid != null) {
+            fieldGridSystem.setLg(grid.lg());
+            fieldGridSystem.setMd(grid.lg());
+            fieldGridSystem.setSm(grid.sm());
+            fieldGridSystem.setXs(grid.xs());
         }
+        layoutField.setGrid(fieldGridSystem);
+        UIHidden hidden = field.getAnnotation(UIHidden.class);
+        layoutField.setHidden(hidden != null);
         return layoutField;
     }
 }
