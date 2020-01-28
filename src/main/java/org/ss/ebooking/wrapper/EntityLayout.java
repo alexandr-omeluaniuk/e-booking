@@ -24,6 +24,7 @@
 package org.ss.ebooking.wrapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Entity layout.
@@ -122,6 +123,39 @@ public class EntityLayout {
         }
     }
     /**
+     * Field validator.
+     */
+    public static class Validator {
+        /** Type. */
+        private String type;
+        /** Attributes. */
+        private Map<String, String> attributes;
+        /**
+         * @return the type
+         */
+        public String getType() {
+            return type;
+        }
+        /**
+         * @param type the type to set
+         */
+        public void setType(String type) {
+            this.type = type;
+        }
+        /**
+         * @return the attributes
+         */
+        public Map<String, String> getAttributes() {
+            return attributes;
+        }
+        /**
+         * @param attributes the attributes to set
+         */
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
+        }
+    }
+    /**
      * Layout field.
      */
     public static class Field {
@@ -133,6 +167,8 @@ public class EntityLayout {
         private boolean hidden;
         /** Grid system. */
         private Grid grid;
+        /** Validators. */
+        private List<Validator> validators;
         /**
          * @return the name
          */
@@ -180,6 +216,18 @@ public class EntityLayout {
          */
         public void setGrid(Grid grid) {
             this.grid = grid;
+        }
+        /**
+         * @return the validators
+         */
+        public List<Validator> getValidators() {
+            return validators;
+        }
+        /**
+         * @param validators the validators to set
+         */
+        public void setValidators(List<Validator> validators) {
+            this.validators = validators;
         }
     }
 }

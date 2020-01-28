@@ -33,13 +33,18 @@ i18n.use(initReactI18next).init({
                 },
                 validation: {
                     email: 'Неверный формат адреса электронной почты',
-                    minLength: 'Не короче {{length}} символов'
+                    minLength: 'Не короче {{length}} символов',
+                    notnull: 'Обязательное поле',
+                    notempty: 'Обязательное поле'
                 },
                 subscriptions: {
                     title: 'Обзор подписок'
                 },
                 models: {
-                    'Subscription': {
+                    titles: {
+                        Subscription: 'Подписка'
+                    },
+                    Subscription: {
                         organizationName: 'Название организации',
                         started: 'Начало подписки',
                         expirationDate: 'Окончание подписки'

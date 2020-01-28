@@ -27,8 +27,16 @@ import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +46,7 @@ import org.springframework.stereotype.Service;
 import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
+import org.ss.ebooking.exception.EBookingException;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
@@ -95,7 +104,17 @@ class EntityServiceImpl implements EntityService {
         }
         EntityLayout.Field layoutField = new EntityLayout.Field();
         layoutField.setName(field.getName());
-        layoutField.setFieldType(field.getType().getSimpleName());
+        if (Date.class.equals(field.getType())) {
+            Temporal temporal = field.getAnnotation(Temporal.class);
+            if (temporal == null || temporal.value() == null) {
+                throw new EBookingException("wrong date field configuration! Field [" + field.getName()
+                        + "] must have @Temporal annotation!");
+            } else {
+                layoutField.setFieldType(temporal.value().name());
+            }
+        } else {
+            layoutField.setFieldType(field.getType().getSimpleName());
+        }
         UIGrid grid = field.getAnnotation(UIGrid.class);
         EntityLayout.Grid fieldGridSystem = new EntityLayout.Grid();
         if (grid != null) {
@@ -107,6 +126,39 @@ class EntityServiceImpl implements EntityService {
         layoutField.setGrid(fieldGridSystem);
         UIHidden hidden = field.getAnnotation(UIHidden.class);
         layoutField.setHidden(hidden != null);
+        layoutField.setValidators(setValidators(field));
         return layoutField;
+    }
+    /**
+     * Set validators.
+     * @param field field.
+     * @return field validators.
+     * @throws Exception error.
+     */
+    private List<EntityLayout.Validator> setValidators(Field field) throws Exception {
+        List<EntityLayout.Validator> validators = new ArrayList<>();
+        NotEmpty vNotEmpty = field.getAnnotation(NotEmpty.class);
+        if (vNotEmpty != null) {
+            EntityLayout.Validator validator = new EntityLayout.Validator();
+            validator.setType(NotEmpty.class.getSimpleName());
+            validators.add(validator);
+        }
+        Size vSize = field.getAnnotation(Size.class);
+        if (vSize != null) {
+            EntityLayout.Validator validator = new EntityLayout.Validator();
+            validator.setType(Size.class.getSimpleName());
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("max", String.valueOf(vSize.max()));
+            attributes.put("min", String.valueOf(vSize.min()));
+            validator.setAttributes(attributes);
+            validators.add(validator);
+        }
+        NotNull vNotNull = field.getAnnotation(NotNull.class);
+        if (vNotNull != null) {
+            EntityLayout.Validator validator = new EntityLayout.Validator();
+            validator.setType(NotNull.class.getSimpleName());
+            validators.add(validator);
+        }
+        return validators;
     }
 }

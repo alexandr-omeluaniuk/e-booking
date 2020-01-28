@@ -41,6 +41,7 @@ import Container from '@material-ui/core/Container';
 import Copyright from './component/Copyright';
 import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
+import { history } from './index';
 
 const useStyles = makeStyles(theme => ({
         paper: {
@@ -93,7 +94,7 @@ export default function Welcome() {
                 })
             }).then(function(response) {
                 if (response.ok) {
-                    window.location.href = AppURLs.context;
+                    history.push(AppURLs.context);
                 } else if (response.status === 401) {
                     return response.json();
                 }

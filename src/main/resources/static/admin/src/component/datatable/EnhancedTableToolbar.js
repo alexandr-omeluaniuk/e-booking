@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -15,7 +15,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
-import FormDialog from '../window/FormDialog';
 import StandardForm from '../form/StandardForm';
 
 const useStyles = makeStyles(theme => ({
@@ -63,7 +62,7 @@ function EnhancedTableToolbar(props) {
                 ) : (
                     <React.Fragment>
                         <Tooltip title={t('components.datatable.toolbar.add')}>
-                            <IconButton aria-label="add record" className={classes.greenButton} onClick={() => {setFormOpen(true)}}>
+                            <IconButton aria-label="add record" className={classes.greenButton} onClick={() => {setFormOpen(true);}}>
                                 <Icon>add</Icon>
                             </IconButton>
                         </Tooltip>
@@ -74,9 +73,7 @@ function EnhancedTableToolbar(props) {
                         </Tooltip>
                     </React.Fragment>
                 )}
-                <FormDialog title="Новая запись" open={formOpen} handleClose={() => {setFormOpen(false)}}>
-                    <StandardForm entity={entity}/>
-                </FormDialog>
+                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={entity}/>
             </Toolbar>
     );
 }
