@@ -34,7 +34,7 @@ function Subscriptions() {
         {id: 'expirationDate', align: 'right', disablePadding: false}
     ];
     return (
-            <EnhancedTable headCells={headCells} title={t('subscriptions.title')} entity={'Subscription'}></EnhancedTable>
+            <EnhancedTable headCells={headCells} title={t('models.titles.many.Subscription')} entity={'Subscription'}></EnhancedTable>
     );
 }
 

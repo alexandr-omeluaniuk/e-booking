@@ -51,5 +51,13 @@ public interface EntityService {
      */
     EntitySearchResponse searchEntities(Class<? extends Serializable> clazz, EntitySearchRequest searchRequest)
             throws Exception;
+    /**
+     * Create entity.
+     * @param <T> entity type.
+     * @param entity entity.
+     * @return entity.
+     * @throws Exception error.
+     */
+    <T> T createEntity(T entity) throws Exception;
     
 }

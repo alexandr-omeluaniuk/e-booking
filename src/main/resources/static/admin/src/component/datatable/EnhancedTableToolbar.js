@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title, entity } = props;
+    const { numSelected, title, entity, reloadTable } = props;
     const [formOpen, setFormOpen] = React.useState(false);
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
@@ -73,7 +73,7 @@ function EnhancedTableToolbar(props) {
                         </Tooltip>
                     </React.Fragment>
                 )}
-                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={entity}/>
+                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={entity} afterSaveCallback={reloadTable}/>
             </Toolbar>
     );
 }
@@ -81,6 +81,7 @@ function EnhancedTableToolbar(props) {
 EnhancedTableToolbar.propTypes = {
     entity: PropTypes.string.isRequired,
     numSelected: PropTypes.number.isRequired,
+    reloadTable: PropTypes.func.isRequired,
     title: PropTypes.string
 };
 

@@ -37,12 +37,12 @@ i18n.use(initReactI18next).init({
                     notnull: 'Обязательное поле',
                     notempty: 'Обязательное поле'
                 },
-                subscriptions: {
-                    title: 'Обзор подписок'
-                },
                 models: {
                     titles: {
-                        Subscription: 'Подписка'
+                        Subscription: 'Подписка',
+                        many: {
+                            Subscription: 'Подписки'
+                        }
                     },
                     Subscription: {
                         organizationName: 'Название организации',

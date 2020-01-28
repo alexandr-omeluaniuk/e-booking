@@ -90,6 +90,10 @@ class EntityServiceImpl implements EntityService {
             final EntitySearchRequest searchRequest) throws Exception {
         return coreDAO.searchEntities(clazz, searchRequest);
     }
+    @Override
+    public <T> T createEntity(T entity) throws Exception {
+        return coreDAO.create(entity);
+    }
     // ==================================== PRIVATE ===================================================================
     /**
      * Get layout field from entity field.

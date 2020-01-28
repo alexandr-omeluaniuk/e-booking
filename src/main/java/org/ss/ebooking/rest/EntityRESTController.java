@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -65,10 +66,24 @@ public class EntityRESTController {
      * @return search response.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/search/{entity}", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public EntitySearchResponse searchEntities(@PathVariable("entity") String entityName,
             @RequestBody EntitySearchRequest searchRequest) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         return entityService.searchEntities(entityClass, searchRequest);
+    }
+    /**
+     * Create entity.
+     * @param entityName entity name.
+     * @param rawData raw data.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        Object entity = mapper.convertValue(rawData, entityClass);
+        entityService.createEntity(entity);
     }
 }

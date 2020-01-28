@@ -61,6 +61,9 @@ function EnhancedTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
+    const reloadTable = () => {
+        setLoad(true);
+    };
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -128,7 +131,7 @@ function EnhancedTable(props) {
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
-            dataService.requestPost('/entity/' + entity, {
+            dataService.requestPost('/entity/search/' + entity, {
                 page: page + 1,
                 pageSize: rowsPerPage
             }).then(resp => {
@@ -149,7 +152,7 @@ function EnhancedTable(props) {
     return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.length} title={title} entity={entity}/>
+                    <EnhancedTableToolbar numSelected={selected.length} title={title} entity={entity} reloadTable={reloadTable}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">

@@ -68,7 +68,7 @@ function StandardForm(props) {
     const classes = useStyles();
     const { t } = useTranslation();
     const dataService = new DataService();
-    const { entity, open, handleClose } = props;
+    const { entity, open, handleClose, afterSaveCallback } = props;
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
     const [load, setLoad] = React.useState(true);
     const [layout, setLayout] = React.useState(null);
@@ -135,7 +135,21 @@ function StandardForm(props) {
     };
     const saveChanges = () => {
         if (isFormValid()) {
-            console.log('SAVE CHANGES');
+            let data = {};
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            handleClose();
+            if (formData.has('id')) {
+                
+            } else {
+                console.log(data);
+                dataService.requestPost('/entity/' + entity, data).then(resp => {
+                    if (afterSaveCallback) {
+                        afterSaveCallback();
+                    }
+                });
+            }
         }
     };
     // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
@@ -186,7 +200,8 @@ function StandardForm(props) {
 StandardForm.propTypes = {
     entity: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired
+    handleClose: PropTypes.func.isRequired,
+    afterSaveCallback: PropTypes.func
 };
 
 export default StandardForm;
