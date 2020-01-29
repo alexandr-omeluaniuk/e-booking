@@ -77,13 +77,14 @@ public class EntityRESTController {
      * Create entity.
      * @param entityName entity name.
      * @param rawData raw data.
+     * @return entity with ID.
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData) throws Exception {
+    public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         Object entity = mapper.convertValue(rawData, entityClass);
-        entityService.createEntity(entity);
+        return entityService.createEntity(entity);
     }
 }

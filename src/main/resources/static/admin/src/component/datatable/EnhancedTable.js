@@ -53,6 +53,7 @@ function EnhancedTable(props) {
     const {headCells, title, entity } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
+    const [total, setTotal] = React.useState(0);
     const [load, setLoad] = React.useState(true);
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState(headCells[0].id);
@@ -96,16 +97,15 @@ function EnhancedTable(props) {
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        setLoad(true);
     };
     const handleChangeRowsPerPage = event => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        setLoad(true);
     };
     const handleChangeDense = event => {
         setDense(event.target.checked);
-    };
-    const getSorting = (order, orderBy) => {
-        return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
     };
     const desc = (a, b, orderBy) => {
         if (b[orderBy] < a[orderBy]) {
@@ -116,18 +116,8 @@ function EnhancedTable(props) {
         }
         return 0;
     };
-    const stableSort = (array, cmp) => {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-            const order = cmp(a[0], b[0]);
-            if (order !== 0)
-                return order;
-            return a[1] - b[1];
-        });
-        return stabilizedThis.map(el => el[0]);
-    };
     const isSelected = name => selected.indexOf(name) !== -1;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
@@ -138,10 +128,11 @@ function EnhancedTable(props) {
                 if (resp) {
                     setLoad(false);
                     setRows(resp.data);
+                    setTotal(resp.total);
                 }
             });
         }
-    }, [load, entity, page, rowsPerPage, dataService]);
+    }, [load, entity, page, rowsPerPage, dataService, total]);
     useEffect(() => {
         return () => {
             dataService.abort();
@@ -159,7 +150,7 @@ function EnhancedTable(props) {
                             <EnhancedTableHead classes={classes} numSelected={selected.length} order={order} orderBy={orderBy} headCells={headCells}
                                 onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length} entity={entity}/>
                             <TableBody>
-                            {stableSort(rows, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                            {rows.map((row, index) => {
                                 const isItemSelected = isSelected(row[0]);
                                 const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
@@ -192,7 +183,7 @@ function EnhancedTable(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length} rowsPerPage={rowsPerPage}
+                    <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={total} rowsPerPage={rowsPerPage}
                         page={page} onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage}/> 
                 </Paper>
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('components.datatable.densePadding')} />

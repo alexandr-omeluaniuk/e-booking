@@ -6,7 +6,7 @@
 package org.ss.ebooking;
 
 import org.springframework.boot.SpringApplication;
-import org.ss.ebooking.config.AppConfig;
+import org.ss.ebooking.config.WebConfig;
 
 /**
  * Application entry point.
@@ -17,6 +17,6 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SpringApplication.run(AppConfig.class, args);
+        SpringApplication.run(WebConfig.class, args);
     }
 }

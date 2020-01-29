@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -38,6 +39,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
+import org.ss.ebooking.constants.AppConstants;
 
 /**
  * Subscription.
@@ -61,12 +63,14 @@ public class Subscription implements Serializable {
     @UIGrid(xs = "12")
     private String organizationName;
     /** Started. */
+    @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
     @UIGrid(xs = "6")
     private Date started;
     /** Expiration date. */
+    @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)

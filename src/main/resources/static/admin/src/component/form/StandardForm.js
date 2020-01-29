@@ -105,7 +105,7 @@ function StandardForm(props) {
                             helperText={invalidFields.get(name)}/>
             );
         } else if (field.fieldType === 'DATE') {
-            let value = formData.has(name) ? formData[name] : null;
+            let value = formData.has(name) ? formData.get(name) : null;
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
                         <KeyboardDatePicker disableToolbar variant="inline" format={t('constants.momentJsDateFormat')} margin="normal"
@@ -128,6 +128,12 @@ function StandardForm(props) {
                 if (v.type === 'NotEmpty' && (value === null || value === undefined || value.length === 0)) {
                     newInvalidField.set(fieldName, t('validation.notempty'));
                 }
+                if (v.type === 'Size' && value && (value.length > v.attributes.max)) {
+                    newInvalidField.set(fieldName, t('validation.maxLength', {length: v.attributes.max}));
+                }
+                if (v.type === 'Size' && value && (value.length < v.attributes.min)) {
+                    newInvalidField.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
+                }
             });
         });
         setInvalidFields(newInvalidField);
@@ -137,13 +143,17 @@ function StandardForm(props) {
         if (isFormValid()) {
             let data = {};
             for (const [key, value] of formData.entries()) {
-                data[key] = value;
+                let field = layout.fields.filter(f => { return f.name === key; })[0];
+                if (field.fieldType === 'DATE') {
+                    data[key] = value.format('DD.MM.YYYY');
+                } else {
+                    data[key] = value;
+                }
             }
             handleClose();
             if (formData.has('id')) {
                 
             } else {
-                console.log(data);
                 dataService.requestPost('/entity/' + entity, data).then(resp => {
                     if (afterSaveCallback) {
                         afterSaveCallback();

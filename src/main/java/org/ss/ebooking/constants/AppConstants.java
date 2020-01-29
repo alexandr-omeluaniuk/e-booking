@@ -21,18 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.test;
-
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.ss.ebooking.config.WebConfig;
+package org.ss.ebooking.constants;
 
 /**
- *
+ * Application constants.
  * @author ss
  */
-@SpringBootTest(classes = { WebConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@Transactional
-public abstract class AbstractTest {
-    
+public final class AppConstants {
+    /** Default date format. */
+    public static final String DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
+    /**
+     * Private constructor.
+     */
+    private AppConstants() {
+    }
 }

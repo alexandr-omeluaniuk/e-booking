@@ -34,6 +34,7 @@ i18n.use(initReactI18next).init({
                 validation: {
                     email: 'Неверный формат адреса электронной почты',
                     minLength: 'Не короче {{length}} символов',
+                    maxLength: 'Не более {{length}} символов',
                     notnull: 'Обязательное поле',
                     notempty: 'Обязательное поле'
                 },
