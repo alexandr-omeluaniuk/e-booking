@@ -77,6 +77,19 @@ public class EntityRESTController {
         return entityService.searchEntities(entityClass, searchRequest);
     }
     /**
+     * Get entity by ID.
+     * @param entityName entity name.
+     * @param id entity ID.
+     * @return entity.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public DataModel getEntityById(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
+            throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        return entityService.findEntityByID(id, entityClass);
+    }
+    /**
      * Create entity.
      * @param entityName entity name.
      * @param rawData raw data.

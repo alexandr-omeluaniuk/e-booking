@@ -66,7 +66,8 @@ i18n.use(initReactI18next).init({
                     }
                 },
                 common: {
-                    delete: 'Удалить'
+                    delete: 'Удалить',
+                    edit: 'Редактировать'
                 }
             }
         }

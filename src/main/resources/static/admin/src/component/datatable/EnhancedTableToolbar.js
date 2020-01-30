@@ -15,7 +15,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useTranslation } from 'react-i18next';
-import StandardForm from '../form/StandardForm';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -40,8 +39,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title, entity, reloadTable, clearSelection, massDeletion } = props;
-    const [formOpen, setFormOpen] = React.useState(false);
+    const { numSelected, title, clearSelection, massDeletion, createEntry } = props;
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
                 {numSelected > 0 ? (
@@ -69,7 +67,7 @@ function EnhancedTableToolbar(props) {
                 ) : (
                     <React.Fragment>
                         <Tooltip title={t('components.datatable.toolbar.add')}>
-                            <IconButton aria-label="add record" className={classes.greenButton} onClick={() => {setFormOpen(true);}}>
+                            <IconButton aria-label="add record" className={classes.greenButton} onClick={createEntry}>
                                 <Icon>add</Icon>
                             </IconButton>
                         </Tooltip>
@@ -80,18 +78,16 @@ function EnhancedTableToolbar(props) {
                         </Tooltip>
                     </React.Fragment>
                 )}
-                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={entity} afterSaveCallback={reloadTable}/>
             </Toolbar>
     );
 }
 
 EnhancedTableToolbar.propTypes = {
-    entity: PropTypes.string.isRequired,
     numSelected: PropTypes.number.isRequired,
-    reloadTable: PropTypes.func.isRequired,
     title: PropTypes.string,
     clearSelection: PropTypes.func.isRequired,
-    massDeletion: PropTypes.func.isRequired
+    massDeletion: PropTypes.func.isRequired,
+    createEntry: PropTypes.func.isRequired
 };
 
 export default EnhancedTableToolbar;

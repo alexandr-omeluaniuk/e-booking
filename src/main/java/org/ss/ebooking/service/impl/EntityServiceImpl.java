@@ -98,6 +98,10 @@ class EntityServiceImpl implements EntityService {
     public <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
         coreDAO.massDelete(ids, cl);
     }
+    @Override
+    public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
+        return coreDAO.findById(id, cl);
+    }
     // ==================================== PRIVATE ===================================================================
     /**
      * Get layout field from entity field.

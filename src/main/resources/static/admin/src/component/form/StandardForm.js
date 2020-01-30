@@ -68,7 +68,7 @@ function StandardForm(props) {
     const classes = useStyles();
     const { t } = useTranslation();
     const dataService = new DataService();
-    const { entity, open, handleClose, afterSaveCallback } = props;
+    const { entity, open, handleClose, afterSaveCallback, id } = props;
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
     const [load, setLoad] = React.useState(true);
     const [layout, setLayout] = React.useState(null);
@@ -173,6 +173,16 @@ function StandardForm(props) {
             });
         }
     }, [load, entity, dataService]);
+    useEffect(() => {
+        if (open) {
+            setFormData(new Map());
+            if (id) {
+                dataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
+                    console.log(resp);
+                });
+            }
+        }
+    }, [open, id, entity, dataService]);
     // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
     if (layout === null) {
         return null;
@@ -211,7 +221,8 @@ StandardForm.propTypes = {
     entity: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    afterSaveCallback: PropTypes.func
+    afterSaveCallback: PropTypes.func,
+    id: PropTypes.number
 };
 
 export default StandardForm;

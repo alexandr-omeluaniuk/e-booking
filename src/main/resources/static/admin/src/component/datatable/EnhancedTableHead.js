@@ -40,6 +40,9 @@ function EnhancedTableHead(props) {
                             </TableSortLabel>
                         </TableCell>
                     ))}
+                    <TableCell padding="checkbox">
+                        
+                    </TableCell>
                 </TableRow>
             </TableHead>
     );

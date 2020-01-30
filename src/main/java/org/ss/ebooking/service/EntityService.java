@@ -68,5 +68,14 @@ public interface EntityService {
      * @throws Exception error.
      */
     <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception;
+    /**
+     * Find entity by ID.
+     * @param <T> entity type.
+     * @param id entity ID.
+     * @param cl entity class.
+     * @return entity.
+     * @throws Exception error.
+     */
+    <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception;
     
 }

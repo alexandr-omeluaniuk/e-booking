@@ -19,8 +19,12 @@ import Switch from '@material-ui/core/Switch';
 import { makeStyles } from '@material-ui/core/styles';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
+import StandardForm from '../form/StandardForm';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -61,6 +65,8 @@ function EnhancedTable(props) {
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [formOpen, setFormOpen] = React.useState(false);
+    const [editId, setEditId] = React.useState(null);
     // ----------------------------------------------- FUNCTIONS --------------------------------------------------------------------------
     const reloadTable = () => {
         setLoad(true);
@@ -108,6 +114,13 @@ function EnhancedTable(props) {
     const clearSelection = () => {
         setSelected(new Set());
     };
+    const editEntry = (row) => {
+        setEditId(row.id);
+        setFormOpen(true);
+    };
+    const createEntry = () => {
+        setFormOpen(true);
+    };
     const isSelected = row => selected.has(row.id);
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
@@ -137,8 +150,8 @@ function EnhancedTable(props) {
     return (
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar numSelected={selected.size} title={title} entity={entity} reloadTable={reloadTable} 
-                            clearSelection={clearSelection} massDeletion={massDeletion}/>
+                    <EnhancedTableToolbar numSelected={selected.size} title={title} reloadTable={reloadTable} 
+                            clearSelection={clearSelection} massDeletion={massDeletion} createEntry={createEntry}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">
@@ -149,7 +162,7 @@ function EnhancedTable(props) {
                                 const isItemSelected = isSelected(row);
                                 const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
-                                    <TableRow hover role="checkbox" key={index}
+                                    <TableRow hover role="checkbox" key={index} 
                                         aria-checked={isItemSelected} tabIndex={-1} selected={isItemSelected}>
                                         <TableCell padding="checkbox">
                                             <Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }}
@@ -168,6 +181,13 @@ function EnhancedTable(props) {
                                                 );
                                             }
                                         })}
+                                        <TableCell padding="checkbox">
+                                            <Tooltip title={t('common.edit')}>
+                                                <IconButton onClick={() => editEntry(row)}>
+                                                    <Icon>edit</Icon>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -183,6 +203,7 @@ function EnhancedTable(props) {
                         page={page} onChangePage={handleChangePage} onChangeRowsPerPage={handleChangeRowsPerPage}/> 
                 </Paper>
                 <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label={t('components.datatable.densePadding')} />
+                <StandardForm open={formOpen} handleClose={() => {setFormOpen(false);}} entity={entity} afterSaveCallback={reloadTable} id={editId}/>
             </div>
     );
 }
