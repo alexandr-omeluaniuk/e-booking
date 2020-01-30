@@ -71,6 +71,12 @@ function EnhancedTable(props) {
         setOrderBy(property);
         setLoad(true);
     };
+    const massDeletion = () => {
+        dataService.requestPut('/entity/delete/' + entity, Array.from(selected)).then(resp => {
+            setSelected(new Set());
+            setLoad(true);
+        });
+    };
     const handleSelectAllClick = event => {
         if (event.target.checked) {
             const newSelecteds = rows.map(n => n.name);
@@ -132,7 +138,7 @@ function EnhancedTable(props) {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <EnhancedTableToolbar numSelected={selected.size} title={title} entity={entity} reloadTable={reloadTable} 
-                            clearSelection={clearSelection}/>
+                            clearSelection={clearSelection} massDeletion={massDeletion}/>
                     <TableContainer>
                         <Table className={classes.table} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium'}
                             aria-label="enhanced table">

@@ -63,11 +63,13 @@ class CoreDAOImpl implements CoreDAO {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> void massDelete(Set<Long> ids, Class<T> cl) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
-        Root<T> c = criteria.from(cl);
-        criteria.where(c.get(DataModel.ID_FIELD_NAME).in(ids));
-        em.createQuery(criteria).executeUpdate();
+        if (!ids.isEmpty()) {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
+            Root<T> c = criteria.from(cl);
+            criteria.where(c.get(DataModel.ID_FIELD_NAME).in(ids));
+            em.createQuery(criteria).executeUpdate();
+        }
     }
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)

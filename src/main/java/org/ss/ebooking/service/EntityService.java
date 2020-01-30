@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.service;
 
+import java.util.Set;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
@@ -59,5 +60,13 @@ public interface EntityService {
      * @throws Exception error.
      */
     <T extends DataModel> T createEntity(T entity) throws Exception;
+    /**
+     * Mass deletion.
+     * @param <T> entity type.
+     * @param ids set of IDs.
+     * @param cl entity class.
+     * @throws Exception error.
+     */
+    <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception;
     
 }

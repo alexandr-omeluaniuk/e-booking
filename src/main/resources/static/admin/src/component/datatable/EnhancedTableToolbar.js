@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title, entity, reloadTable, clearSelection } = props;
+    const { numSelected, title, entity, reloadTable, clearSelection, massDeletion } = props;
     const [formOpen, setFormOpen] = React.useState(false);
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
@@ -56,7 +56,7 @@ function EnhancedTableToolbar(props) {
                 {numSelected > 0 ? (
                     <React.Fragment>
                         <Tooltip title={t('common.delete')}>
-                            <IconButton aria-label="delete">
+                            <IconButton aria-label="delete" onClick={massDeletion}>
                                 <Icon>delete</Icon>
                             </IconButton>
                         </Tooltip>
@@ -90,7 +90,8 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
     reloadTable: PropTypes.func.isRequired,
     title: PropTypes.string,
-    clearSelection: PropTypes.func.isRequired
+    clearSelection: PropTypes.func.isRequired,
+    massDeletion: PropTypes.func.isRequired
 };
 
 export default EnhancedTableToolbar;

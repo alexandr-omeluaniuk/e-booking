@@ -51,7 +51,7 @@ class DataService {
             body: payload ? JSON.stringify(payload) : null
         }).then(function(response) {
             if (response.ok) {
-                return response.json();         
+                return response.json();
             } else if (response.status === 401) {
                 history.push(AppURLs.links.welcome);
                 throw new Error('Unauthorized request!');

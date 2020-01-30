@@ -25,6 +25,7 @@ package org.ss.ebooking.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
+import org.ss.ebooking.wrapper.RESTResponse;
 
 /**
  * Entity REST controller.
@@ -82,10 +84,25 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData) throws Exception {
+    public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+            throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.createEntity(entity);
+    }
+    /**
+     * Mass deletion.
+     * @param entityName entity name.
+     * @param ids set of IDs.
+     * @return response.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/delete/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse deleteEntities(@PathVariable("entity") String entityName, @RequestBody Set<Long> ids)
+            throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        entityService.massDeleteEntities(ids, entityClass);
+        return new RESTResponse();
     }
 }
