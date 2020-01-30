@@ -17,6 +17,7 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.criteria.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +103,13 @@ class CoreDAOImpl implements CoreDAO {
         CriteriaQuery<T> criteria = cb.createQuery(cl);
         Root<T> c = criteria.from(cl);
         criteria.select(c);
+        Optional.of(searchRequest.getOrderBy()).ifPresent((orderBy) -> {
+            if ("asc".equals(searchRequest.getOrder())) {
+                criteria.orderBy(cb.asc(c.get(orderBy)));
+            } else {
+                criteria.orderBy(cb.desc(c.get(orderBy)));
+            }
+        });
         List<T> entities = em.createQuery(criteria)
                 .setFirstResult((searchRequest.getPage() - 1) * searchRequest.getPageSize())
                 .setMaxResults(searchRequest.getPageSize()).getResultList();

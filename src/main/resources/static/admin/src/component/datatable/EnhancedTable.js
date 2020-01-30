@@ -69,6 +69,7 @@ function EnhancedTable(props) {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
+        setLoad(true);
     };
     const handleSelectAllClick = event => {
         if (event.target.checked) {
@@ -107,15 +108,6 @@ function EnhancedTable(props) {
     const handleChangeDense = event => {
         setDense(event.target.checked);
     };
-    const desc = (a, b, orderBy) => {
-        if (b[orderBy] < a[orderBy]) {
-            return -1;
-        }
-        if (b[orderBy] > a[orderBy]) {
-            return 1;
-        }
-        return 0;
-    };
     const isSelected = name => selected.indexOf(name) !== -1;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
@@ -123,7 +115,9 @@ function EnhancedTable(props) {
         if (load) {
             dataService.requestPost('/entity/search/' + entity, {
                 page: page + 1,
-                pageSize: rowsPerPage
+                pageSize: rowsPerPage,
+                order: order,
+                orderBy: orderBy
             }).then(resp => {
                 if (resp) {
                     setLoad(false);
@@ -132,7 +126,7 @@ function EnhancedTable(props) {
                 }
             });
         }
-    }, [load, entity, page, rowsPerPage, dataService, total]);
+    }, [load, entity, page, rowsPerPage, dataService, total, order, orderBy]);
     useEffect(() => {
         return () => {
             dataService.abort();
