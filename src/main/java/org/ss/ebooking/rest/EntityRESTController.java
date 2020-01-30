@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.ss.ebooking.constants.AppURLs;
+import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
@@ -84,7 +85,7 @@ public class EntityRESTController {
     public Object createEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
-        Object entity = mapper.convertValue(rawData, entityClass);
+        DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.createEntity(entity);
     }
 }

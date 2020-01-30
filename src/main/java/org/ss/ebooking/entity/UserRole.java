@@ -23,7 +23,6 @@
  */
 package org.ss.ebooking.entity;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,7 +37,7 @@ import javax.validation.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "user_role")
-public class UserRole implements Serializable {
+public class UserRole implements DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================= FIELDS ===============================================

@@ -40,13 +40,13 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTableToolbar(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const { numSelected, title, entity, reloadTable } = props;
+    const { numSelected, title, entity, reloadTable, clearSelection } = props;
     const [formOpen, setFormOpen] = React.useState(false);
     return (
             <Toolbar className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}>
                 {numSelected > 0 ? (
                     <Typography className={classes.title} color="inherit" variant="subtitle1">
-                        {numSelected} selected
+                        {t('components.datatable.selectedRecords')}: {numSelected}
                     </Typography>
                 ) : (
                     <Typography className={classes.title} variant="h6" id="tableTitle">
@@ -54,11 +54,18 @@ function EnhancedTableToolbar(props) {
                     </Typography>
                 )}
                 {numSelected > 0 ? (
-                    <Tooltip title="Delete">
-                        <IconButton aria-label="delete">
-                            <Icon>delete</Icon>
-                        </IconButton>
-                    </Tooltip>
+                    <React.Fragment>
+                        <Tooltip title={t('common.delete')}>
+                            <IconButton aria-label="delete">
+                                <Icon>delete</Icon>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title={t('components.datatable.clearSelection')}>
+                            <IconButton aria-label="clear selection" onClick={clearSelection}>
+                                <Icon>close</Icon>
+                            </IconButton>
+                        </Tooltip>
+                    </React.Fragment>
                 ) : (
                     <React.Fragment>
                         <Tooltip title={t('components.datatable.toolbar.add')}>
@@ -82,7 +89,8 @@ EnhancedTableToolbar.propTypes = {
     entity: PropTypes.string.isRequired,
     numSelected: PropTypes.number.isRequired,
     reloadTable: PropTypes.func.isRequired,
-    title: PropTypes.string
+    title: PropTypes.string,
+    clearSelection: PropTypes.func.isRequired
 };
 
 export default EnhancedTableToolbar;

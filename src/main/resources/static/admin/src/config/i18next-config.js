@@ -54,6 +54,8 @@ i18n.use(initReactI18next).init({
                 components: {
                     datatable: {
                         densePadding: 'Компактная таблица',
+                        selectedRecords: 'Выбрано записей',
+                        clearSelection: 'Очистить выделение',
                         toolbar: {
                             filter: 'Фильтр',
                             add: 'Новая запись'
@@ -62,6 +64,9 @@ i18n.use(initReactI18next).init({
                     window: {
                         save: 'Сохранить'
                     }
+                },
+                common: {
+                    delete: 'Удалить'
                 }
             }
         }

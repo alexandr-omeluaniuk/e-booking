@@ -23,7 +23,6 @@
  */
 package org.ss.ebooking.service.impl;
 
-import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
+import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.exception.EBookingException;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
@@ -73,7 +73,7 @@ class EntityServiceImpl implements EntityService {
     @Autowired
     private CoreDAO coreDAO;
     @Override
-    public EntityLayout getEntityLayout(final Class<? extends Serializable> clazz) throws Exception {
+    public EntityLayout getEntityLayout(final Class<? extends DataModel> clazz) throws Exception {
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         EntityLayout layout = new EntityLayout();
         layout.setFields(new ArrayList<>());
@@ -86,12 +86,12 @@ class EntityServiceImpl implements EntityService {
         return layout;
     }
     @Override
-    public EntitySearchResponse searchEntities(final Class<? extends Serializable> clazz,
+    public EntitySearchResponse searchEntities(final Class<? extends DataModel> clazz,
             final EntitySearchRequest searchRequest) throws Exception {
         return coreDAO.searchEntities(clazz, searchRequest);
     }
     @Override
-    public <T> T createEntity(T entity) throws Exception {
+    public <T extends DataModel> T createEntity(T entity) throws Exception {
         return coreDAO.create(entity);
     }
     // ==================================== PRIVATE ===================================================================

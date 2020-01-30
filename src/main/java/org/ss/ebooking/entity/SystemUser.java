@@ -24,7 +24,6 @@
 package org.ss.ebooking.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,7 +45,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
-public class SystemUser implements Serializable {
+public class SystemUser implements DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================

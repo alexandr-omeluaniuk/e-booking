@@ -6,7 +6,8 @@
 package org.ss.ebooking.dao;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
+import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 
@@ -21,14 +22,14 @@ public interface CoreDAO {
      * @param entity entity.
      * @return created entity.
      */
-    <T> T create(T entity);
+    <T extends DataModel> T create(T entity);
     /**
      * Update entity.
      * @param <T> entity class.
      * @param entity entity.
      * @return updated entity.
      */
-    <T> T update(T entity);
+    <T extends DataModel> T update(T entity);
     /**
      * Find entity by ID.
      * @param <T> entity type.
@@ -36,37 +37,21 @@ public interface CoreDAO {
      * @param cl entity class.
      * @return entity.
      */
-    <T> T findById(Serializable id, Class<T> cl);
+    <T extends DataModel> T findById(Serializable id, Class<T> cl);
     /**
      * Delete entity.
      * @param <T> entity type.
      * @param id entity ID.
      * @param cl entity class.
      */
-    <T> void delete(Serializable id, Class<T> cl);
+    <T extends DataModel> void delete(Serializable id, Class<T> cl);
     /**
-     * Get all entities.
+     * Mass deletion.
      * @param <T> entity type.
+     * @param ids set of IDs.
      * @param cl entity class.
-     * @return all entities.
      */
-    <T> List<T> getAll(Class<T> cl);
-    /**
-     * Get portion of entities.
-     * @param <T> entity type.
-     * @param cl entity class.
-     * @param page page.
-     * @param pageSize page size.
-     * @return all entities.
-     */
-    <T> List<T> getPortion(Class<T> cl, int page, int pageSize);
-    /**
-     * Get count of records.
-     * @param <T> record type.
-     * @param cl record class.
-     * @return count of records.
-     */
-    <T> Integer count(Class<T> cl);
+    <T extends DataModel> void massDelete(Set<Long> ids, Class<T> cl);
     /**
      * Search entities.
      * @param <T> entity type.
@@ -75,5 +60,5 @@ public interface CoreDAO {
      * @return search response.
      * @throws Exception error.
      */
-    <T> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest) throws Exception;
+    <T extends DataModel> EntitySearchResponse searchEntities(Class<T> cl, EntitySearchRequest searchRequest) throws Exception;
 }

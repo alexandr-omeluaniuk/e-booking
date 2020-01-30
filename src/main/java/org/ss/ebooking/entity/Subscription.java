@@ -24,7 +24,6 @@
 package org.ss.ebooking.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +46,7 @@ import org.ss.ebooking.constants.AppConstants;
  */
 @Entity
 @Table(name = "subscription")
-public class Subscription implements Serializable {
+public class Subscription implements DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
     // =========================================== FIELDS =============================================================

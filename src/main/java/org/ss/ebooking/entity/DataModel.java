@@ -21,43 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.service;
+package org.ss.ebooking.entity;
 
-import org.ss.ebooking.entity.DataModel;
-import org.ss.ebooking.wrapper.EntityLayout;
-import org.ss.ebooking.wrapper.EntitySearchRequest;
-import org.ss.ebooking.wrapper.EntitySearchResponse;
+import java.io.Serializable;
 
 /**
- * Entity service.
+ * DataModel.
  * @author ss
  */
-public interface EntityService {
-    /** Entity package. */
-    static final String ENTITY_PACKAGE = "org.ss.ebooking.entity.";
+public interface DataModel extends Serializable{
+    /** ID field name. */
+    static final String ID_FIELD_NAME = "id";
     /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
+     * Set ID.
+     * @param id entity ID.
      */
-    EntityLayout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
+    void setId(Long id);
     /**
-     * Search entities.
-     * @param clazz entity class.
-     * @param searchRequest search request.
-     * @return search response.
-     * @throws Exception error.
+     * Get ID.
+     * @return entity ID.
      */
-    EntitySearchResponse searchEntities(Class<? extends DataModel> clazz, EntitySearchRequest searchRequest)
-            throws Exception;
-    /**
-     * Create entity.
-     * @param <T> entity type.
-     * @param entity entity.
-     * @return entity.
-     * @throws Exception error.
-     */
-    <T extends DataModel> T createEntity(T entity) throws Exception;
-    
+    Long getId();
 }
