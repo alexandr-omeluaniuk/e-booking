@@ -61,6 +61,14 @@ public interface EntityService {
      */
     <T extends DataModel> T createEntity(T entity) throws Exception;
     /**
+     * Update entity.
+     * @param <T> entity type.
+     * @param entity entity.
+     * @return updated entity.
+     * @throws Exception error.
+     */
+    <T extends DataModel> T updateEntity(T entity) throws Exception;
+    /**
      * Mass deletion.
      * @param <T> entity type.
      * @param ids set of IDs.

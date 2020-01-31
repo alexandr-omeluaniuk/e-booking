@@ -70,7 +70,6 @@ function StandardForm(props) {
     const dataService = new DataService();
     const { entity, open, handleClose, afterSaveCallback, id } = props;
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
-    const [load, setLoad] = React.useState(true);
     const [layout, setLayout] = React.useState(null);
     const [formData, setFormData] = React.useState(new Map());
     const [invalidFields, setInvalidFields] = React.useState(new Map());
@@ -152,7 +151,11 @@ function StandardForm(props) {
             }
             handleClose();
             if (formData.has('id')) {
-                
+                dataService.requestPut('/entity/' + entity, data).then(resp => {
+                    if (afterSaveCallback) {
+                        afterSaveCallback();
+                    }
+                });
             } else {
                 dataService.requestPost('/entity/' + entity, data).then(resp => {
                     if (afterSaveCallback) {
@@ -162,27 +165,31 @@ function StandardForm(props) {
             }
         }
     };
-    // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
-    useEffect(() => {
-        if (load) {
-            dataService.requestGet('/entity/layout/' + entity).then(resp => {
-                if (resp) {
-                    setLoad(false);
-                    setLayout(resp);
+    const load = (layout, data) => {
+        if (data) {
+            let dataMap = new Map();
+            layout.fields.forEach(field => {
+                if (data[field.name] !== undefined) {
+                    let value = data[field.name];
+                    if (field.fieldType === 'DATE') {
+                        value = moment(value, t('constants.momentJsDateFormat'));
+                    }
+                    dataMap.set(field.name, value);
                 }
             });
+            setFormData(dataMap);
         }
-    }, [load, entity, dataService]);
+        setLayout(layout);
+    };
+    // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
     useEffect(() => {
         if (open) {
             setFormData(new Map());
-            if (id) {
-                dataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
-                    console.log(resp);
-                });
-            }
+            dataService.requestGet('/entity/' + entity + '/' + (id ? id : 0)).then(resp => {
+                load(resp.layout, resp.data);
+            });
         }
-    }, [open, id, entity, dataService]);
+    }, [open]);
     // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
     if (layout === null) {
         return null;

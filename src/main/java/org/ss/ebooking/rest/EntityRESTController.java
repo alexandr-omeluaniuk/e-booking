@@ -35,8 +35,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.entity.DataModel;
-import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.wrapper.DataModelWrapper;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 import org.ss.ebooking.wrapper.RESTResponse;
@@ -51,17 +51,6 @@ public class EntityRESTController {
     /** Entity service. */
     @Autowired
     private EntityService entityService;
-    /**
-     * Get entity layout.
-     * @param entityName entity name.
-     * @return entity layout.
-     * @throws Exception error.
-     */
-    @RequestMapping(value = "/layout/{entity}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityLayout getEntityLayout(@PathVariable("entity") String entityName) throws Exception {
-        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
-        return entityService.getEntityLayout(entityClass);
-    }
     /**
      * Search entities.
      * @param entityName entity name.
@@ -84,10 +73,15 @@ public class EntityRESTController {
      * @throws Exception error.
      */
     @RequestMapping(value = "/{entity}/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public DataModel getEntityById(@PathVariable("entity") String entityName, @PathVariable("id") Long id)
-            throws Exception {
+    public DataModelWrapper getEntityById(@PathVariable("entity") String entityName,
+            @PathVariable("id") Long id) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
-        return entityService.findEntityByID(id, entityClass);
+        DataModelWrapper wrapper = new DataModelWrapper();
+        wrapper.setLayout(entityService.getEntityLayout(entityClass));
+        if (id > 0) {
+            wrapper.setData(entityService.findEntityByID(id, entityClass));
+        }
+        return wrapper;
     }
     /**
      * Create entity.
@@ -103,6 +97,22 @@ public class EntityRESTController {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
         return entityService.createEntity(entity);
+    }
+    /**
+     * Update entity.
+     * @param entityName entity name.
+     * @param rawData raw data.
+     * @return empty response.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/{entity}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public RESTResponse updateEntity(@PathVariable("entity") String entityName, @RequestBody Object rawData)
+            throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        DataModel entity = (DataModel) mapper.convertValue(rawData, entityClass);
+        entityService.updateEntity(entity);
+        return new RESTResponse();
     }
     /**
      * Mass deletion.

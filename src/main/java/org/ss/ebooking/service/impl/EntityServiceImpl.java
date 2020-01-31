@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -63,6 +64,8 @@ class EntityServiceImpl implements EntityService {
     private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
     /** Excluded fields. */
     private static final Set<String> EXCLUDED_FIELDS = new HashSet<>();
+    /** Layouts cache. */
+    private static final Map<Class<? extends DataModel>, EntityLayout> LAYOUTS_CACHE = new ConcurrentHashMap<>();
     /**
      * Static initialization.
      */
@@ -74,6 +77,9 @@ class EntityServiceImpl implements EntityService {
     private CoreDAO coreDAO;
     @Override
     public EntityLayout getEntityLayout(final Class<? extends DataModel> clazz) throws Exception {
+        if (LAYOUTS_CACHE.containsKey(clazz)) {
+            return LAYOUTS_CACHE.get(clazz);
+        }
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         EntityLayout layout = new EntityLayout();
         layout.setFields(new ArrayList<>());
@@ -83,6 +89,7 @@ class EntityServiceImpl implements EntityService {
                 layout.getFields().add(getLayoutField(field));
             }
         }
+        LAYOUTS_CACHE.put(clazz, layout);
         return layout;
     }
     @Override
@@ -93,6 +100,10 @@ class EntityServiceImpl implements EntityService {
     @Override
     public <T extends DataModel> T createEntity(T entity) throws Exception {
         return coreDAO.create(entity);
+    }
+    @Override
+    public <T extends DataModel> T updateEntity(T entity) throws Exception {
+        return coreDAO.update(entity);
     }
     @Override
     public <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
