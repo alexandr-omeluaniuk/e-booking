@@ -37,7 +37,7 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
@@ -191,6 +191,7 @@ function StandardForm(props) {
                 load(resp.layout, resp.data);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
     // ------------------------------------------ RENDERING -------------------------------------------------------------------------------
     if (layout === null) {

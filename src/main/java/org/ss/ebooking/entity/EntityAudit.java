@@ -38,7 +38,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class EntityAudit {
+public abstract class EntityAudit extends TenantEntity {
 // ================================== FIELDS ======================================================
     /** Created by. */
     @CreatedBy

@@ -1,4 +1,4 @@
-/*
+/* 
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,29 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.test.service;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
-import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
+import React from 'react';
+import EnhancedTable from './../component/datatable/EnhancedTable';
 
-/**
- *
- * @author ss
- */
-public class EntityServiceTest extends AbstractTest {
-    @Autowired
-    private EntityService entityService;
-    
-    @DisplayName("Get entity layout test")
-    @Test
-    public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
-        Assertions.assertNotNull(layout);
-    }
+function ListView(props) {
+    const { entity } = props;
+    const { t } = useTranslation();
+    const headCells = [
+        {id: 'organizationName', align: 'left', disablePadding: true},
+        {id: 'started', align: 'right', disablePadding: false},
+        {id: 'expirationDate', align: 'right', disablePadding: false}
+    ];
+    return (
+            <EnhancedTable headCells={headCells} title={t('models.titles.many.' + entity)} entity={entity}></EnhancedTable>
+    );
 }
+
+export default ListView;

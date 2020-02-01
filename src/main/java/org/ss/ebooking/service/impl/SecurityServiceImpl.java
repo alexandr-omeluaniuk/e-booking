@@ -16,12 +16,16 @@
  */
 package org.ss.ebooking.service.impl;
 
-import java.util.Optional;
-import org.springframework.security.core.context.SecurityContext;
+import java.util.Set;
+import org.reflections.Reflections;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.ss.ebooking.anno.security.StandardRoleAccess;
+import org.ss.ebooking.config.security.UserPermissions;
 import org.ss.ebooking.config.security.UserPrincipal;
+import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.SystemUser;
+import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.service.SecurityService;
 
 /**
@@ -37,10 +41,14 @@ class SecurityServiceImpl implements SecurityService {
         return userPrincipal.getUser();
     }
     @Override
-    public Optional<SystemUser> getCurrentAuditor() {
-        return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .map(UserPrincipal.class::cast).filter(UserPrincipal::isAuthenticated)
-                .map(UserPrincipal::getUser);
+    public UserPermissions getUserPermissions() throws Exception {
+        SystemUser currentUser = this.currentUser();
+        UserPermissions permissions = new UserPermissions();
+        Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
+        Set<Class<? extends DataModel>> allDataModels = reflections.getSubTypesOf(DataModel.class);
+        for (Class<? extends DataModel> dataModelClass : allDataModels) {
+            StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
+        }
+        return permissions;
     }
 }

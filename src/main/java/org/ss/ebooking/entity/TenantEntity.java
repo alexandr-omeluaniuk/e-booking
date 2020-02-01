@@ -21,29 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.test.service;
+package org.ss.ebooking.entity;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
-import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 /**
- *
+ * Tenant entity.
  * @author ss
  */
-public class EntityServiceTest extends AbstractTest {
-    @Autowired
-    private EntityService entityService;
-    
-    @DisplayName("Get entity layout test")
-    @Test
-    public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
-        Assertions.assertNotNull(layout);
+@MappedSuperclass
+public abstract class TenantEntity extends DataModel {
+    /** Subscription. */
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id")
+    private Subscription subscription;
+    /**
+     * @return the subscription
+     */
+    public Subscription getSubscription() {
+        return subscription;
+    }
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 }

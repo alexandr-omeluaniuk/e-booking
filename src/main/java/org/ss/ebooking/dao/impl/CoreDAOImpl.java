@@ -25,6 +25,7 @@ import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 import org.ss.ebooking.entity.DataModel;
+import org.ss.ebooking.entity.DataModel_;
 
 /**
  * Core DAO implementation.
@@ -67,7 +68,7 @@ class CoreDAOImpl implements CoreDAO {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaDelete<T> criteria = cb.createCriteriaDelete(cl);
             Root<T> c = criteria.from(cl);
-            criteria.where(c.get(DataModel.ID_FIELD_NAME).in(ids));
+            criteria.where(c.get(DataModel_.id).in(ids));
             em.createQuery(criteria).executeUpdate();
         }
     }

@@ -7,7 +7,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 import Dashboard from '../view/Dashboard';
-import Clients from '../view/Clients';
 import Subscriptions from '../view/Subscriptions';
 import AppURLs from '../constants/AppURLs';
 
@@ -16,11 +15,6 @@ export const mainListItems = [{
         label: 'dashboard',
         path: AppURLs.links.view + '/dashboard',
         component: Dashboard
-    }, {
-        icon: 'contacts',
-        label: 'clients',
-        path: AppURLs.links.view + '/clients',
-        component: Clients
     }, {
         icon: 'shop',
         label: 'subscriptions',

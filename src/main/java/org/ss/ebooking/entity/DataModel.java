@@ -24,22 +24,33 @@
 package org.ss.ebooking.entity;
 
 import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import org.ss.ebooking.anno.UIHidden;
 
 /**
  * DataModel.
  * @author ss
  */
-public interface DataModel extends Serializable{
-    /** ID field name. */
-    static final String ID_FIELD_NAME = "id";
+@MappedSuperclass
+public abstract class DataModel implements Serializable {
+    /** Primary key. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UIHidden
+    private Long id;
     /**
-     * Set ID.
-     * @param id entity ID.
+     * @return the id
      */
-    void setId(Long id);
+    public Long getId() {
+        return id;
+    }
     /**
-     * Get ID.
-     * @return entity ID.
+     * @param id the id to set
      */
-    Long getId();
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

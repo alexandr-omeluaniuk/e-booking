@@ -16,17 +16,23 @@
  */
 package org.ss.ebooking.service;
 
-import org.springframework.data.domain.AuditorAware;
+import org.ss.ebooking.config.security.UserPermissions;
 import org.ss.ebooking.entity.SystemUser;
 
 /**
  * Security service.
  * @author Alexandr Omeluaniuk
  */
-public interface SecurityService extends AuditorAware<SystemUser> {
+public interface SecurityService {
     /**
      * Get current user.
      * @return current user.
      */
     SystemUser currentUser();
+    /**
+     * Get user permissions.
+     * @return user permissions.
+     * @throws Exception error.
+     */
+    UserPermissions getUserPermissions() throws Exception;
 }

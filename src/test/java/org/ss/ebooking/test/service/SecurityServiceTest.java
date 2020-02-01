@@ -23,27 +23,24 @@
  */
 package org.ss.ebooking.test.service;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.service.SecurityService;
 import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
 
 /**
  *
  * @author ss
  */
-public class EntityServiceTest extends AbstractTest {
+public class SecurityServiceTest extends AbstractTest {
     @Autowired
-    private EntityService entityService;
+    private SecurityService service;
     
-    @DisplayName("Get entity layout test")
+    @DisplayName("Get user permissions")
     @Test
-    public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
-        Assertions.assertNotNull(layout);
+    public void testGetUserPermissions() throws Exception {
+//        UserPermissions permissions = service.getUserPermissions();
+//        Assertions.assertNotNull(permissions);
     }
 }

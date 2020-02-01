@@ -23,21 +23,16 @@
  */
 package org.ss.ebooking.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.security.StandardRoleAccess;
+import org.ss.ebooking.config.security.StandardRole;
 
 /**
  * SystemUser.
@@ -45,62 +40,40 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
-public class SystemUser implements DataModel {
+@StandardRoleAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR, StandardRole.ROLE_SUPER_ADMIN })
+public class SystemUser extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
-    /** Primary key. */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     /** Email. */
-    @Email(message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide an email")
+    @Email
+    @NotEmpty
     @Size(max = 255)
     @Column(name = "email", length = 255)
     private String email;
     /** Password. */
-    @Size(min = 5, message = "*Your password must have at least 5 characters")
-    @NotEmpty(message = "*Please provide your password")
+    @Size(min = 5)
+    @NotEmpty
     @Column(name = "password", nullable = false, length = 255)
     private String password;
     /** First name. */
-    @NotEmpty(message = "*Please provide your first name")
+    @NotEmpty
     @Size(max = 255)
     @Column(name = "firstname", nullable = false, length = 255)
     private String firstname;
     /** Last name. */
     @Size(max = 255)
-    @NotEmpty(message = "*Please provide your last name")
+    @NotEmpty
     @Column(name = "lastname", nullable = false, length = 255)
     private String lastname;
     /** Is active. */
     @Column(name = "is_active", nullable = false)
     private boolean active;
-    /** UserRole. */
-    @JsonIgnore
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private UserRole role;
-    /** Subscription. */
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subscription_id")
-    private Subscription subscription;
+    /** Standard role. */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "standard_role")
+    private StandardRole standardRole;
 // ==================================== SET & GET =================================================
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
     /**
      * @return the email
      */
@@ -162,28 +135,16 @@ public class SystemUser implements DataModel {
         this.active = active;
     }
     /**
-     * @return the role
+     * @return the standardRole
      */
-    public UserRole getRole() {
-        return role;
+    public StandardRole getStandardRole() {
+        return standardRole;
     }
     /**
-     * @param role the role to set
+     * @param standardRole the standardRole to set
      */
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-    /**
-     * @return the subscription
-     */
-    public Subscription getSubscription() {
-        return subscription;
-    }
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
+    public void setStandardRole(StandardRole standardRole) {
+        this.standardRole = standardRole;
     }
 // ================================================================================================
     @Override
@@ -198,8 +159,8 @@ public class SystemUser implements DataModel {
             return false;
         }
         SystemUser other = (SystemUser) object;
-        return !((this.id == null && other.id != null)
-                || (this.id != null && !this.id.equals(other.id)));
+        return !((this.getId() == null && other.getId() != null)
+                || (this.getId() != null && !this.getId().equals(other.getId())));
     }
     @Override
     public String toString() {

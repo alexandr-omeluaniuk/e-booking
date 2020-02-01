@@ -61,7 +61,7 @@ class AuthManager implements AuthenticationManager {
         if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password: " + password);
         }
-        GrantedAuthority ga = new SimpleGrantedAuthority(user.getRole().getName());
+        GrantedAuthority ga = new SimpleGrantedAuthority(user.getStandardRole().name());
         List<GrantedAuthority> gaList = new ArrayList<>();
         gaList.add(ga);
         UserPrincipal authentication = new UserPrincipal(username, password, gaList);

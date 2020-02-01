@@ -21,29 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.test.service;
+package org.ss.ebooking.anno.security;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
-import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.ss.ebooking.config.security.StandardRole;
 
 /**
- *
+ * Standard role access.
  * @author ss
  */
-public class EntityServiceTest extends AbstractTest {
-    @Autowired
-    private EntityService entityService;
-    
-    @DisplayName("Get entity layout test")
-    @Test
-    public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
-        Assertions.assertNotNull(layout);
-    }
+@Target(value = {ElementType.TYPE})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface StandardRoleAccess {
+    /**
+     * One or more standard security roles.
+     * @return security roles.
+     */
+    public StandardRole[] roles();
 }

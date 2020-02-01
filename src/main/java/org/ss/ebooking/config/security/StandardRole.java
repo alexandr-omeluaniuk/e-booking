@@ -21,29 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.test.service;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
-import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
+package org.ss.ebooking.config.security;
 
 /**
- *
+ * Standard user role.
  * @author ss
  */
-public class EntityServiceTest extends AbstractTest {
-    @Autowired
-    private EntityService entityService;
-    
-    @DisplayName("Get entity layout test")
-    @Test
-    public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
-        Assertions.assertNotNull(layout);
-    }
+public enum StandardRole {
+    /** Super administrator. */
+    ROLE_SUPER_ADMIN,
+    /** Subscription administrator. */
+    ROLE_SUBSCRIPTION_ADMINISTRATOR,
+    /** Subscription user role. */
+    ROLE_SUBSCRIPTION_USER;
 }

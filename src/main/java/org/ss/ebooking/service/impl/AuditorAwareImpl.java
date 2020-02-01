@@ -21,15 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.constants;
+package org.ss.ebooking.service.impl;
+
+import java.util.Optional;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.ss.ebooking.config.security.UserPrincipal;
+import org.ss.ebooking.entity.SystemUser;
 
 /**
- * Standard user role.
+ * Auditor aware implementation.
  * @author ss
  */
-public class StandardRole {
-    /** Super administrator. */
-    public static final String SUPER_ADMIN = "ROLE_SUPER_ADMIN";
-    /** Subscription administrator. */
-    public static final String SUBSCRIPTION_ADMINISTRATOR = "ROLE_SUBSCRIPTION_ADMINISTRATOR";
+@Service
+class AuditorAwareImpl implements AuditorAware<SystemUser> {
+    @Override
+    public Optional<SystemUser> getCurrentAuditor() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(UserPrincipal.class::cast).filter(UserPrincipal::isAuthenticated)
+                .map(UserPrincipal::getUser);
+    }
 }

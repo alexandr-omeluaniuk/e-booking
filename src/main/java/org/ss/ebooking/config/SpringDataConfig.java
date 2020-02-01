@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.ss.ebooking.entity.SystemUser;
-import org.ss.ebooking.service.SecurityService;
 
 /**
  * Spring Data configuration.
@@ -31,10 +30,11 @@ import org.ss.ebooking.service.SecurityService;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class SpringDataConfig {
+    /** Auditor aware. */
     @Autowired
-    private SecurityService securityService;
+    private AuditorAware<SystemUser> auditorAware;
     @Bean
     public AuditorAware<SystemUser> auditorAware() {
-        return securityService;
+        return auditorAware;
     }
 }

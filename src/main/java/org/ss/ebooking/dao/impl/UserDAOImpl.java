@@ -44,7 +44,6 @@ class UserDAOImpl implements UserDAO {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
         Root<SystemUser> c = criteria.from(SystemUser.class);
-        c.fetch(SystemUser_.role);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
         List<SystemUser> users = em.createQuery(criteria).getResultList();
         return users.isEmpty() ? null : users.get(0);
