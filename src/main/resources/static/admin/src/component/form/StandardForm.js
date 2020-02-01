@@ -42,6 +42,8 @@ import moment from 'moment';
 import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
+import { TYPE_STRING, TYPE_DATE } from '../../config/datatypes';
+import {NOT_NULL, NOT_EMPTY, SIZE} from '../../config/validators';
 
 moment.locale(i18n.language);
 
@@ -93,17 +95,17 @@ function StandardForm(props) {
     const renderFormField = (field) => {
         let label = t('models.' + entity + '.' + field.name);
         var isRequired = field.validators.filter(v => {
-            return v.type === 'NotNull' || v.type === 'NotEmpty';
+            return v.type === NOT_NULL || v.type === NOT_EMPTY;
         }).length > 0;
         label += isRequired ? ' *' : '';
         let name = field.name;
-        if (field.fieldType === 'String') {
+        if (field.fieldType === TYPE_STRING) {
             return (
                     <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
                             value={formData.has(name) ? formData.get(name) : ''} name={name} error={invalidFields.has(name)}
                             helperText={invalidFields.get(name)}/>
             );
-        } else if (field.fieldType === 'DATE') {
+        } else if (field.fieldType === TYPE_DATE) {
             let value = formData.has(name) ? formData.get(name) : null;
             return (
                     <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
@@ -121,16 +123,16 @@ function StandardForm(props) {
             field.validators.forEach(v => {
                 let fieldName = field.name;
                 let value = formData.has(fieldName) ? formData.get(fieldName) : null;
-                if (v.type === 'NotNull' && (value === null || value === undefined)) {
+                if (v.type === NOT_NULL && (value === null || value === undefined)) {
                     newInvalidField.set(fieldName, t('validation.notnull'));
                 }
-                if (v.type === 'NotEmpty' && (value === null || value === undefined || value.length === 0)) {
+                if (v.type === NOT_EMPTY && (value === null || value === undefined || value.length === 0)) {
                     newInvalidField.set(fieldName, t('validation.notempty'));
                 }
-                if (v.type === 'Size' && value && (value.length > v.attributes.max)) {
+                if (v.type === SIZE && value && (value.length > v.attributes.max)) {
                     newInvalidField.set(fieldName, t('validation.maxLength', {length: v.attributes.max}));
                 }
-                if (v.type === 'Size' && value && (value.length < v.attributes.min)) {
+                if (v.type === SIZE && value && (value.length < v.attributes.min)) {
                     newInvalidField.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
                 }
             });
@@ -143,8 +145,8 @@ function StandardForm(props) {
             let data = {};
             for (const [key, value] of formData.entries()) {
                 let field = layout.fields.filter(f => { return f.name === key; })[0];
-                if (field.fieldType === 'DATE') {
-                    data[key] = value.format('DD.MM.YYYY');
+                if (field.fieldType === TYPE_DATE) {
+                    data[key] = value.format(t('constants.momentJsDateFormat'));
                 } else {
                     data[key] = value;
                 }
@@ -171,7 +173,7 @@ function StandardForm(props) {
             layout.fields.forEach(field => {
                 if (data[field.name] !== undefined) {
                     let value = data[field.name];
-                    if (field.fieldType === 'DATE') {
+                    if (field.fieldType === TYPE_DATE) {
                         value = moment(value, t('constants.momentJsDateFormat'));
                     }
                     dataMap.set(field.name, value);
