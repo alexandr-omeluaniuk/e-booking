@@ -33,11 +33,13 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.ListViewColumn;
 import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.constants.AppConstants;
+import org.ss.ebooking.constants.ListViewColumnAlign;
 
 /**
  * Subscription.
@@ -56,6 +58,7 @@ public class Subscription extends DataModel {
     @Size(max = 255)
     @Column(name = "organization_name")
     @UIGrid(xs = "12")
+    @ListViewColumn
     private String organizationName;
     /** Started. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
@@ -63,6 +66,7 @@ public class Subscription extends DataModel {
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
     @UIGrid(xs = "6")
+    @ListViewColumn(align = ListViewColumnAlign.right)
     private Date started;
     /** Expiration date. */
     @JsonFormat(pattern = AppConstants.DEFAULT_DATE_FORMAT)
@@ -70,6 +74,7 @@ public class Subscription extends DataModel {
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
     @UIGrid(xs = "6")
+    @ListViewColumn(align = ListViewColumnAlign.right)
     private Date expirationDate;
     /** Is active. */
     @Column(name = "active")

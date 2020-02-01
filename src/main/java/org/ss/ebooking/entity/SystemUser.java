@@ -31,6 +31,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.ListViewColumn;
 import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
@@ -62,11 +63,13 @@ public class SystemUser extends TenantEntity {
     @NotEmpty
     @Size(max = 255)
     @Column(name = "firstname", nullable = false, length = 255)
+    @ListViewColumn
     private String firstname;
     /** Last name. */
     @Size(max = 255)
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = 255)
+    @ListViewColumn
     private String lastname;
     /** Is active. */
     @Column(name = "is_active", nullable = false)

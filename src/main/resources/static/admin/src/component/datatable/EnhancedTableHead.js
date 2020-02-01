@@ -26,9 +26,9 @@ function EnhancedTableHead(props) {
                     <TableCell padding="checkbox">
                         
                     </TableCell>
-                    {headCells.map(headCell => (
+                    {headCells.map((headCell, i) => (
                         <TableCell key={headCell.id} align={headCell.align}
-                            padding={headCell.disablePadding ? 'none' : 'default'} sortDirection={orderBy === headCell.id ? order : false}>
+                            padding={i === 0 ? 'none' : 'default'} sortDirection={orderBy === headCell.id ? order : false}>
                             <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : 'asc'}
                                 onClick={createSortHandler(headCell.id)}>
                                 {headCell.label}

@@ -56,14 +56,16 @@ class SecurityService {
                     path: AppURLs.links.view + '/dashboard',
                     component: Dashboard
                 });
-                permissions.entityMetadata.forEach(meta => {
-                    navItems.push({
-                        icon: meta.icon ? meta.icon : 'help',
-                        label: t['models']['titles']['many'][meta.className],
-                        path: AppURLs.links.view + '/' + meta.className,
-                        metadata: meta
+                if (permissions) {
+                    permissions.entityMetadata.forEach(meta => {
+                        navItems.push({
+                            icon: meta.icon ? meta.icon : 'help',
+                            label: t['models']['titles']['many'][meta.className],
+                            path: AppURLs.links.view + '/' + meta.className,
+                            metadata: meta
+                        });
                     });
-                });
+                }
                 resolve(navItems);
             });
         });

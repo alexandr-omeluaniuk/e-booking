@@ -178,7 +178,7 @@ function EnhancedTable(props) {
                                                 );
                                             } else {
                                                 return (
-                                                    <TableCell align="right" key={i}>{row[column.id]}</TableCell>
+                                                    <TableCell align={column.align} key={i}>{row[column.id]}</TableCell>
                                                 );
                                             }
                                         })}

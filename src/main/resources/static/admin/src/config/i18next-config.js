@@ -49,6 +49,10 @@ i18n.use(initReactI18next).init({
                         organizationName: 'Название организации',
                         started: 'Начало подписки',
                         expirationDate: 'Окончание подписки'
+                    },
+                    SystemUser: {
+                        firstname: 'Имя',
+                        lastname: 'Фамилия'
                     }
                 },
                 components: {

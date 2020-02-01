@@ -16,6 +16,7 @@
  */
 package org.ss.ebooking.service.impl;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.Set;
 import org.reflections.Reflections;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.ss.ebooking.anno.ListViewColumn;
 import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
@@ -39,6 +41,15 @@ import org.ss.ebooking.service.SecurityService;
  */
 @Service
 class SecurityServiceImpl implements SecurityService {
+    /** Data model classes. */
+    private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES;
+    /**
+     * Static initialization.
+     */
+    static {
+        Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
+        DATA_MODEL_CLASSES = reflections.getSubTypesOf(DataModel.class);
+    }
     @Override
     public SystemUser currentUser() {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,9 +61,7 @@ class SecurityServiceImpl implements SecurityService {
         SystemUser currentUser = this.currentUser();
         UserPermissions permissions = new UserPermissions();
         permissions.setEntityMetadata(new ArrayList<>());
-        Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
-        Set<Class<? extends DataModel>> allDataModels = reflections.getSubTypesOf(DataModel.class);
-        for (Class<? extends DataModel> dataModelClass : allDataModels) {
+        for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
                 boolean hasAccess = true;
                 StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
@@ -64,16 +73,36 @@ class SecurityServiceImpl implements SecurityService {
                     hasAccess = accessibleForRoles.contains(currentUser.getStandardRole());
                 }
                 if (hasAccess) {
-                    UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
-                    metadata.setClassName(dataModelClass.getSimpleName());
-                    MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
-                    if (materialIcon != null) {
-                        metadata.setIcon(materialIcon.icon());
-                    }
-                    permissions.getEntityMetadata().add(metadata);
+                    permissions.getEntityMetadata().add(createMetadata(dataModelClass));
                 }
             }
         }
         return permissions;
+    }
+    // ========================================= PRIVATE ==============================================================
+    /**
+     * Create entity metadata.
+     * @param dataModelClass data model class.
+     * @return data model metadata.
+     * @throws Exception error.
+     */
+    private UserPermissions.EntityMetadata createMetadata(Class<? extends DataModel> dataModelClass) throws Exception {
+        UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
+        metadata.setListViewColumns(new ArrayList());
+        metadata.setClassName(dataModelClass.getSimpleName());
+        MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
+        if (materialIcon != null) {
+            metadata.setIcon(materialIcon.icon());
+        }
+        for (Field field : dataModelClass.getDeclaredFields()) {
+            ListViewColumn listViewColumnAnno = field.getAnnotation(ListViewColumn.class);
+            if (listViewColumnAnno != null) {
+                UserPermissions.ListViewColumn listViewColumn = new UserPermissions.ListViewColumn();
+                listViewColumn.setId(field.getName());
+                listViewColumn.setAlign(listViewColumnAnno.align());
+                metadata.getListViewColumns().add(listViewColumn);
+            }
+        }
+        return metadata;
     }
 }

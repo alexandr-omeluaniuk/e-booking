@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.ss.ebooking.constants;
 
-import React from 'react';
-import EnhancedTable from './../component/datatable/EnhancedTable';
-import { useTranslation } from 'react-i18next';
-
-function ListView(props) {
-    const { metadata } = props;
-    const { t } = useTranslation();
-    return (
-            <EnhancedTable headCells={metadata.listViewColumns} title={t('models.titles.many.' + metadata.className)} entity={metadata.className} />
-    );
+/**
+ * List view column align.
+ * @author ss
+ */
+public enum ListViewColumnAlign {
+    /** Left. */
+    left,
+    /** Right. */
+    right;
 }
-
-export default ListView;

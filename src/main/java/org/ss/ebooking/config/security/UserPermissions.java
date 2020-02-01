@@ -24,6 +24,7 @@
 package org.ss.ebooking.config.security;
 
 import java.util.List;
+import org.ss.ebooking.constants.ListViewColumnAlign;
 
 /**
  * User permissions.
@@ -48,10 +49,12 @@ public class UserPermissions {
      * Data model metadata.
      */
     public static class EntityMetadata {
-        /** Entity class name. */
+        /** Entity class id. */
         private String className;
         /** Data model material icon. */
         private String icon;
+        /** List view columns. */
+        private List<ListViewColumn> listViewColumns;
         /**
          * @return the icon
          */
@@ -75,6 +78,51 @@ public class UserPermissions {
          */
         public void setClassName(String className) {
             this.className = className;
+        }
+        /**
+         * @return the listViewColumns
+         */
+        public List<ListViewColumn> getListViewColumns() {
+            return listViewColumns;
+        }
+        /**
+         * @param listViewColumns the listViewColumns to set
+         */
+        public void setListViewColumns(List<ListViewColumn> listViewColumns) {
+            this.listViewColumns = listViewColumns;
+        }
+    }
+    /**
+     * List view column.
+     */
+    public static class ListViewColumn {
+        /** Field id. */
+        private String id;
+        /** Field align. */
+        private ListViewColumnAlign align;
+        /**
+         * @return the id
+         */
+        public String getId() {
+            return id;
+        }
+        /**
+         * @param id the id to set
+         */
+        public void setId(String id) {
+            this.id = id;
+        }
+        /**
+         * @return the align
+         */
+        public ListViewColumnAlign getAlign() {
+            return align;
+        }
+        /**
+         * @param align the align to set
+         */
+        public void setAlign(ListViewColumnAlign align) {
+            this.align = align;
         }
     }
 }

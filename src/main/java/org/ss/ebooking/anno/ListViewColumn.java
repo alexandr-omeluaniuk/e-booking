@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,17 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.ss.ebooking.anno;
 
-import React from 'react';
-import EnhancedTable from './../component/datatable/EnhancedTable';
-import { useTranslation } from 'react-i18next';
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.ss.ebooking.constants.ListViewColumnAlign;
 
-function ListView(props) {
-    const { metadata } = props;
-    const { t } = useTranslation();
-    return (
-            <EnhancedTable headCells={metadata.listViewColumns} title={t('models.titles.many.' + metadata.className)} entity={metadata.className} />
-    );
+/**
+ * List view column.
+ * @author ss
+ */
+@Target(value = {ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface ListViewColumn {
+    /**
+     * Column align.
+     * @return column align.
+     */
+    public ListViewColumnAlign align() default ListViewColumnAlign.left;
 }
-
-export default ListView;
