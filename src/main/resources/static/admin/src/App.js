@@ -16,11 +16,13 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import { initRouting, mainListItems } from './config/router-config';
 import { NavLink, BrowserRouter as Router } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import Copyright from './component/Copyright';
 import SecurityService from './service/SecurityService';
+import AppURLs from './constants/AppURLs';
+import { Switch, Route, Redirect } from "react-router-dom";
+import ListView from './view/ListView';
 
 const drawerWidth = 240;
 
@@ -110,13 +112,13 @@ const useStyles = makeStyles(theme => ({
 
 
 function App() {
-    let currentRoute = mainListItems.filter(item => { return window.location.pathname === item.path; });
     const classes = useStyles();
     const { t } = useTranslation();
-    let defaultTitle = currentRoute.length > 0 ? t('menu.' + currentRoute[0].label) : '';
+    // ------------------------------------------------ STATE -----------------------------------------------------------------------------
     const [open, setOpen] = React.useState(true);
-    const [title, setTitle] = React.useState(defaultTitle);
-    const [permissions, setPermissions] = React.useState(null);
+    const [title, setTitle] = React.useState('');
+    const [navItems, setNavItems] = React.useState(null);
+    // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
     const createToolbar = () => {
         return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -137,19 +139,22 @@ function App() {
             </AppBar>
         );
     };
-    const createMainListItems = () => {
+    const createSideBarNavigation = () => {
+        if (!navItems) {
+            return null;
+        }
         return (
                 <div>
-                    {mainListItems.map((item, i) => {
+                    {navItems.map((item, i) => {
                         return (
                             <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
-                                setTitle(t('menu.' + item.label));
+                                setTitle(item.label);
                             }}>
                                 <ListItem button selected={window.location.pathname === item.path}>
                                     <ListItemIcon>
                                         <Icon>{item.icon}</Icon>
                                     </ListItemIcon>
-                                    <ListItemText primary={t('menu.' + item.label)} />
+                                    <ListItemText primary={item.label} />
                                 </ListItem>
                             </NavLink>
                         );
@@ -157,7 +162,7 @@ function App() {
                 </div>
         );
     };
-    const createDrawer = () => {
+    const createSideBar = () => {
         return (
             <Drawer variant="permanent"
                 classes={{
@@ -169,16 +174,37 @@ function App() {
                     </IconButton>
                 </div>
                 <Divider />
-                <List>{createMainListItems()}</List>
+                <List>{createSideBarNavigation()}</List>
             </Drawer>
         );
     };
     const createMain = () => {
+        if (!navItems) {
+            return null;
+        }
+        let routes = (
+            <Switch>
+                <Route exact path={AppURLs.context}>
+                    <Redirect to={AppURLs.links.view + '/dashboard'}/>
+                </Route>
+                {navItems.map((prop, key) => {
+                    if (prop.metadata) {
+                        return (
+                            <Route path={prop.path} render={() => <ListView metadata={prop.metadata}/>} key={key}/>
+                        );
+                    } else {
+                        return (
+                            <Route path={prop.path} component={prop.component} key={key}/>
+                        );
+                    }
+                })}
+            </Switch>
+        );
         return (
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                         <Container maxWidth="lg" className={classes.container}>
-                            { initRouting() }
+                            { routes }
                             <Box pt={4}>
                                 <Copyright />
                             </Box>
@@ -186,20 +212,24 @@ function App() {
                 </main>
         );
     };
+    // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
-        if (!permissions) {
-            SecurityService.getPermissions().then(p => {
-                setPermissions(p);
+        if (!navItems) {
+            SecurityService.getNavigation().then(p => {
+                setNavItems(p);
+                let currentRoute = p.filter(item => { return window.location.pathname === item.path; });
+                setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [permissions]);
+    }, [navItems]);
+    // -------------------------------------------------------- RENDER --------------------------------------------------------------------
     return (
             <Router>
                 <div className={classes.root}>
                     <CssBaseline />
                     { createToolbar() }
-                    { createDrawer() }
+                    { createSideBar() }
                     { createMain() }
                 </div>
             </Router>

@@ -15,9 +15,7 @@ i18n.use(initReactI18next).init({
                     momentJsDateFormat: 'DD.MM.YYYY'
                 },
                 menu: {
-                    dashboard: "Обзор",
-                    clients: 'Клиенты',
-                    subscriptions: 'Подписки'
+                    dashboard: "Обзор"
                 },
                 loginPage: {
                     signIn: 'Войти в систему',
@@ -41,8 +39,10 @@ i18n.use(initReactI18next).init({
                 models: {
                     titles: {
                         Subscription: 'Подписка',
+                        SystemUser: 'Пользователь',
                         many: {
-                            Subscription: 'Подписки'
+                            Subscription: 'Подписки',
+                            SystemUser: 'Пользователи'
                         }
                     },
                     Subscription: {

@@ -16,6 +16,7 @@
  */
 package org.ss.ebooking.service.impl;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,22 +53,25 @@ class SecurityServiceImpl implements SecurityService {
         Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
         Set<Class<? extends DataModel>> allDataModels = reflections.getSubTypesOf(DataModel.class);
         for (Class<? extends DataModel> dataModelClass : allDataModels) {
-            boolean hasAccess = true;
-            StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
-            if (roleAccess != null) {
-                Set<StandardRole> accessibleForRoles = new HashSet<>();
-                for (StandardRole sRole : roleAccess.roles()) {
-                    accessibleForRoles.add(sRole);
+            if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
+                boolean hasAccess = true;
+                StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
+                if (roleAccess != null) {
+                    Set<StandardRole> accessibleForRoles = new HashSet<>();
+                    for (StandardRole sRole : roleAccess.roles()) {
+                        accessibleForRoles.add(sRole);
+                    }
+                    hasAccess = accessibleForRoles.contains(currentUser.getStandardRole());
                 }
-                hasAccess = accessibleForRoles.contains(currentUser.getStandardRole());
-            }
-            if (hasAccess) {
-                UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
-                MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
-                if (materialIcon != null) {
-                    metadata.setIcon(materialIcon.icon());
+                if (hasAccess) {
+                    UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
+                    metadata.setClassName(dataModelClass.getSimpleName());
+                    MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
+                    if (materialIcon != null) {
+                        metadata.setIcon(materialIcon.icon());
+                    }
+                    permissions.getEntityMetadata().add(metadata);
                 }
-                permissions.getEntityMetadata().add(metadata);
             }
         }
         return permissions;

@@ -139,7 +139,8 @@ function EnhancedTable(props) {
                 }
             });
         }
-    }, [load, entity, page, rowsPerPage, dataService, total, order, orderBy]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [load, entity, page, rowsPerPage, order, orderBy]);
     useEffect(() => {
         return () => {
             dataService.abort();

@@ -24,9 +24,10 @@
 
 import React from 'react';
 import EnhancedTable from './../component/datatable/EnhancedTable';
+import { useTranslation } from 'react-i18next';
 
 function ListView(props) {
-    const { entity } = props;
+    const { metadata } = props;
     const { t } = useTranslation();
     const headCells = [
         {id: 'organizationName', align: 'left', disablePadding: true},
@@ -34,7 +35,7 @@ function ListView(props) {
         {id: 'expirationDate', align: 'right', disablePadding: false}
     ];
     return (
-            <EnhancedTable headCells={headCells} title={t('models.titles.many.' + entity)} entity={entity}></EnhancedTable>
+            <EnhancedTable headCells={headCells} title={t('models.titles.many.' + metadata.className)} entity={metadata.className} />
     );
 }
 

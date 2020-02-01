@@ -23,22 +23,51 @@
  */
 
 import DataService from './DataService';
+import AppURLs from '../constants/AppURLs';
+import Dashboard from '../view/Dashboard';
+import i18n from '../config/i18next-config';
 
 class SecurityService {
     static _permissions;
     
     static getPermissions = () => {
-        let permissions = this._permissions;
+        let service = this;
         return new Promise((resolve, reject) => {
-            if (permissions) {
-                resolve(permissions);
+            if (service.permissions) {
+                resolve(service.permissions);
             } else {
                 new DataService().requestGet('/security/permissions').then(resp => {
+                    service.permissions = resp;
                     resolve(resp);
                 });
             }
         });
     }
+    
+    static getNavigation = () => {
+        let t = i18n.store.data[i18n.language].translation;
+        let service = this;
+        return new Promise((resolve, reject) => {
+            service.getPermissions().then(permissions => {
+                let navItems = [];
+                navItems.push({
+                    icon: 'dashboard',
+                    label: t['menu']['dashboard'],
+                    path: AppURLs.links.view + '/dashboard',
+                    component: Dashboard
+                });
+                permissions.entityMetadata.forEach(meta => {
+                    navItems.push({
+                        icon: meta.icon ? meta.icon : 'help',
+                        label: t['models']['titles']['many'][meta.className],
+                        path: AppURLs.links.view + '/' + meta.className,
+                        metadata: meta
+                    });
+                });
+                resolve(navItems);
+            });
+        });
+    };
 }
 
 export default SecurityService;

@@ -48,6 +48,8 @@ public class UserPermissions {
      * Data model metadata.
      */
     public static class EntityMetadata {
+        /** Entity class name. */
+        private String className;
         /** Data model material icon. */
         private String icon;
         /**
@@ -61,6 +63,18 @@ public class UserPermissions {
          */
         public void setIcon(String icon) {
             this.icon = icon;
+        }
+        /**
+         * @return the className
+         */
+        public String getClassName() {
+            return className;
+        }
+        /**
+         * @param className the className to set
+         */
+        public void setClassName(String className) {
+            this.className = className;
         }
     }
 }
