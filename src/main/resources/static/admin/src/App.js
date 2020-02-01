@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,6 +20,7 @@ import { initRouting, mainListItems } from './config/router-config';
 import { NavLink, BrowserRouter as Router } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import Copyright from './component/Copyright';
+import SecurityService from './service/SecurityService';
 
 const drawerWidth = 240;
 
@@ -115,6 +116,7 @@ function App() {
     let defaultTitle = currentRoute.length > 0 ? t('menu.' + currentRoute[0].label) : '';
     const [open, setOpen] = React.useState(true);
     const [title, setTitle] = React.useState(defaultTitle);
+    const [permissions, setPermissions] = React.useState(null);
     const createToolbar = () => {
         return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -184,6 +186,14 @@ function App() {
                 </main>
         );
     };
+    useEffect(() => {
+        if (!permissions) {
+            SecurityService.getPermissions().then(p => {
+                setPermissions(p);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [permissions]);
     return (
             <Router>
                 <div className={classes.root}>

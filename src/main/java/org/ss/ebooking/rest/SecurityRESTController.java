@@ -21,46 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.config.security;
+package org.ss.ebooking.rest;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.ss.ebooking.config.security.UserPermissions;
+import org.ss.ebooking.constants.AppURLs;
+import org.ss.ebooking.service.SecurityService;
 
 /**
- * User permissions.
+ * Security REST controller.
  * @author ss
  */
-public class UserPermissions {
-    /** Data models metadata. */
-    private List<EntityMetadata> entityMetadata;
+@RestController
+@RequestMapping(AppURLs.APP_ADMIN_REST_API + "/security")
+public class SecurityRESTController {
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
     /**
-     * @return the entityMetadata
+     * Get user permissions.
+     * @return user permissions.
+     * @throws Exception error.
      */
-    public List<EntityMetadata> getEntityMetadata() {
-        return entityMetadata;
-    }
-    /**
-     * @param entityMetadata the entityMetadata to set
-     */
-    public void setEntityMetadata(List<EntityMetadata> entityMetadata) {
-        this.entityMetadata = entityMetadata;
-    }
-    /**
-     * Data model metadata.
-     */
-    public static class EntityMetadata {
-        /** Data model material icon. */
-        private String icon;
-        /**
-         * @return the icon
-         */
-        public String getIcon() {
-            return icon;
-        }
-        /**
-         * @param icon the icon to set
-         */
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
+    @RequestMapping(value = "/permissions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserPermissions getUserPermissions() throws Exception {
+        return securityService.getUserPermissions();
     }
 }

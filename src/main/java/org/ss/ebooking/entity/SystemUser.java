@@ -31,6 +31,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 
@@ -40,6 +41,7 @@ import org.ss.ebooking.config.security.StandardRole;
  */
 @Entity
 @Table(name = "users")
+@MaterialIcon(icon = "supervisor_account")
 @StandardRoleAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR, StandardRole.ROLE_SUPER_ADMIN })
 public class SystemUser extends TenantEntity {
     /** Default UID. */

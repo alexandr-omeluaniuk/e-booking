@@ -1,4 +1,4 @@
-/*
+/* 
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,46 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.config.security;
 
-import java.util.List;
+import DataService from './DataService';
 
-/**
- * User permissions.
- * @author ss
- */
-public class UserPermissions {
-    /** Data models metadata. */
-    private List<EntityMetadata> entityMetadata;
-    /**
-     * @return the entityMetadata
-     */
-    public List<EntityMetadata> getEntityMetadata() {
-        return entityMetadata;
-    }
-    /**
-     * @param entityMetadata the entityMetadata to set
-     */
-    public void setEntityMetadata(List<EntityMetadata> entityMetadata) {
-        this.entityMetadata = entityMetadata;
-    }
-    /**
-     * Data model metadata.
-     */
-    public static class EntityMetadata {
-        /** Data model material icon. */
-        private String icon;
-        /**
-         * @return the icon
-         */
-        public String getIcon() {
-            return icon;
-        }
-        /**
-         * @param icon the icon to set
-         */
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
+class SecurityService {
+    static _permissions;
+    
+    static getPermissions = () => {
+        let permissions = this._permissions;
+        return new Promise((resolve, reject) => {
+            if (permissions) {
+                resolve(permissions);
+            } else {
+                new DataService().requestGet('/security/permissions').then(resp => {
+                    resolve(resp);
+                });
+            }
+        });
     }
 }
+
+export default SecurityService;

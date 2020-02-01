@@ -21,46 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.config.security;
+package org.ss.ebooking.anno;
 
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * User permissions.
+ * Material icon.
  * @author ss
  */
-public class UserPermissions {
-    /** Data models metadata. */
-    private List<EntityMetadata> entityMetadata;
+@Target(value = {ElementType.TYPE})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface MaterialIcon {
     /**
-     * @return the entityMetadata
+     * Material icon.
+     * @return material icon.
      */
-    public List<EntityMetadata> getEntityMetadata() {
-        return entityMetadata;
-    }
-    /**
-     * @param entityMetadata the entityMetadata to set
-     */
-    public void setEntityMetadata(List<EntityMetadata> entityMetadata) {
-        this.entityMetadata = entityMetadata;
-    }
-    /**
-     * Data model metadata.
-     */
-    public static class EntityMetadata {
-        /** Data model material icon. */
-        private String icon;
-        /**
-         * @return the icon
-         */
-        public String getIcon() {
-            return icon;
-        }
-        /**
-         * @param icon the icon to set
-         */
-        public void setIcon(String icon) {
-            this.icon = icon;
-        }
-    }
+    public String icon() default "help";
 }

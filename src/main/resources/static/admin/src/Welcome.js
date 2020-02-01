@@ -94,7 +94,7 @@ export default function Welcome() {
                 })
             }).then(function(response) {
                 if (response.ok) {
-                    history.push(AppURLs.context);
+                    return response.json();
                 } else if (response.status === 401) {
                     return response.json();
                 }
@@ -103,15 +103,19 @@ export default function Welcome() {
             });
             promise.then(rsp => {
                 if (rsp) {
-                    let msg;
-                    if (rsp.code === '1') {
-                        msg = t('loginPage.err.userNotFound');
-                    } else if (rsp.code === '2') {
-                        msg = t('loginPage.err.badPassword');
-                    } else if (rsp.code === '3') {
-                        msg = t('loginPage.err.userDeactivated');
+                    if (rsp.success) {
+                        history.push(AppURLs.context);
+                    } else {
+                        let msg;
+                        if (rsp.code === '1') {
+                            msg = t('loginPage.err.userNotFound');
+                        } else if (rsp.code === '2') {
+                            msg = t('loginPage.err.badPassword');
+                        } else if (rsp.code === '3') {
+                            msg = t('loginPage.err.userDeactivated');
+                        }
+                        setLoginError(msg);
                     }
-                    setLoginError(msg);
                 }
             });
         }

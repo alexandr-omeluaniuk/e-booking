@@ -16,11 +16,15 @@
  */
 package org.ss.ebooking.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import org.reflections.Reflections;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
+import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.UserPermissions;
 import org.ss.ebooking.config.security.UserPrincipal;
 import org.ss.ebooking.entity.DataModel;
@@ -44,10 +48,27 @@ class SecurityServiceImpl implements SecurityService {
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = this.currentUser();
         UserPermissions permissions = new UserPermissions();
+        permissions.setEntityMetadata(new ArrayList<>());
         Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
         Set<Class<? extends DataModel>> allDataModels = reflections.getSubTypesOf(DataModel.class);
         for (Class<? extends DataModel> dataModelClass : allDataModels) {
+            boolean hasAccess = true;
             StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
+            if (roleAccess != null) {
+                Set<StandardRole> accessibleForRoles = new HashSet<>();
+                for (StandardRole sRole : roleAccess.roles()) {
+                    accessibleForRoles.add(sRole);
+                }
+                hasAccess = accessibleForRoles.contains(currentUser.getStandardRole());
+            }
+            if (hasAccess) {
+                UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
+                MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
+                if (materialIcon != null) {
+                    metadata.setIcon(materialIcon.icon());
+                }
+                permissions.getEntityMetadata().add(metadata);
+            }
         }
         return permissions;
     }

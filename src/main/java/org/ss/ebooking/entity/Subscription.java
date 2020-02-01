@@ -33,6 +33,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
@@ -44,6 +45,7 @@ import org.ss.ebooking.constants.AppConstants;
  */
 @Entity
 @Table(name = "subscription")
+@MaterialIcon(icon = "subscriptions")
 @StandardRoleAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
 public class Subscription extends DataModel {
     /** Default UID. */
