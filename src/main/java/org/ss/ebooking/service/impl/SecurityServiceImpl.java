@@ -26,8 +26,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.ss.ebooking.anno.ListViewColumn;
-import org.ss.ebooking.anno.MaterialIcon;
+import org.ss.ebooking.anno.ui.ListViewColumn;
+import org.ss.ebooking.anno.ui.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.UserPermissions;
@@ -105,6 +105,7 @@ class SecurityServiceImpl implements SecurityService {
                 UserPermissions.ListViewColumn listViewColumn = new UserPermissions.ListViewColumn();
                 listViewColumn.setId(field.getName());
                 listViewColumn.setAlign(listViewColumnAnno.align());
+                listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
                 metadata.getListViewColumns().add(listViewColumn);
             }
         }

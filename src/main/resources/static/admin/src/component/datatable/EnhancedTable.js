@@ -121,6 +121,13 @@ function EnhancedTable(props) {
     const createEntry = () => {
         setFormOpen(true);
     };
+    const renderCell = (fieldMeta, value) => {
+        if (fieldMeta.enumField) {
+            return t('enum.' + fieldMeta.enumField + '.' + value);
+        } else {
+            return value;
+        }
+    };
     const isSelected = row => selected.has(row.id);
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
@@ -173,12 +180,12 @@ function EnhancedTable(props) {
                                             if (i === 0) {
                                                 return (
                                                     <TableCell component="th" scope="row" padding="none" key={i} id={labelId}>
-                                                        {row[column.id]}
+                                                        { renderCell(column, row[column.id]) }
                                                     </TableCell> 
                                                 );
                                             } else {
                                                 return (
-                                                    <TableCell align={column.align} key={i}>{row[column.id]}</TableCell>
+                                                    <TableCell align={column.align} key={i}>{renderCell(column, row[column.id])}</TableCell>
                                                 );
                                             }
                                         })}

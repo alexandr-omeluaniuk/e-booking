@@ -33,9 +33,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.ss.ebooking.anno.ListViewColumn;
-import org.ss.ebooking.anno.MaterialIcon;
-import org.ss.ebooking.anno.UIHidden;
+import org.ss.ebooking.anno.ui.ListViewColumn;
+import org.ss.ebooking.anno.ui.MaterialIcon;
+import org.ss.ebooking.anno.ui.UIGrid;
+import org.ss.ebooking.anno.ui.UIHidden;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
@@ -54,6 +55,8 @@ public class SystemUser extends TenantEntity {
 // ==================================== FIELDS ====================================================
     /** Email. */
     @Email
+    @UIGrid(xs = "12")
+    @ListViewColumn
     @NotEmpty
     @Size(max = 255)
     @Column(name = "email", nullable = false, length = 255)
@@ -66,26 +69,33 @@ public class SystemUser extends TenantEntity {
     private String password;
     /** First name. */
     @Size(max = 255)
-    @Column(name = "firstname", length = 255)
+    @UIGrid(xs = "6")
     @ListViewColumn
+    @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
     @Size(max = 255)
+    @UIGrid(xs = "6")
+    @ListViewColumn
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = 255)
-    @ListViewColumn
     private String lastname;
     /** Status. */
     @NotNull
+    @UIHidden
+    @ListViewColumn
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private SystemUserStatus status;
     /** Standard role. */
     @NotNull
+    @UIHidden
+    @ListViewColumn
     @Enumerated(EnumType.STRING)
     @Column(name = "standard_role", nullable = false)
     private StandardRole standardRole;
     /** Validation string for registration. */
+    @UIHidden
     @Column(name = "validation_string")
     private String validationString;
 // ==================================== SET & GET =================================================

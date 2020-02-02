@@ -114,6 +114,8 @@ public class UserPermissions {
         private String id;
         /** Field align. */
         private ListViewColumnAlign align;
+        /** Is enum constant. */
+        private String enumField;
         /**
          * @return the id
          */
@@ -137,6 +139,18 @@ public class UserPermissions {
          */
         public void setAlign(ListViewColumnAlign align) {
             this.align = align;
+        }
+        /**
+         * @return the enumField
+         */
+        public String getEnumField() {
+            return enumField;
+        }
+        /**
+         * @param enumField the enumField to set
+         */
+        public void setEnumField(String enumField) {
+            this.enumField = enumField;
         }
     }
 }

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.anno;
+package org.ss.ebooking.anno.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,10 +29,34 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Field is hidden on user interface.
+ * UI 12-columns grid system annotation
  * @author ss
  */
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface UIHidden {
+public @interface UIGrid {
+    /**
+     * Defines the number of grids the component is going to use. It's applied for the lg breakpoint 
+     * and wider screens if not overridden.
+     * @return number of grids.
+     */
+    public String lg() default "false";
+    /**
+     * Defines the number of grids the component is going to use. It's applied for the md breakpoint
+     * and wider screens if not overridden.
+     * @return number of grids.
+     */
+    public String md() default "false";
+    /**
+     * Defines the number of grids the component is going to use. It's applied for the sm breakpoint 
+     * and wider screens if not overridden.
+     * @return number of grids.
+     */
+    public String sm() default "false";
+    /**
+     * Defines the number of grids the component is going to use.
+     * It's applied for all the screen sizes with the lowest priority.
+     * @return number of grids.
+     */
+    public String xs() default "12";
 }

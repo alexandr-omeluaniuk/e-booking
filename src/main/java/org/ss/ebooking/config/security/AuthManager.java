@@ -66,8 +66,7 @@ class AuthManager implements AuthenticationManager {
         gaList.add(ga);
         UserPrincipal authentication = new UserPrincipal(username, password, gaList);
         authentication.setUser(user);
-        LOG.info("successfull authentication for [" + user.getFirstname() + " " + user.getLastname()
-                + "], is authenticated [" + authentication.isAuthenticated() + "]");
+        LOG.info("successfull authentication for [" + user + "] completed...");
         return authentication;
     }
 }

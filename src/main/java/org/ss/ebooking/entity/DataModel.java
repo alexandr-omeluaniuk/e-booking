@@ -28,7 +28,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import org.ss.ebooking.anno.UIHidden;
+import org.ss.ebooking.anno.ui.UIHidden;
 
 /**
  * DataModel.

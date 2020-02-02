@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.anno;
+package org.ss.ebooking.anno.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

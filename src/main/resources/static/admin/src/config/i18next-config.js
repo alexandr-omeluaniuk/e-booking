@@ -67,7 +67,10 @@ i18n.use(initReactI18next).init({
                     },
                     SystemUser: {
                         firstname: 'Имя',
-                        lastname: 'Фамилия'
+                        lastname: 'Фамилия',
+                        status: 'Статус',
+                        standardRole: 'Стандартная роль',
+                        email: 'Логин'
                     }
                 },
                 components: {
@@ -87,6 +90,18 @@ i18n.use(initReactI18next).init({
                 common: {
                     delete: 'Удалить',
                     edit: 'Редактировать'
+                },
+                enum: {
+                    SystemUserStatus: {
+                        ACTIVE: 'Активный',
+                        INACTIVE: 'Деактивирован',
+                        REGISTRATION: 'В процессе регистрации'
+                    },
+                    StandardRole: {
+                        ROLE_SUPER_ADMIN: 'Супер админстратор',
+                        ROLE_SUBSCRIPTION_ADMINISTRATOR: 'Администратор',
+                        ROLE_SUBSCRIPTION_USER: 'Пользователь'
+                    }
                 }
             }
         }

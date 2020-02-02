@@ -35,6 +35,7 @@ import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.dao.UserDAO;
 import org.ss.ebooking.entity.SystemUser;
 import org.ss.ebooking.service.SystemUserService;
+import org.ss.ebooking.wrapper.RESTResponse;
 
 /**
  * Public resources.
@@ -62,13 +63,14 @@ public class PublicRESTController {
     /**
      * Check validation string.
      * @param validationString validation string.
-     * @return user if validation string is exist or null if no.
+     * @return user if validation string is exist or empty response if no.
      * @throws Exception error.
      */
     @RequestMapping(value = "/check-validation-string/{validationString}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public SystemUser checkValidationString(@PathVariable("validationString") String validationString)
+    public Object checkValidationString(@PathVariable("validationString") String validationString)
             throws Exception {
-        return userDAO.getUserByValidationString(validationString);
+        SystemUser user = userDAO.getUserByValidationString(validationString);
+        return user == null ? new RESTResponse() : user;
     }
 }

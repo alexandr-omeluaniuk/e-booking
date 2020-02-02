@@ -67,7 +67,7 @@ export default function FinishRegistration(props) {
     const [passwordRepeat, setPasswordRepeat] = useState('');
     const [passwordValid, setPasswordValid] = useState(false);
     const [passwordRepeatValid, setPasswordRepeatValid] = useState(true);
-    const [user, setUser] = useState(undefined);
+    const [user, setUser] = useState(null);
     // -------------------------------------------------- METHODS -------------------------------------------------------------------------
     const validation = (p, p2) => {
         let isPasswordValid = p && p.length >= 8;
@@ -91,9 +91,9 @@ export default function FinishRegistration(props) {
     };
     // ------------------------------------------------- HOOKS ----------------------------------------------------------------------------
     useEffect(() => {
-        if (user === undefined) {
+        if (!user) {
             dataService.requestGet('/public/check-validation-string/' + validationString).then(resp => {
-                setUser(resp);
+                setUser(resp ? {} : user);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -145,7 +145,7 @@ export default function FinishRegistration(props) {
                     <Avatar className={classes.avatar}>
                         <Icon>error</Icon>
                     </Avatar>
-                    <Typography component="h1" variant="h5" color="error">
+                    <Typography component="h6" variant="h6" color="error">
                         { t('finishRegistrationPage.invalidLink') }
                     </Typography>
                 </div>
@@ -154,9 +154,13 @@ export default function FinishRegistration(props) {
                 </Box>
             </Container>
     );
-    if (user === null) {
-        return notValid;
+    if (user) {
+        if (!user.id) {
+            return notValid;
+        } else {
+            return page;
+        }
     } else {
-        return page;
+        return null;
     }
 }
