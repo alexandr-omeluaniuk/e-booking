@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import Welcome from './Welcome';
+import FinishRegistration from './FinishRegistration';
 import * as serviceWorker from './serviceWorker';
 import './config/i18next-config';
 import { createBrowserHistory } from "history";
@@ -16,6 +17,9 @@ const indexRoutes = [{
     }, {
         path: AppURLs.context,
         component: App
+    }, {
+        path: AppURLs.registration,
+        component: FinishRegistration
     }];
 
 ReactDOM.render(

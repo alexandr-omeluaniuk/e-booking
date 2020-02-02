@@ -78,7 +78,7 @@ class SystemUserServiceImpl implements SystemUserService {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(systemUser.getEmail());
         msg.setSubject("Регистрация нового пользователя");
-        msg.setText("My test: " + validationString);
+        msg.setText("Пройдите по ссылке: " + config.getServerDomain() + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         emailService.send(msg);

@@ -43,6 +43,8 @@ public class EBookingConfig {
     private String superAdminLastName;
     /** Super admin password. */
     private String superAdminPassword;
+    /** External server domain. Uses for access to public resources. */
+    private String serverDomain;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the rememberMeKey
@@ -103,5 +105,17 @@ public class EBookingConfig {
      */
     public void setSuperAdminPassword(String superAdminPassword) {
         this.superAdminPassword = superAdminPassword;
+    }
+    /**
+     * @return the serverDomain
+     */
+    public String getServerDomain() {
+        return serverDomain;
+    }
+    /**
+     * @param serverDomain the serverDomain to set
+     */
+    public void setServerDomain(String serverDomain) {
+        this.serverDomain = serverDomain;
     }
 }
