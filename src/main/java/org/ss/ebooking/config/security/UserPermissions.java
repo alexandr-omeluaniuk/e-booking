@@ -33,6 +33,8 @@ import org.ss.ebooking.constants.ListViewColumnAlign;
 public class UserPermissions {
     /** Data models metadata. */
     private List<EntityMetadata> entityMetadata;
+    /** User full name. */
+    private String fullname;
     /**
      * @return the entityMetadata
      */
@@ -44,6 +46,18 @@ public class UserPermissions {
      */
     public void setEntityMetadata(List<EntityMetadata> entityMetadata) {
         this.entityMetadata = entityMetadata;
+    }
+    /**
+     * @return the fullname
+     */
+    public String getFullname() {
+        return fullname;
+    }
+    /**
+     * @param fullname the fullname to set
+     */
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
     /**
      * Data model metadata.

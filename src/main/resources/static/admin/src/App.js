@@ -13,7 +13,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { NavLink, BrowserRouter as Router } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
 import Copyright from './component/Copyright';
 import SecurityService from './service/SecurityService';
 import AppURLs from './constants/AppURLs';
@@ -82,11 +81,11 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
     const classes = useStyles();
-    const { t } = useTranslation();
     // ------------------------------------------------ STATE -----------------------------------------------------------------------------
     const [open, setOpen] = React.useState(true);
     const [title, setTitle] = React.useState('');
     const [navItems, setNavItems] = React.useState(null);
+    const [permissions, setPermissions] = React.useState(null);
     // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
     const createSideBarNavigation = () => {
         if (!navItems) {
@@ -168,6 +167,9 @@ function App() {
                 setNavItems(p);
                 let currentRoute = p.filter(item => { return window.location.pathname === item.path; });
                 setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
+                SecurityService.getPermissions().then(perm => {
+                    setPermissions(perm);
+                });
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,7 +179,7 @@ function App() {
             <Router>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <DesktopToolbar title={title} open={open} setOpen={setOpen}/>
+                    <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}/>
                     { createSideBar() }
                     { createMain() }
                 </div>

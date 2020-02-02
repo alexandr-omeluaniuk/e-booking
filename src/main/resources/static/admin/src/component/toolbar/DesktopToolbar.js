@@ -75,7 +75,7 @@ const menuId = 'account-menu-id';
 function DesktopToolbar(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { title, open, setOpen } = props;
+    const { title, open, setOpen,fullname } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     
@@ -107,11 +107,13 @@ function DesktopToolbar(props) {
     const renderMenu = (
             <Menu anchorEl={anchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} id={menuId} keepMounted
                 transformOrigin={{ vertical: 'top', horizontal: 'right' }} open={isMenuOpen} onClose={handleMenuClose}>
-                <MenuItem disabled={true}><Typography variant="caption">Александр Омельянюк<hr/></Typography></MenuItem>
+                <MenuItem disabled={true}><Typography variant="caption">{fullname}<hr/></Typography></MenuItem>
                 <MenuItem onClick={logout}><Icon>power_settings_new</Icon> {t('toolbar.accountmenu.logout')}</MenuItem>
             </Menu>
     );
+    // ---------------------------------------------------- HOOKS -------------------------------------------------------------------------
     
+    // ---------------------------------------------------- RENDER ------------------------------------------------------------------------
     return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>

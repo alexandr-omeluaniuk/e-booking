@@ -63,6 +63,8 @@ class SecurityServiceImpl implements SecurityService {
     public UserPermissions getUserPermissions() throws Exception {
         SystemUser currentUser = this.currentUser();
         UserPermissions permissions = new UserPermissions();
+        permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
+                + currentUser.getLastname());
         permissions.setEntityMetadata(new ArrayList<>());
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
