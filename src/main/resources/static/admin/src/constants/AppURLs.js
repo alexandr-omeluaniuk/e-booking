@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-const context = '/admin';
+const context = '/crm';
 
 const AppURLs = {
     context: context,
