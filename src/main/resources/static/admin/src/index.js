@@ -18,7 +18,7 @@ const indexRoutes = [{
         path: AppURLs.context,
         component: App
     }, {
-        path: AppURLs.registration,
+        path: AppURLs.links.registration,
         component: FinishRegistration
     }];
 

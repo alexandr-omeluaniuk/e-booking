@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
     },
     title: {
         flexGrow: 1
+    },
+    titleIcon: {
+        minWidth: '30px'
     }
 }));
 
@@ -75,7 +78,7 @@ const menuId = 'account-menu-id';
 function DesktopToolbar(props) {
     const { t } = useTranslation();
     const classes = useStyles();
-    const { title, open, setOpen,fullname } = props;
+    const { title, open, setOpen, fullname, icon } = props;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     
@@ -121,6 +124,7 @@ function DesktopToolbar(props) {
                         className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
                         <Icon>menu</Icon>
                     </IconButton>
+                    {icon ? (<Icon className={classes.titleIcon}>{icon}</Icon>) : null}
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
                         { title }
                     </Typography>

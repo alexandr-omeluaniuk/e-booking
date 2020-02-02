@@ -59,10 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().mvcMatchers(AppURLs.APP_ADMIN_REST_API + "/**").authenticated()
+                .authorizeRequests().mvcMatchers(AppURLs.APP_CRM_PUBLIC_REST_API + "/**").permitAll().and()
+                .authorizeRequests().mvcMatchers(AppURLs.APP_CRM_REST_API + "/**").authenticated()
                 .and().addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin().loginPage(AppURLs.APP_LOGIN_PAGE).permitAll().and()
-                .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_LOGOUT)
+                .formLogin().loginPage(AppURLs.APP_CRM_LOGIN_PAGE).permitAll().and()
+                .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_CRM_LOGOUT)
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint)
@@ -73,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/static/**", "/locales/**", "/*.json", "/*.js",
-                "/*.ico", "/*.html", "/", AppURLs.APP_ADMIN_VIEWS + "/**");
+                "/*.ico", "/*.html", "/", AppURLs.APP_CRM_VIEWS + "/**");
     }
     /**
      * Create custom authentication filter.
@@ -81,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private Filter authFilter() {
         AuthUsernamePasswordFilter filter = new AuthUsernamePasswordFilter();
-        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AppURLs.APP_LOGIN, "POST"));
+        filter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(AppURLs.APP_CRM_LOGIN, "POST"));
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
         filter.setAuthenticationManager(authManager);

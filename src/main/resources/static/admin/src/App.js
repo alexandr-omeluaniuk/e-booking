@@ -84,6 +84,7 @@ function App() {
     // ------------------------------------------------ STATE -----------------------------------------------------------------------------
     const [open, setOpen] = React.useState(true);
     const [title, setTitle] = React.useState('');
+    const [icon, setIcon] = React.useState(null);
     const [navItems, setNavItems] = React.useState(null);
     const [permissions, setPermissions] = React.useState(null);
     // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
@@ -97,6 +98,7 @@ function App() {
                         return (
                             <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
                                 setTitle(item.label);
+                                setIcon(item.icon);
                             }}>
                                 <ListItem button selected={window.location.pathname === item.path}>
                                     <ListItemIcon>
@@ -167,6 +169,7 @@ function App() {
                 setNavItems(p);
                 let currentRoute = p.filter(item => { return window.location.pathname === item.path; });
                 setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
+                setIcon(currentRoute.length > 0 ? currentRoute[0].icon : null)
                 SecurityService.getPermissions().then(perm => {
                     setPermissions(perm);
                 });
@@ -179,7 +182,8 @@ function App() {
             <Router>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}/>
+                    <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}
+                            icon={icon}/>
                     { createSideBar() }
                     { createMain() }
                 </div>

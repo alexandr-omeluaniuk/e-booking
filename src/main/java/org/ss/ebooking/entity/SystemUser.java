@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,6 +35,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.ListViewColumn;
 import org.ss.ebooking.anno.MaterialIcon;
+import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
@@ -57,6 +59,8 @@ public class SystemUser extends TenantEntity {
     @Column(name = "email", nullable = false, length = 255)
     private String email;
     /** Password. */
+    @JsonIgnore
+    @UIHidden
     @Size(max = 255)
     @Column(name = "password", length = 255)
     private String password;

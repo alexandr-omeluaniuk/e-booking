@@ -80,11 +80,19 @@ class SystemUserServiceImpl implements SystemUserService {
         msg.setTo(systemUser.getEmail());
         msg.setSubject("Регистрация нового пользователя");
         msg.setText("Пройдите по ссылке: " + config.getServerDomain()
-                + AppURLs.APP_FINISH_REGISTRATION + "/" + validationString);
+                + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         emailService.send(msg);
         coreDAO.create(systemUser);
+    }
+    @Override
+    public void finishRegistration(String validationString, String password) throws Exception {
+        SystemUser systemUser = userDAO.getUserByValidationString(validationString);
+        systemUser.setValidationString(null);
+        systemUser.setStatus(SystemUserStatus.ACTIVE);
+        systemUser.setPassword(bCryptPasswordEncoder.encode(password));
+        coreDAO.update(systemUser);
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -116,13 +124,5 @@ class SystemUserServiceImpl implements SystemUserService {
                 LOG.warn("Unexpected error occurred during super user creation.", e);
             }
         }
-    }
-    @Override
-    public void finishRegistration(String validationString, String password) throws Exception {
-        SystemUser systemUser = userDAO.getUserByValidationString(validationString);
-        systemUser.setValidationString(null);
-        systemUser.setStatus(SystemUserStatus.ACTIVE);
-        systemUser.setPassword(bCryptPasswordEncoder.encode(password));
-        coreDAO.update(systemUser);
     }
 }

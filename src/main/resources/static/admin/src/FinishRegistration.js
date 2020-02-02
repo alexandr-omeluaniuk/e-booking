@@ -22,12 +22,11 @@
  * THE SOFTWARE.
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
@@ -37,6 +36,7 @@ import Copyright from './component/Copyright';
 import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
 import { history } from './index';
+import DataService from './service/DataService';
 
 const useStyles = makeStyles(theme => ({
         paper: {
@@ -58,14 +58,16 @@ const useStyles = makeStyles(theme => ({
         }
     }));
 
-export default function FinishRegistration() {
+export default function FinishRegistration(props) {
+    const dataService = new DataService();
+    const validationString = props.match.params.validationString;
     const classes = useStyles();
     const { t } = useTranslation();
     const [password, setPassword] = useState('');
     const [passwordRepeat, setPasswordRepeat] = useState('');
-    const [passwordValid, setPasswordValid] = useState(true);
-    const [passwordRepeatValid, setPasswordRepeatValid] = useState(false);
-    const [loginError, setLoginError] = useState('');
+    const [passwordValid, setPasswordValid] = useState(false);
+    const [passwordRepeatValid, setPasswordRepeatValid] = useState(true);
+    const [user, setUser] = useState(undefined);
     // -------------------------------------------------- METHODS -------------------------------------------------------------------------
     const validation = (p, p2) => {
         let isPasswordValid = p && p.length >= 8;
@@ -78,10 +80,26 @@ export default function FinishRegistration() {
         return isPasswordValid && isPasswordRepeatValid;
     };
     const finishRegistration = () => {
-        
+        if (passwordValid && passwordRepeatValid) {
+            dataService.requestPut('/public/finish-registration', {
+                validation: validationString,
+                password: password
+            }).then(resp => {
+                history.push(AppURLs.links.welcome);
+            });
+        }
     };
+    // ------------------------------------------------- HOOKS ----------------------------------------------------------------------------
+    useEffect(() => {
+        if (user === undefined) {
+            dataService.requestGet('/public/check-validation-string/' + validationString).then(resp => {
+                setUser(resp);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
     // -------------------------------------------------- RENDER --------------------------------------------------------------------------
-    return (
+    const page = (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.paper}>
@@ -91,6 +109,11 @@ export default function FinishRegistration() {
                     <Typography component="h1" variant="h5">
                         { t('finishRegistrationPage.title') }
                     </Typography>
+                    {user ? (
+                        <Typography variant="caption">
+                            {user.firstname ? user.firstname : ''} {user.lastname}
+                        </Typography>
+                    ) : null}
                     <form className={classes.form} noValidate>
                         <TextField variant="outlined" margin="normal" required fullWidth label={t('finishRegistrationPage.enterPassword')}
                             name="x-password" autoComplete="new-password" autoFocus value={password} type="password" onChange={(e) => {
@@ -115,4 +138,25 @@ export default function FinishRegistration() {
                 </Box>
             </Container>
     );
+    const notValid = (
+        <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <Icon>error</Icon>
+                    </Avatar>
+                    <Typography component="h1" variant="h5" color="error">
+                        { t('finishRegistrationPage.invalidLink') }
+                    </Typography>
+                </div>
+                <Box mt={8}>
+                    <Copyright />
+                </Box>
+            </Container>
+    );
+    if (user === null) {
+        return notValid;
+    } else {
+        return page;
+    }
 }

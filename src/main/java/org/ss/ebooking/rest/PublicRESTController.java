@@ -23,32 +23,52 @@
  */
 package org.ss.ebooking.rest;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.ss.ebooking.config.security.UserPermissions;
 import org.ss.ebooking.constants.AppURLs;
-import org.ss.ebooking.service.SecurityService;
+import org.ss.ebooking.dao.UserDAO;
+import org.ss.ebooking.entity.SystemUser;
+import org.ss.ebooking.service.SystemUserService;
 
 /**
- * Security REST controller.
+ * Public resources.
  * @author ss
  */
 @RestController
-@RequestMapping(AppURLs.APP_CRM_REST_API + "/security")
-public class SecurityRESTController {
-    /** Security service. */
+@RequestMapping(AppURLs.APP_CRM_PUBLIC_REST_API)
+public class PublicRESTController {
+    /** System user service. */
     @Autowired
-    private SecurityService securityService;
+    private SystemUserService systemUserService;
+    /** User DAO. */
+    @Autowired
+    private UserDAO userDAO;
     /**
-     * Get user permissions.
-     * @return user permissions.
+     * Finish registration.
+     * @param params parameters.
      * @throws Exception error.
      */
-    @RequestMapping(value = "/permissions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserPermissions getUserPermissions() throws Exception {
-        return securityService.getUserPermissions();
+    @RequestMapping(value = "/finish-registration", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void finishRegistration(@RequestBody Map<String, String> params) throws Exception {
+        systemUserService.finishRegistration(params.get("validation"), params.get("password"));
+    }
+    /**
+     * Check validation string.
+     * @param validationString validation string.
+     * @return user if validation string is exist or null if no.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/check-validation-string/{validationString}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public SystemUser checkValidationString(@PathVariable("validationString") String validationString)
+            throws Exception {
+        return userDAO.getUserByValidationString(validationString);
     }
 }

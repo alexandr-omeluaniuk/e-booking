@@ -40,7 +40,8 @@ i18n.use(initReactI18next).init({
                     enterPassword: 'Введите пароль',
                     enterPasswordRepeat: 'Повторите пароль',
                     passwordLength: 'Не короче 8 символов',
-                    passwordNotMatch: 'Пароли не совпадают'
+                    passwordNotMatch: 'Пароли не совпадают',
+                    invalidLink: 'Ссылка больше недействительна'
                 },
                 validation: {
                     email: 'Неверный формат адреса электронной почты',

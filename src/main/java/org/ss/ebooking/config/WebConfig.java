@@ -30,7 +30,7 @@ public class WebConfig implements WebMvcConfigurer {
     };
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(AppURLs.APP_LOGIN_PAGE)
+        registry.addResourceHandler(AppURLs.APP_CRM_LOGIN_PAGE)
                 .addResourceLocations("classpath:/static" + AppURLs.APP_CRM + "/build/");
         for (String app : APPLICATIONS) {
             registry.addResourceHandler(app + "/**").addResourceLocations("classpath:/static/" + app + "/build/");
@@ -46,7 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController(AppURLs.APP_LOGIN_PAGE)
+                registry.addViewController(AppURLs.APP_CRM_LOGIN_PAGE)
                         .setViewName("forward:" + AppURLs.APP_CRM + "/index.html");
                 for (String app : APPLICATIONS) {
                     registry.addViewController(app).setViewName("forward:" + app + "/index.html");
