@@ -34,6 +34,14 @@ i18n.use(initReactI18next).init({
                         userDeactivated: 'Учетная запись деактивирована'
                     }
                 },
+                finishRegistrationPage: {
+                    title: 'Завершение регистрации',
+                    finishRegistration: 'Завершить регистрацию',
+                    enterPassword: 'Введите пароль',
+                    enterPasswordRepeat: 'Повторите пароль',
+                    passwordLength: 'Не короче 8 символов',
+                    passwordNotMatch: 'Пароли не совпадают'
+                },
                 validation: {
                     email: 'Неверный формат адреса электронной почты',
                     minLength: 'Не короче {{length}} символов',

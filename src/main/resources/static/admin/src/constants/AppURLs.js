@@ -30,7 +30,7 @@ const AppURLs = {
         welcome: '/welcome',
         logout: '/logout',
         login: '/login',
-        registration: '/registration/:validationString',
+        registration: '/finish-registration/:validationString',
         rest: context + '/api',
         view: context + '/view'
     }

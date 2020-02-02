@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ss.ebooking.config.EBookingConfig;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
+import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.dao.UserDAO;
 import org.ss.ebooking.entity.Subscription;
@@ -78,7 +79,8 @@ class SystemUserServiceImpl implements SystemUserService {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(systemUser.getEmail());
         msg.setSubject("Регистрация нового пользователя");
-        msg.setText("Пройдите по ссылке: " + config.getServerDomain() + "/" + validationString);
+        msg.setText("Пройдите по ссылке: " + config.getServerDomain()
+                + AppURLs.APP_FINISH_REGISTRATION + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
         emailService.send(msg);

@@ -16,6 +16,8 @@ public class AppURLs {
     public static final String APP_LOGOUT = "/logout";
     /** CRM application login page. */
     public static final String APP_LOGIN_PAGE = "/welcome";
+    /** Finish registration. */
+    public static final String APP_FINISH_REGISTRATION = "/finish-registration";
     /** CRM application. */
     public static final String APP_CRM = "/crm";
     /** CRM application REST API. */

@@ -61,14 +61,26 @@ const useStyles = makeStyles(theme => ({
 export default function FinishRegistration() {
     const classes = useStyles();
     const { t } = useTranslation();
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [emailValid, setEmailValid] = useState(true);
+    const [passwordRepeat, setPasswordRepeat] = useState('');
     const [passwordValid, setPasswordValid] = useState(true);
+    const [passwordRepeatValid, setPasswordRepeatValid] = useState(false);
     const [loginError, setLoginError] = useState('');
+    // -------------------------------------------------- METHODS -------------------------------------------------------------------------
+    const validation = (p, p2) => {
+        let isPasswordValid = p && p.length >= 8;
+        let isPasswordRepeatValid = true;
+        if (isPasswordValid) {
+            isPasswordRepeatValid = p === p2;
+        }
+        setPasswordValid(isPasswordValid);
+        setPasswordRepeatValid(isPasswordRepeatValid);
+        return isPasswordValid && isPasswordRepeatValid;
+    };
     const finishRegistration = () => {
         
     };
+    // -------------------------------------------------- RENDER --------------------------------------------------------------------------
     return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -77,23 +89,24 @@ export default function FinishRegistration() {
                         <Icon>assignment_ind</Icon>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        { t('loginPage.signIn') }
-                    </Typography>
-                    <Typography component="h1" variant="h6" align="center" color="error">
-                        {loginError}
+                        { t('finishRegistrationPage.title') }
                     </Typography>
                     <form className={classes.form} noValidate>
-                        <TextField variant="outlined" margin="normal" required fullWidth id="email" label={t('loginPage.emailAddress')}
-                            name="email" autoComplete="email" autoFocus value={email} onChange={(e) => {
-                                setEmail(e.target.value);
-                            }} helperText={emailValid ? null : t('validation.email')} error={!emailValid}/>
-                        <TextField variant="outlined" margin="normal" required fullWidth name="password" label={t('loginPage.password')}
-                            type="password" id="password" autoComplete="current-password" value={password}
-                            onChange={(e) => {
+                        <TextField variant="outlined" margin="normal" required fullWidth label={t('finishRegistrationPage.enterPassword')}
+                            name="x-password" autoComplete="new-password" autoFocus value={password} type="password" onChange={(e) => {
                                 setPassword(e.target.value);
-                            }} helperText={passwordValid ? null : t('validation.minLength', {length: 8})} error={!passwordValid}/>
-                        <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit} onClick={finishRegistration}>
-                            { t('registrationPage.finishRegistration') }
+                                validation(e.target.value, passwordRepeat)
+                            }} helperText={passwordValid ? null : t('finishRegistrationPage.passwordLength')} error={!passwordValid}/>
+                        <TextField variant="outlined" margin="normal" required fullWidth name="x-password-repeat"
+                            label={t('finishRegistrationPage.enterPasswordRepeat')}
+                            type="password" value={passwordRepeat} autoComplete="new-password" error={!passwordRepeatValid}
+                            onChange={(e) => {
+                                setPasswordRepeat(e.target.value);
+                                validation(password, e.target.value)
+                            }} helperText={passwordRepeatValid ? null : t('finishRegistrationPage.passwordNotMatch', {length: 8})} />
+                        <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit}
+                                onClick={finishRegistration} disabled={!passwordValid || !passwordRepeatValid}>
+                            { t('finishRegistrationPage.finishRegistration') }
                         </Button>
                     </form>
                 </div>
