@@ -48,4 +48,11 @@ public interface SystemUserService {
      * If no - create it.
      */
     void superUserCheck();
+    /**
+     * Create system user with ROLE_SUBSCRIPTION_USER.
+     * @param user user without ID.
+     * @return new system user.
+     * @throws Exception error.
+     */
+    SystemUser createSystemUser(SystemUser user) throws Exception;
 }

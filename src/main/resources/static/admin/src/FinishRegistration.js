@@ -93,7 +93,7 @@ export default function FinishRegistration(props) {
     useEffect(() => {
         if (!user) {
             dataService.requestGet('/public/check-validation-string/' + validationString).then(resp => {
-                setUser(resp ? {} : user);
+                setUser(resp ? resp : {});
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

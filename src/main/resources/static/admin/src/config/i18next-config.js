@@ -70,7 +70,7 @@ i18n.use(initReactI18next).init({
                         lastname: 'Фамилия',
                         status: 'Статус',
                         standardRole: 'Стандартная роль',
-                        email: 'Логин'
+                        email: 'Email'
                     }
                 },
                 components: {

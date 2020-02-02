@@ -43,7 +43,7 @@ import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
 import { TYPE_STRING, TYPE_DATE } from '../../config/datatypes';
-import {NOT_NULL, NOT_EMPTY, SIZE} from '../../config/validators';
+import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL } from '../../config/validators';
 
 moment.locale(i18n.language);
 
@@ -119,7 +119,7 @@ function StandardForm(props) {
     };
     const isFormValid = () => {
         let newInvalidField = new Map();
-        layout.fields.forEach(field => {
+        layout.fields.filter(f => {return !f.hidden;}).forEach(field => {
             field.validators.forEach(v => {
                 let fieldName = field.name;
                 let value = formData.has(fieldName) ? formData.get(fieldName) : null;
@@ -135,13 +135,16 @@ function StandardForm(props) {
                 if (v.type === SIZE && value && (value.length < v.attributes.min)) {
                     newInvalidField.set(fieldName, t('validation.minLength', {length: v.attributes.min}));
                 }
+                if (v.type === EMAIL && value && !REGEX_EMAIL.test(value)) {
+                    newInvalidField.set(fieldName, t('validation.email'));
+                }
             });
         });
         setInvalidFields(newInvalidField);
         return newInvalidField.size === 0;
     };
     const saveChanges = () => {
-        if (isFormValid()) {
+        if (invalidFields.size === 0) {
             let data = {};
             for (const [key, value] of formData.entries()) {
                 let field = layout.fields.filter(f => { return f.name === key; })[0];

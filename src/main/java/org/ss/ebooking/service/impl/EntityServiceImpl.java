@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Temporal;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -48,10 +49,12 @@ import org.ss.ebooking.anno.ui.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.Subscription;
+import org.ss.ebooking.entity.SystemUser;
 import org.ss.ebooking.exception.EBookingException;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.service.SubscriptionService;
+import org.ss.ebooking.service.SystemUserService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 
@@ -80,6 +83,9 @@ class EntityServiceImpl implements EntityService {
     /** Subscription service. */
     @Autowired
     private SubscriptionService subscriptionService;
+    /** System user service. */
+    @Autowired
+    private SystemUserService systemUserService;
     @Override
     public EntityLayout getEntityLayout(final Class<? extends DataModel> clazz) throws Exception {
         if (LAYOUTS_CACHE.containsKey(clazz)) {
@@ -106,6 +112,8 @@ class EntityServiceImpl implements EntityService {
     public <T extends DataModel> T createEntity(T entity) throws Exception {
         if (entity instanceof Subscription) {
             return (T) subscriptionService.createSubscription((Subscription) entity);
+        } else if (entity instanceof SystemUser) {
+            return (T) systemUserService.createSystemUser((SystemUser) entity);
         } else {
             return coreDAO.create(entity);
         }
@@ -189,6 +197,12 @@ class EntityServiceImpl implements EntityService {
         if (vNotNull != null) {
             EntityLayout.Validator validator = new EntityLayout.Validator();
             validator.setType(NotNull.class.getSimpleName());
+            validators.add(validator);
+        }
+        Email vEmail = field.getAnnotation(Email.class);
+        if (vEmail != null) {
+            EntityLayout.Validator validator = new EntityLayout.Validator();
+            validator.setType(Email.class.getSimpleName());
             validators.add(validator);
         }
         return validators;

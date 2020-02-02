@@ -22,8 +22,12 @@
  * THE SOFTWARE.
  */
 
+export const REGEX_EMAIL = /\S+@\S+\.\S+/;
+
 export const NOT_NULL = 'NotNull';
 
 export const NOT_EMPTY = 'NotEmpty';
 
 export const SIZE = 'Size';
+
+export const EMAIL = 'Email';

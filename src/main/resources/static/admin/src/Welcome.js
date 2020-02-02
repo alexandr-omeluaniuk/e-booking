@@ -42,6 +42,7 @@ import Copyright from './component/Copyright';
 import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
 import { history } from './index';
+import { REGEX_EMAIL } from './config/validators';
 
 const useStyles = makeStyles(theme => ({
         paper: {
@@ -64,7 +65,6 @@ const useStyles = makeStyles(theme => ({
     }));
 
 export default function Welcome() {
-    const EMAIL_REGEX = /\S+@\S+\.\S+/;
     const classes = useStyles();
     const { t } = useTranslation();
     const [email, setEmail] = useState('');
@@ -74,7 +74,7 @@ export default function Welcome() {
     const [loginError, setLoginError] = useState('');
     const validate = (e, p) => {
         let isPasswordValid = p && p.length >= 8;
-        let isEmailValid = EMAIL_REGEX.test(e);
+        let isEmailValid = REGEX_EMAIL.test(e);
         setEmailValid(isEmailValid);
         setPasswordValid(isPasswordValid);
         setLoginError('');

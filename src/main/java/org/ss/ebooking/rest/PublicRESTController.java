@@ -53,12 +53,14 @@ public class PublicRESTController {
     /**
      * Finish registration.
      * @param params parameters.
+     * @return empty response.
      * @throws Exception error.
      */
     @RequestMapping(value = "/finish-registration", method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void finishRegistration(@RequestBody Map<String, String> params) throws Exception {
+    public RESTResponse finishRegistration(@RequestBody Map<String, String> params) throws Exception {
         systemUserService.finishRegistration(params.get("validation"), params.get("password"));
+        return new RESTResponse();
     }
     /**
      * Check validation string.

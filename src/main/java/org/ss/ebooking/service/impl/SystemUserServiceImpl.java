@@ -125,4 +125,10 @@ class SystemUserServiceImpl implements SystemUserService {
             }
         }
     }
+    @Override
+    public SystemUser createSystemUser(SystemUser user) throws Exception {
+        user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
+        startRegistration(user);
+        return user;
+    }
 }
