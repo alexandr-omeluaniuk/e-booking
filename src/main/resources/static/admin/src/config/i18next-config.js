@@ -11,6 +11,11 @@ i18n.use(initReactI18next).init({
     resources: {
         ru: {
             translation: {
+                toolbar: {
+                    accountmenu: {
+                        logout: 'Выход'
+                    }
+                },
                 constants: {
                     momentJsDateFormat: 'DD.MM.YYYY'
                 },

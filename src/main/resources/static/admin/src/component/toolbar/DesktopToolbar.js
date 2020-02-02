@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+/* global fetch */
+
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
@@ -32,6 +34,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { useTranslation } from 'react-i18next';
+import AppURLs from '../../constants/AppURLs';
+import { history } from '../../index';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -63,9 +70,48 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const menuId = 'account-menu-id';
+
 function DesktopToolbar(props) {
-    const { title, open, setOpen } = props;
+    const { t } = useTranslation();
     const classes = useStyles();
+    const { title, open, setOpen } = props;
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+    
+    const handleProfileMenuOpen = event => {
+        setAnchorEl(event.currentTarget);
+    };
+    
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+    
+    const logout = () => {
+        let promise = fetch(AppURLs.links.logout, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            if (response.ok) {
+                history.push(AppURLs.links.welcome);
+            }
+        }).catch(error => {
+            console.error('HTTP error occurred: ' + error);
+        });
+        promise.then(rsp => {});
+    };
+    
+    const renderMenu = (
+            <Menu anchorEl={anchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} id={menuId} keepMounted
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }} open={isMenuOpen} onClose={handleMenuClose}>
+                <MenuItem disabled={true}><Typography variant="caption">Александр Омельянюк<hr/></Typography></MenuItem>
+                <MenuItem onClick={logout}><Icon>power_settings_new</Icon> {t('toolbar.accountmenu.logout')}</MenuItem>
+            </Menu>
+    );
+    
     return (
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
@@ -81,6 +127,11 @@ function DesktopToolbar(props) {
                             <Icon>notifications</Icon>
                         </Badge>
                     </IconButton>
+                    <IconButton edge="end" aria-label="account of current user" aria-controls={menuId} aria-haspopup="true"
+                            onClick={handleProfileMenuOpen} color="inherit">
+                            <Icon>account_circle</Icon>
+                    </IconButton>
+                    { renderMenu }
                 </Toolbar>
             </AppBar>
     );
