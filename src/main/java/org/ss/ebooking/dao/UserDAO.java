@@ -30,4 +30,9 @@ public interface UserDAO {
      * @return user.
      */
     SystemUser findByUsername(String username);
+    /**
+     * Get super user.
+     * @return super user or null.
+     */
+    SystemUser getSuperUser();
 }

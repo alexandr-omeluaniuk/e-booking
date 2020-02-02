@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.ss.ebooking.config.security.AuthUsernamePasswordFilter;
 import org.ss.ebooking.constants.AppURLs;
+import org.ss.ebooking.service.SystemUserService;
 
 /**
  * Spring security configuration.
@@ -52,6 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** E-Booking configuration. */
     @Autowired
     private EBookingConfig config;
+    /** System user service. */
+    @Autowired
+    private SystemUserService systemUserService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -64,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling().authenticationEntryPoint(authEntryPoint)
                 .and().rememberMe().key(config.getRememberMeKey()).tokenValiditySeconds(
                         Integer.valueOf(String.valueOf(TimeUnit.DAYS.toMillis(1))));
+        systemUserService.superUserCheck();
     }
     @Override
     public void configure(WebSecurity web) throws Exception {

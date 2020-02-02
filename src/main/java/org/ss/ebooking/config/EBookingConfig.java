@@ -35,6 +35,14 @@ import org.springframework.context.annotation.Configuration;
 public class EBookingConfig {
     /** Remember me key. */
     private String rememberMeKey;
+    /** Super admin email. */
+    private String superAdminEmail;
+    /** Super admin first name. */
+    private String superAdminFirstName;
+    /** Super admin last name. */
+    private String superAdminLastName;
+    /** Super admin password. */
+    private String superAdminPassword;
     // ========================================== SET & GET ===========================================================
     /**
      * @return the rememberMeKey
@@ -47,5 +55,53 @@ public class EBookingConfig {
      */
     public void setRememberMeKey(String rememberMeKey) {
         this.rememberMeKey = rememberMeKey;
+    }
+    /**
+     * @return the superAdminEmail
+     */
+    public String getSuperAdminEmail() {
+        return superAdminEmail;
+    }
+    /**
+     * @param superAdminEmail the superAdminEmail to set
+     */
+    public void setSuperAdminEmail(String superAdminEmail) {
+        this.superAdminEmail = superAdminEmail;
+    }
+    /**
+     * @return the superAdminFirstName
+     */
+    public String getSuperAdminFirstName() {
+        return superAdminFirstName;
+    }
+    /**
+     * @param superAdminFirstName the superAdminFirstName to set
+     */
+    public void setSuperAdminFirstName(String superAdminFirstName) {
+        this.superAdminFirstName = superAdminFirstName;
+    }
+    /**
+     * @return the superAdminLastName
+     */
+    public String getSuperAdminLastName() {
+        return superAdminLastName;
+    }
+    /**
+     * @param superAdminLastName the superAdminLastName to set
+     */
+    public void setSuperAdminLastName(String superAdminLastName) {
+        this.superAdminLastName = superAdminLastName;
+    }
+    /**
+     * @return the superAdminPassword
+     */
+    public String getSuperAdminPassword() {
+        return superAdminPassword;
+    }
+    /**
+     * @param superAdminPassword the superAdminPassword to set
+     */
+    public void setSuperAdminPassword(String superAdminPassword) {
+        this.superAdminPassword = superAdminPassword;
     }
 }

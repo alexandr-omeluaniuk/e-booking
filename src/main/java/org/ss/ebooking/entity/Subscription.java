@@ -30,6 +30,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -76,9 +77,13 @@ public class Subscription extends DataModel {
     @UIGrid(xs = "6")
     @ListViewColumn(align = ListViewColumnAlign.right)
     private Date expirationDate;
-    /** Is active. */
-    @Column(name = "active")
-    private boolean active;
+    /** Subscription admin email. */
+    @NotEmpty
+    @Email
+    @UIGrid(xs = "12")
+    @Size(max = 255)
+    @Column(name = "admin_email", length = 255, nullable = false)
+    private String subscriptionAdminEmail;
     // =========================================== SET & GET ==========================================================
     /**
      * @return the organizationName
@@ -117,16 +122,16 @@ public class Subscription extends DataModel {
         this.expirationDate = expirationDate;
     }
     /**
-     * @return the active
+     * @return the subscriptionAdminEmail
      */
-    public boolean isActive() {
-        return active;
+    public String getSubscriptionAdminEmail() {
+        return subscriptionAdminEmail;
     }
     /**
-     * @param active the active to set
+     * @param subscriptionAdminEmail the subscriptionAdminEmail to set
      */
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setSubscriptionAdminEmail(String subscriptionAdminEmail) {
+        this.subscriptionAdminEmail = subscriptionAdminEmail;
     }
     // ================================================================================================================
     @Override

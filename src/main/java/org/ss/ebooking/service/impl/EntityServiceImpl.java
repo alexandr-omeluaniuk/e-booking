@@ -47,9 +47,11 @@ import org.ss.ebooking.anno.UIGrid;
 import org.ss.ebooking.anno.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.entity.DataModel;
+import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.exception.EBookingException;
 import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.service.SubscriptionService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 
@@ -75,6 +77,9 @@ class EntityServiceImpl implements EntityService {
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
+    /** Subscription service. */
+    @Autowired
+    private SubscriptionService subscriptionService;
     @Override
     public EntityLayout getEntityLayout(final Class<? extends DataModel> clazz) throws Exception {
         if (LAYOUTS_CACHE.containsKey(clazz)) {
@@ -99,7 +104,11 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel> T createEntity(T entity) throws Exception {
-        return coreDAO.create(entity);
+        if (entity instanceof Subscription) {
+            return (T) subscriptionService.createSubscription((Subscription) entity);
+        } else {
+            return coreDAO.create(entity);
+        }
     }
     @Override
     public <T extends DataModel> T updateEntity(T entity) throws Exception {

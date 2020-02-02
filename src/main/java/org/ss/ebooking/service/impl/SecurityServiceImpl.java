@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.ss.ebooking.anno.ListViewColumn;
@@ -40,6 +42,7 @@ import org.ss.ebooking.service.SecurityService;
  * @author Alexandr Omeluaniuk
  */
 @Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class SecurityServiceImpl implements SecurityService {
     /** Data model classes. */
     private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES;

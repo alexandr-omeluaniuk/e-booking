@@ -25,6 +25,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.dao.UserDAO;
 import org.ss.ebooking.entity.SystemUser;
 import org.ss.ebooking.entity.SystemUser_;
@@ -45,6 +46,16 @@ class UserDAOImpl implements UserDAO {
         CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
         Root<SystemUser> c = criteria.from(SystemUser.class);
         criteria.select(c).where(cb.equal(c.get(SystemUser_.email), username));
+        List<SystemUser> users = em.createQuery(criteria).getResultList();
+        return users.isEmpty() ? null : users.get(0);
+    }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public SystemUser getSuperUser() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
+        Root<SystemUser> c = criteria.from(SystemUser.class);
+        criteria.select(c).where(cb.equal(c.get(SystemUser_.standardRole), StandardRole.ROLE_SUPER_ADMIN));
         List<SystemUser> users = em.createQuery(criteria).getResultList();
         return users.isEmpty() ? null : users.get(0);
     }

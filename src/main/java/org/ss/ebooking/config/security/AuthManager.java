@@ -55,7 +55,7 @@ class AuthManager implements AuthenticationManager {
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
         }
-        if (!user.isActive()) {
+        if (SystemUserStatus.ACTIVE != user.getStatus()) {
             throw new DisabledException("User is deactivated: " + username);
         }
         if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {

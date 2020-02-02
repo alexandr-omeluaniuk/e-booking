@@ -30,11 +30,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.ListViewColumn;
 import org.ss.ebooking.anno.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
+import org.ss.ebooking.config.security.SystemUserStatus;
 
 /**
  * SystemUser.
@@ -43,7 +45,7 @@ import org.ss.ebooking.config.security.StandardRole;
 @Entity
 @Table(name = "users")
 @MaterialIcon(icon = "supervisor_account")
-@StandardRoleAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR, StandardRole.ROLE_SUPER_ADMIN })
+@StandardRoleAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
 public class SystemUser extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
@@ -52,17 +54,15 @@ public class SystemUser extends TenantEntity {
     @Email
     @NotEmpty
     @Size(max = 255)
-    @Column(name = "email", length = 255)
+    @Column(name = "email", nullable = false, length = 255)
     private String email;
     /** Password. */
-    @Size(min = 5)
-    @NotEmpty
-    @Column(name = "password", nullable = false, length = 255)
+    @Size(min = 255)
+    @Column(name = "password", length = 255)
     private String password;
     /** First name. */
-    @NotEmpty
     @Size(max = 255)
-    @Column(name = "firstname", nullable = false, length = 255)
+    @Column(name = "firstname", length = 255)
     @ListViewColumn
     private String firstname;
     /** Last name. */
@@ -71,13 +71,19 @@ public class SystemUser extends TenantEntity {
     @Column(name = "lastname", nullable = false, length = 255)
     @ListViewColumn
     private String lastname;
-    /** Is active. */
-    @Column(name = "is_active", nullable = false)
-    private boolean active;
-    /** Standard role. */
+    /** Status. */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "standard_role")
+    @Column(name = "status", nullable = false)
+    private SystemUserStatus status;
+    /** Standard role. */
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "standard_role", nullable = false)
     private StandardRole standardRole;
+    /** Validation string for registration. */
+    @Column(name = "validation_string")
+    private String validationString;
 // ==================================== SET & GET =================================================
     /**
      * @return the email
@@ -128,18 +134,6 @@ public class SystemUser extends TenantEntity {
         this.lastname = lastname;
     }
     /**
-     * @return the active
-     */
-    public boolean isActive() {
-        return active;
-    }
-    /**
-     * @param active the active to set
-     */
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-    /**
      * @return the standardRole
      */
     public StandardRole getStandardRole() {
@@ -150,6 +144,30 @@ public class SystemUser extends TenantEntity {
      */
     public void setStandardRole(StandardRole standardRole) {
         this.standardRole = standardRole;
+    }
+    /**
+     * @return the validationString
+     */
+    public String getValidationString() {
+        return validationString;
+    }
+    /**
+     * @param validationString the validationString to set
+     */
+    public void setValidationString(String validationString) {
+        this.validationString = validationString;
+    }
+    /**
+     * @return the status
+     */
+    public SystemUserStatus getStatus() {
+        return status;
+    }
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(SystemUserStatus status) {
+        this.status = status;
     }
 // ================================================================================================
     @Override
