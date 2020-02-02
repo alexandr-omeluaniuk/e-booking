@@ -57,7 +57,7 @@ public class SystemUser extends TenantEntity {
     @Column(name = "email", nullable = false, length = 255)
     private String email;
     /** Password. */
-    @Size(min = 255)
+    @Size(max = 255)
     @Column(name = "password", length = 255)
     private String password;
     /** First name. */

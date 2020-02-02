@@ -59,4 +59,14 @@ class UserDAOImpl implements UserDAO {
         List<SystemUser> users = em.createQuery(criteria).getResultList();
         return users.isEmpty() ? null : users.get(0);
     }
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public SystemUser getUserByValidationString(String validationString) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<SystemUser> criteria = cb.createQuery(SystemUser.class);
+        Root<SystemUser> c = criteria.from(SystemUser.class);
+        criteria.select(c).where(cb.equal(c.get(SystemUser_.validationString), validationString));
+        List<SystemUser> users = em.createQuery(criteria).getResultList();
+        return users.isEmpty() ? null : users.get(0);
+    }
 }

@@ -37,6 +37,13 @@ public interface SystemUserService {
      */
     void startRegistration(SystemUser systemUser) throws Exception;
     /**
+     * Finish user registration.
+     * @param validationString validation string.
+     * @param password password.
+     * @throws Exception error.
+     */
+    void finishRegistration(String validationString, String password) throws Exception;
+    /**
      * Check if super user exists.
      * If no - create it.
      */

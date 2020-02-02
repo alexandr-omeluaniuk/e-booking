@@ -35,4 +35,10 @@ public interface UserDAO {
      * @return super user or null.
      */
     SystemUser getSuperUser();
+    /**
+     * Get user by validation string.
+     * @param validationString validation string.
+     * @return system user or null.
+     */
+    SystemUser getUserByValidationString(String validationString);
 }

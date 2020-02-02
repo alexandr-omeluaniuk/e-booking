@@ -36,6 +36,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.ss.ebooking.config.EBookingConfig;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
@@ -83,6 +85,7 @@ class SystemUserServiceImpl implements SystemUserService {
         coreDAO.create(systemUser);
     }
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void superUserCheck() {
         SystemUser superAdmin = userDAO.getSuperUser();
         if (superAdmin == null && config.getSuperAdminEmail() != null
@@ -96,6 +99,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 calendar.add(Calendar.YEAR, 33);
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
+                superAdminSubscription.setSubscriptionAdminEmail(config.getSuperAdminEmail());
                 superAdminSubscription = coreDAO.create(superAdminSubscription);
                 superAdmin = new SystemUser();
                 superAdmin.setSubscription(superAdminSubscription);
@@ -110,5 +114,13 @@ class SystemUserServiceImpl implements SystemUserService {
                 LOG.warn("Unexpected error occurred during super user creation.", e);
             }
         }
+    }
+    @Override
+    public void finishRegistration(String validationString, String password) throws Exception {
+        SystemUser systemUser = userDAO.getUserByValidationString(validationString);
+        systemUser.setValidationString(null);
+        systemUser.setStatus(SystemUserStatus.ACTIVE);
+        systemUser.setPassword(bCryptPasswordEncoder.encode(password));
+        coreDAO.update(systemUser);
     }
 }

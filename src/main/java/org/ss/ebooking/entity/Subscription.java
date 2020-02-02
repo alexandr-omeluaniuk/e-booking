@@ -82,7 +82,7 @@ public class Subscription extends DataModel {
     @Email
     @UIGrid(xs = "12")
     @Size(max = 255)
-    @Column(name = "admin_email", length = 255, nullable = false)
+    @Column(name = "admin_email", length = 255, nullable = false, updatable = false)
     private String subscriptionAdminEmail;
     // =========================================== SET & GET ==========================================================
     /**
