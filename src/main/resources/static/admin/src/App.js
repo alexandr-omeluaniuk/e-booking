@@ -2,11 +2,7 @@ import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Icon from '@material-ui/core/Icon';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -23,15 +19,12 @@ import SecurityService from './service/SecurityService';
 import AppURLs from './constants/AppURLs';
 import { Switch, Route, Redirect } from "react-router-dom";
 import ListView from './view/ListView';
-
-const drawerWidth = 240;
+import { drawerWidth } from './constants/style';
+import DesktopToolbar from './component/toolbar/DesktopToolbar';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex'
-  },
-  toolbar: {
-    paddingRight: 24 // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: 'flex',
@@ -39,30 +32,6 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  menuButton: {
-    marginRight: 36
-  },
-  menuButtonHidden: {
-    display: 'none'
-  },
-  title: {
-    flexGrow: 1
   },
   drawerPaper: {
     position: 'relative',
@@ -119,26 +88,6 @@ function App() {
     const [title, setTitle] = React.useState('');
     const [navItems, setNavItems] = React.useState(null);
     // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
-    const createToolbar = () => {
-        return (
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-                <Toolbar className={classes.toolbar}>
-                    <IconButton edge="start" color="inherit" aria-label="open drawer" onClick={() => {setOpen(true);}}
-                        className={clsx(classes.menuButton, open && classes.menuButtonHidden)}>
-                        <Icon>menu</Icon>
-                    </IconButton>
-                    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        { title }
-                    </Typography>
-                    <IconButton color="inherit">
-                        <Badge badgeContent={4} color="secondary">
-                            <Icon>notifications</Icon>
-                        </Badge>
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-        );
-    };
     const createSideBarNavigation = () => {
         if (!navItems) {
             return null;
@@ -228,7 +177,7 @@ function App() {
             <Router>
                 <div className={classes.root}>
                     <CssBaseline />
-                    { createToolbar() }
+                    <DesktopToolbar title={title} open={open} setOpen={setOpen}/>
                     { createSideBar() }
                     { createMain() }
                 </div>
