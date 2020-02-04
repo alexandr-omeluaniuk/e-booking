@@ -16,11 +16,15 @@
  */
 
 /* global fetch */
-
 import AppURLs from '../constants/AppURLs';
 import { history } from '../index';
 
+let _showNotification;
+
 class DataService {
+    static setNotification(func) {
+        _showNotification = func;
+    }
     constructor() {
         this.abortController = new AbortController();
     }
@@ -55,6 +59,12 @@ class DataService {
             } else if (response.status === 401) {
                 history.push(AppURLs.links.welcome);
                 throw new Error('Unauthorized request!');
+            } else {
+                response.json().then(errJson => {
+                    if (_showNotification) {
+                        _showNotification(errJson.message, errJson.details, 'error');
+                    }
+                });
             }
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);

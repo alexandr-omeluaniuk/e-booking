@@ -21,39 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import org.ss.ebooking.anno.ui.UIHidden;
+package org.ss.ebooking.exception;
 
 /**
- * Tenant entity.
+ * User friendly exception.
  * @author ss
  */
-@MappedSuperclass
-public abstract class TenantEntity extends DataModel {
-    /** Subscription. */
-    @JsonIgnore
-    @UIHidden
-    @OneToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "subscription_id", nullable = false)
-    private Subscription subscription;
+public class UserFriendlyException extends EBookingException {
+    /** Duplicate user. */
+    public static final String CODE_DUPLICATE_USER = "DUPLICATE_USER";
     /**
-     * @return the subscription
+     * Constructor.
+     * @param errorCode error code, uses translations on the client-side. 
      */
-    public Subscription getSubscription() {
-        return subscription;
-    }
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
+    public UserFriendlyException(String errorCode) {
+        super(errorCode);
     }
 }

@@ -20,6 +20,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import ListView from './view/ListView';
 import { drawerWidth } from './constants/style';
 import DesktopToolbar from './component/toolbar/DesktopToolbar';
+import DataService from './service/DataService';
+import Notification from './component/window/Notification';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -87,7 +89,18 @@ function App() {
     const [icon, setIcon] = React.useState(null);
     const [navItems, setNavItems] = React.useState(null);
     const [permissions, setPermissions] = React.useState(null);
+    const [openNotification, setOpenNotification] = React.useState(false);
+    const [notificationMessage, setNotificationMessage] = React.useState(null);
+    const [notificationDetails, setNotificationDetails] = React.useState(null);
+    const [notificationType, setNotificationType] = React.useState('info');
     // ------------------------------------------------ METHODS ---------------------------------------------------------------------------
+    const showNotification = (msg, details, type) => {
+        setNotificationMessage(msg);
+        setNotificationDetails(details);
+        setNotificationType(type ? type : 'info');
+        setOpenNotification(true);
+    };
+    DataService.setNotification(showNotification);
     const createSideBarNavigation = () => {
         if (!navItems) {
             return null;
@@ -187,6 +200,8 @@ function App() {
                     { createSideBar() }
                     { createMain() }
                 </div>
+                <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
+                        details={notificationDetails} severity={notificationType}/>
             </Router>
     );
 }

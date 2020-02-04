@@ -8,6 +8,8 @@ import './config/i18next-config';
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch } from "react-router-dom";
 import AppURLs from './constants/AppURLs';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ruRU } from '@material-ui/core/locale';
 
 export const history = createBrowserHistory();
 
@@ -22,15 +24,23 @@ const indexRoutes = [{
         component: FinishRegistration
     }];
 
+const theme = createMuiTheme({
+    palette: {
+        primary: { main: '#1976d2' }
+    }
+}, ruRU);
+
 ReactDOM.render(
-    <Router history={history}>
-        <Switch>
-        {indexRoutes.map((prop, key) => {
-            return <Route path={prop.path} component={prop.component} key={key} />;
-        })}
-        </Switch>
-    </Router>,
-   document.getElementById("root")
+        <ThemeProvider theme={theme}>
+            <Router history={history}>
+                <Switch>
+                {indexRoutes.map((prop, key) => {
+                    return <Route path={prop.path} component={prop.component} key={key} />;
+                })}
+                </Switch>
+            </Router>
+        </ThemeProvider>,
+    document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

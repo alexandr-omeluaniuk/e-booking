@@ -53,7 +53,9 @@ class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionAdmin.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR);
         subscriptionAdmin.setLastname(subscription.getOrganizationName());
         subscriptionAdmin.setEmail(subscription.getSubscriptionAdminEmail());
+        subscription = coreDAO.create(subscription);
+        subscriptionAdmin.setSubscription(subscription);
         systemUserService.startRegistration(subscriptionAdmin);
-        return coreDAO.create(subscription);
+        return subscription;
     }
 }

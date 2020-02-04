@@ -28,8 +28,31 @@ package org.ss.ebooking.wrapper;
  * @author ss
  */
 public class RESTResponse {
-    /** Success. */
-    private boolean success = true;
+    /** Is success. */
+    private boolean success;
+    /** Message for client. */
+    private String message;
+    /** Error code (custom). */
+    private String code;
+    /** Details. */
+    private String details;
+    /** Stacktrace. */
+    private String stacktrace;
+    /**
+     * Constructor.
+     */
+    public RESTResponse() {
+        this.success = true;
+    }
+    /**
+     * Constructor.
+     * @param success is success.
+     * @param message message.
+     */
+    public RESTResponse(boolean success, String message) {
+        this.success = success;
+        this.message = message;
+    }
     /**
      * @return the success
      */
@@ -41,5 +64,53 @@ public class RESTResponse {
      */
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+    /**
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    /**
+     * @return the code
+     */
+    public String getCode() {
+        return code;
+    }
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+    /**
+     * @return the details
+     */
+    public String getDetails() {
+        return details;
+    }
+    /**
+     * @param details the details to set
+     */
+    public void setDetails(String details) {
+        this.details = details;
+    }
+    /**
+     * @return the stacktrace
+     */
+    public String getStacktrace() {
+        return stacktrace;
+    }
+    /**
+     * @param stacktrace the stacktrace to set
+     */
+    public void setStacktrace(String stacktrace) {
+        this.stacktrace = stacktrace;
     }
 }

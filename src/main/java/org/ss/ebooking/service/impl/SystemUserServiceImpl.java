@@ -46,6 +46,8 @@ import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.dao.UserDAO;
 import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.entity.SystemUser;
+import org.ss.ebooking.exception.UserFriendlyException;
+import org.ss.ebooking.service.SecurityService;
 import org.ss.ebooking.service.SystemUserService;
 
 /**
@@ -72,9 +74,15 @@ class SystemUserServiceImpl implements SystemUserService {
     /** E-Booking configuration. */
     @Autowired
     private EBookingConfig config;
+    /** Security service. */
+    @Autowired
+    private SecurityService securityService;
 // =================================================== PUBLIC =========================================================
     @Override
     public void startRegistration(SystemUser systemUser) throws Exception {
+        if (userDAO.findByUsername(systemUser.getEmail()) != null) {
+            throw new UserFriendlyException(UserFriendlyException.CODE_DUPLICATE_USER);
+        }
         String validationString = UUID.randomUUID().toString();
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(systemUser.getEmail());
@@ -83,8 +91,8 @@ class SystemUserServiceImpl implements SystemUserService {
                 + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
-        emailService.send(msg);
         coreDAO.create(systemUser);
+        emailService.send(msg);
     }
     @Override
     public void finishRegistration(String validationString, String password) throws Exception {
@@ -128,6 +136,7 @@ class SystemUserServiceImpl implements SystemUserService {
     @Override
     public SystemUser createSystemUser(SystemUser user) throws Exception {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
+        user.setSubscription(securityService.currentUser().getSubscription());
         startRegistration(user);
         return user;
     }

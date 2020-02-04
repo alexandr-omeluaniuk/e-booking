@@ -26,6 +26,7 @@ package org.ss.ebooking.service.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,8 +95,7 @@ class EntityServiceImpl implements EntityService {
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
         EntityLayout layout = new EntityLayout();
         layout.setFields(new ArrayList<>());
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
+        for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(getLayoutField(field));
             }
@@ -206,5 +206,19 @@ class EntityServiceImpl implements EntityService {
             validators.add(validator);
         }
         return validators;
+    }
+    /**
+     * Get class fields (include super classes).
+     * @param clazz class.
+     * @return class fields.
+     * @throws Exception error.
+     */
+    private List<Field> getClassFields(Class clazz) throws Exception {
+        List<Field> result = new ArrayList<>();
+        result.addAll(Arrays.asList(clazz.getDeclaredFields()));
+        if (clazz.getSuperclass() != null) {
+            result.addAll(getClassFields(clazz.getSuperclass()));
+        }
+        return result;
     }
 }

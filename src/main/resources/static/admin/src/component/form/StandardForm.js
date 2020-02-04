@@ -178,10 +178,13 @@ function StandardForm(props) {
                     let value = data[field.name];
                     if (field.fieldType === TYPE_DATE) {
                         value = moment(value, t('constants.momentJsDateFormat'));
+                    } else if (field.fieldType === TYPE_STRING) {
+                        value = value === null || value === undefined ? '' : value;
                     }
                     dataMap.set(field.name, value);
                 }
             });
+            //console.log(dataMap);
             setFormData(dataMap);
         }
         setLayout(layout);
