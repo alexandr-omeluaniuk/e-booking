@@ -10,6 +10,8 @@ import { Router, Route, Switch } from "react-router-dom";
 import AppURLs from './constants/AppURLs';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { ruRU } from '@material-ui/core/locale';
+import purple from '@material-ui/core/colors/purple';
+import pink from '@material-ui/core/colors/pink';
 
 export const history = createBrowserHistory();
 
@@ -26,7 +28,8 @@ const indexRoutes = [{
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#1976d2' }
+        primary: purple,
+        secondary: pink
     }
 }, ruRU);
 

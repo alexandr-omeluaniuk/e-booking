@@ -22,6 +22,7 @@ import { drawerWidth } from './constants/style';
 import DesktopToolbar from './component/toolbar/DesktopToolbar';
 import DataService from './service/DataService';
 import Notification from './component/window/Notification';
+import background from './assets/main-background.jpg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,16 +56,30 @@ const useStyles = makeStyles(theme => ({
     }
   },
   appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto'
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-    maxWidth: 'none'
-  },
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+        "&:after": {
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: "-1",
+            content: '""',
+            display: "block",
+            opacity: ".3",
+            backgroundImage: 'url(' + background + ')',
+            backgroundSize: "cover",
+            backgroundPosition: "center center"
+        }
+    },
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
+        maxWidth: 'none'
+    },
   paper: {
     padding: theme.spacing(2),
     display: 'flex',
@@ -166,12 +181,12 @@ function App() {
         return (
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
-                        <Container maxWidth="lg" className={classes.container}>
-                            { routes }
-                            <Box pt={4}>
-                                <Copyright />
-                            </Box>
-                        </Container>
+                    <Container maxWidth="lg" className={classes.container}>
+                        { routes }
+                        <Box pt={4}>
+                            <Copyright />
+                        </Box>
+                    </Container>
                 </main>
         );
     };
@@ -182,7 +197,7 @@ function App() {
                 setNavItems(p);
                 let currentRoute = p.filter(item => { return window.location.pathname === item.path; });
                 setTitle(currentRoute.length > 0 ? currentRoute[0].label : '');
-                setIcon(currentRoute.length > 0 ? currentRoute[0].icon : null)
+                setIcon(currentRoute.length > 0 ? currentRoute[0].icon : null);
                 SecurityService.getPermissions().then(perm => {
                     setPermissions(perm);
                 });

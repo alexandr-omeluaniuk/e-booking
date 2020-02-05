@@ -34,6 +34,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,13 +44,26 @@ import { useTranslation } from 'react-i18next';
 import AppURLs from './constants/AppURLs';
 import { history } from './index';
 import { REGEX_EMAIL } from './config/validators';
+import background from './assets/login-background.jpg'
 
 const useStyles = makeStyles(theme => ({
+        background: {
+            backgroundImage: 'url(' + background + ')',
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        },
         paper: {
             marginTop: theme.spacing(8),
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            padding: theme.spacing(4),
+            backgroundColor: '#ffffffed'
         },
         avatar: {
             margin: theme.spacing(1),
@@ -121,9 +135,10 @@ export default function Welcome() {
         }
     };
     return (
+            <div className={classes.background}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <div className={classes.paper}>
+                <Paper className={classes.paper} elevation={4}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
@@ -158,10 +173,11 @@ export default function Welcome() {
                             </Grid>
                         </Grid>
                     </form>
-                </div>
-                <Box mt={8}>
-                    <Copyright />
-                </Box>
+                    <Box mt={8}>
+                        <Copyright />
+                    </Box>
+                </Paper>
             </Container>
+            </div>
     );
 }
