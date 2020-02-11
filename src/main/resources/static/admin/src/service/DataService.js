@@ -17,34 +17,33 @@
 
 /* global fetch */
 import AppURLs from '../constants/AppURLs';
-import { history } from '../index';
 
 let _showNotification;
+
+let abortController = new AbortController();
 
 class DataService {
     static setNotification(func) {
         _showNotification = func;
     }
-    constructor() {
-        this.abortController = new AbortController();
-    }
-    requestGet = (url) => {
+    static requestGet = (url) => {
         return this._request('GET', url);
     };
-    requestPut = (url, data) => {
+    static requestPut = (url, data) => {
         return this._request('PUT', url, data);
     };
-    requestPost = (url, data) => {
+    static requestPost = (url, data) => {
         return this._request('POST', url, data);
     };
-    requestDelete = (url) => {
+    static requestDelete = (url) => {
         return this._request('DELETE', url);
     };
-    abort = () => {
-        this.abortController.abort();
+    static abort = () => {
+        abortController.abort();
+        abortController = new AbortController();
     }
-    _request = (method, url, payload) => {
-        let signal = this.abortController.signal;
+    static _request = (method, url, payload) => {
+        let signal = abortController.signal;
         return fetch(AppURLs.links.rest + url, {
             method: method,
             signal: signal,
@@ -57,8 +56,7 @@ class DataService {
             if (response.ok) {
                 return response.json();
             } else if (response.status === 401) {
-                history.push(AppURLs.links.welcome);
-                throw new Error('Unauthorized request!');
+                window.location.href = AppURLs.links.welcome;
             } else {
                 response.json().then(errJson => {
                     if (_showNotification) {

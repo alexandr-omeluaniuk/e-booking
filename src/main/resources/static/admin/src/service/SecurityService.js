@@ -36,7 +36,7 @@ class SecurityService {
             if (service.permissions) {
                 resolve(service.permissions);
             } else {
-                new DataService().requestGet('/security/permissions').then(resp => {
+                DataService.requestGet('/security/permissions').then(resp => {
                     service.permissions = resp;
                     resolve(resp);
                 });

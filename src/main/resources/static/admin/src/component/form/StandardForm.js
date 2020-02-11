@@ -69,7 +69,6 @@ const useStyles = makeStyles(theme => ({
 function StandardForm(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const dataService = new DataService();
     const { entity, open, handleClose, afterSaveCallback, id } = props;
     // ------------------------------------------ STATE -----------------------------------------------------------------------------------
     const [layout, setLayout] = React.useState(null);
@@ -156,13 +155,13 @@ function StandardForm(props) {
             }
             handleClose();
             if (formData.has('id')) {
-                dataService.requestPut('/entity/' + entity, data).then(resp => {
+                DataService.requestPut('/entity/' + entity, data).then(resp => {
                     if (afterSaveCallback) {
                         afterSaveCallback();
                     }
                 });
             } else {
-                dataService.requestPost('/entity/' + entity, data).then(resp => {
+                DataService.requestPost('/entity/' + entity, data).then(resp => {
                     if (afterSaveCallback) {
                         afterSaveCallback();
                     }
@@ -193,7 +192,7 @@ function StandardForm(props) {
     useEffect(() => {
         if (open) {
             setFormData(new Map());
-            dataService.requestGet('/entity/' + entity + '/' + (id ? id : 0)).then(resp => {
+            DataService.requestGet('/entity/' + entity + '/' + (id ? id : 0)).then(resp => {
                 load(resp.layout, resp.data);
             });
         }

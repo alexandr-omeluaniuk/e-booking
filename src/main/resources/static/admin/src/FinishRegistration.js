@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
     }));
 
 export default function FinishRegistration(props) {
-    const dataService = new DataService();
     const validationString = props.match.params.validationString;
     const classes = useStyles();
     const { t } = useTranslation();
@@ -81,7 +80,7 @@ export default function FinishRegistration(props) {
     };
     const finishRegistration = () => {
         if (passwordValid && passwordRepeatValid) {
-            dataService.requestPut('/public/finish-registration', {
+            DataService.requestPut('/public/finish-registration', {
                 validation: validationString,
                 password: password
             }).then(resp => {
@@ -92,7 +91,7 @@ export default function FinishRegistration(props) {
     // ------------------------------------------------- HOOKS ----------------------------------------------------------------------------
     useEffect(() => {
         if (!user) {
-            dataService.requestGet('/public/check-validation-string/' + validationString).then(resp => {
+            DataService.requestGet('/public/check-validation-string/' + validationString).then(resp => {
                 setUser(resp ? resp : {});
             });
         }

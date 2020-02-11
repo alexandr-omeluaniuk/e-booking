@@ -99,7 +99,7 @@ const useStyles = makeStyles(theme => ({
 function App() {
     const classes = useStyles();
     // ------------------------------------------------ STATE -----------------------------------------------------------------------------
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const [title, setTitle] = React.useState('');
     const [icon, setIcon] = React.useState(null);
     const [navItems, setNavItems] = React.useState(null);
@@ -205,6 +205,12 @@ function App() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navItems]);
+    useEffect(() => {
+        return () => {
+            DataService.abort();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     // -------------------------------------------------------- RENDER --------------------------------------------------------------------
     return (
             <Router>

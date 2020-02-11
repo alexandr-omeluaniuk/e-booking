@@ -53,7 +53,6 @@ const useStyles = makeStyles(theme => ({
 function EnhancedTable(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const dataService = new DataService();
     const {headCells, title, entity } = props;
     // ----------------------------------------------- STATE ------------------------------------------------------------------------------
     const [rows, setRows] = React.useState([]);
@@ -78,7 +77,7 @@ function EnhancedTable(props) {
         setLoad(true);
     };
     const massDeletion = () => {
-        dataService.requestPut('/entity/delete/' + entity, Array.from(selected)).then(resp => {
+        DataService.requestPut('/entity/delete/' + entity, Array.from(selected)).then(resp => {
             setSelected(new Set());
             setLoad(true);
         });
@@ -133,7 +132,7 @@ function EnhancedTable(props) {
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
     useEffect(() => {
         if (load) {
-            dataService.requestPost('/entity/search/' + entity, {
+            DataService.requestPost('/entity/search/' + entity, {
                 page: page + 1,
                 pageSize: rowsPerPage,
                 order: order,
@@ -150,7 +149,7 @@ function EnhancedTable(props) {
     }, [load, entity, page, rowsPerPage, order, orderBy]);
     useEffect(() => {
         return () => {
-            dataService.abort();
+            DataService.abort();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
