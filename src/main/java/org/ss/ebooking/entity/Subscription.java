@@ -36,11 +36,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.ui.ListViewColumn;
 import org.ss.ebooking.anno.ui.MaterialIcon;
-import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.constants.AppConstants;
 import org.ss.ebooking.constants.ListViewColumnAlign;
 import org.ss.ebooking.anno.ui.FormField;
+import org.ss.ebooking.anno.security.SideBarNavigationItem;
 
 /**
  * Subscription.
@@ -49,7 +49,7 @@ import org.ss.ebooking.anno.ui.FormField;
 @Entity
 @Table(name = "subscription")
 @MaterialIcon(icon = "subscriptions")
-@StandardRoleAccess(roles = { StandardRole.ROLE_SUPER_ADMIN })
+@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN })
 public class Subscription extends DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

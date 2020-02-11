@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.entity.DataModel;
+import org.ss.ebooking.service.EntityMetadataService;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.wrapper.DataModelWrapper;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
@@ -51,6 +52,9 @@ public class EntityRESTController {
     /** Entity service. */
     @Autowired
     private EntityService entityService;
+    /** Entity metadata service. */
+    @Autowired
+    private EntityMetadataService entityMetadataService;
     /**
      * Search entities.
      * @param entityName entity name.
@@ -77,7 +81,7 @@ public class EntityRESTController {
             @PathVariable("id") Long id) throws Exception {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         DataModelWrapper wrapper = new DataModelWrapper();
-        wrapper.setLayout(entityService.getEntityLayout(entityClass));
+        wrapper.setLayout(entityMetadataService.getEntityLayout(entityClass));
         if (id > 0) {
             wrapper.setData(entityService.findEntityByID(id, entityClass));
         }

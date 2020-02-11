@@ -35,11 +35,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.ui.ListViewColumn;
 import org.ss.ebooking.anno.ui.MaterialIcon;
-import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
 import org.ss.ebooking.anno.ui.FormField;
 import org.ss.ebooking.anno.ui.HiddenField;
+import org.ss.ebooking.anno.security.SideBarNavigationItem;
 
 /**
  * SystemUser.
@@ -48,7 +48,7 @@ import org.ss.ebooking.anno.ui.HiddenField;
 @Entity
 @Table(name = "users")
 @MaterialIcon(icon = "supervisor_account")
-@StandardRoleAccess(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
+@SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
 public class SystemUser extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

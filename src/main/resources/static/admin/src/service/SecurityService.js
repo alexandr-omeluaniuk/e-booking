@@ -57,7 +57,7 @@ class SecurityService {
                     component: Dashboard
                 });
                 if (permissions) {
-                    permissions.entityMetadata.forEach(meta => {
+                    permissions.sideBarNavItems.forEach(meta => {
                         navItems.push({
                             icon: meta.icon ? meta.icon : 'help',
                             label: t['models']['titles']['many'][meta.className],

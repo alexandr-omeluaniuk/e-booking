@@ -25,7 +25,6 @@ package org.ss.ebooking.service;
 
 import java.util.Set;
 import org.ss.ebooking.entity.DataModel;
-import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 
@@ -36,13 +35,6 @@ import org.ss.ebooking.wrapper.EntitySearchResponse;
 public interface EntityService {
     /** Entity package. */
     static final String ENTITY_PACKAGE = "org.ss.ebooking.entity.";
-    /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
-     */
-    EntityLayout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
     /**
      * Search entities.
      * @param clazz entity class.

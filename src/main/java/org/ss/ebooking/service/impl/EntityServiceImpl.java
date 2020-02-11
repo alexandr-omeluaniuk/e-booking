@@ -23,22 +23,8 @@
  */
 package org.ss.ebooking.service.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.persistence.Temporal;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,15 +35,12 @@ import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.entity.SystemUser;
-import org.ss.ebooking.exception.EBookingException;
-import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.service.SubscriptionService;
 import org.ss.ebooking.service.SystemUserService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
 import org.ss.ebooking.anno.ui.FormField;
-import org.ss.ebooking.anno.ui.HiddenField;
 
 /**
  * Entity service implementation.
@@ -68,16 +51,6 @@ import org.ss.ebooking.anno.ui.HiddenField;
 class EntityServiceImpl implements EntityService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(EntityService.class);
-    /** Excluded fields. */
-    private static final Set<String> EXCLUDED_FIELDS = new HashSet<>();
-    /** Layouts cache. */
-    private static final Map<Class<? extends DataModel>, EntityLayout> LAYOUTS_CACHE = new ConcurrentHashMap<>();
-    /**
-     * Static initialization.
-     */
-    static {
-        EXCLUDED_FIELDS.add("serialVersionUID");
-    }
     /** Core DAO. */
     @Autowired
     private CoreDAO coreDAO;
@@ -87,22 +60,6 @@ class EntityServiceImpl implements EntityService {
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
-    @Override
-    public EntityLayout getEntityLayout(final Class<? extends DataModel> clazz) throws Exception {
-        if (LAYOUTS_CACHE.containsKey(clazz)) {
-            return LAYOUTS_CACHE.get(clazz);
-        }
-        LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
-        EntityLayout layout = new EntityLayout();
-        layout.setFields(new ArrayList<>());
-        for (Field field : getClassFields(clazz)) {
-            if (!EXCLUDED_FIELDS.contains(field.getName())) {
-                layout.getFields().add(getLayoutField(field));
-            }
-        }
-        LAYOUTS_CACHE.put(clazz, layout);
-        return layout;
-    }
     @Override
     public EntitySearchResponse searchEntities(final Class<? extends DataModel> clazz,
             final EntitySearchRequest searchRequest) throws Exception {
@@ -120,8 +77,9 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel> T updateEntity(T entity) throws Exception {
-        T fromDB = coreDAO.findById(entity.getId(), (Class<T>) entity.getClass());
-        
+        Class<T> entityClass = (Class<T>) entity.getClass();
+        T fromDB = coreDAO.findById(entity.getId(), entityClass);
+        setUpdatableFields(entityClass, fromDB, entity);
         return coreDAO.update(fromDB);
     }
     @Override
@@ -134,93 +92,23 @@ class EntityServiceImpl implements EntityService {
     }
     // ==================================== PRIVATE ===================================================================
     /**
-     * Get layout field from entity field.
-     * @param field entity field.
-     * @return layout field.
+     * Set values for updatable fields.
+     * @param entityClass entity class.
+     * @param fromDB entity from database.
+     * @param fromUser entity from user.
      * @throws Exception error.
      */
-    private EntityLayout.Field getLayoutField(Field field) throws Exception {
-        Annotation[] annotations = field.getAnnotations();
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("field [" + field.getName() + "], annotations [" + annotations.length + "]");
-        }
-        EntityLayout.Field layoutField = new EntityLayout.Field();
-        layoutField.setName(field.getName());
-        if (Date.class.equals(field.getType())) {
-            Temporal temporal = field.getAnnotation(Temporal.class);
-            if (temporal == null || temporal.value() == null) {
-                throw new EBookingException("wrong date field configuration! Field [" + field.getName()
-                        + "] must have @Temporal annotation!");
-            } else {
-                layoutField.setFieldType(temporal.value().name());
+    private void setUpdatableFields(Class entityClass, Object fromDB, Object fromUser) throws Exception {
+        for (Field field : entityClass.getDeclaredFields()) {
+            FormField formField = field.getAnnotation(FormField.class);
+            if (formField != null) {    // field is updatable
+                field.setAccessible(true);
+                field.set(fromDB, field.get(fromUser));
+                field.setAccessible(false);
             }
-        } else {
-            layoutField.setFieldType(field.getType().getSimpleName());
         }
-        FormField grid = field.getAnnotation(FormField.class);
-        EntityLayout.Grid fieldGridSystem = new EntityLayout.Grid();
-        if (grid != null) {
-            fieldGridSystem.setLg(grid.lg());
-            fieldGridSystem.setMd(grid.lg());
-            fieldGridSystem.setSm(grid.sm());
-            fieldGridSystem.setXs(grid.xs());
+        if (entityClass.getSuperclass() != null) {
+            setUpdatableFields(entityClass.getSuperclass(), fromDB, fromUser);
         }
-        layoutField.setGrid(fieldGridSystem);
-        HiddenField hidden = field.getAnnotation(HiddenField.class);
-        layoutField.setHidden(hidden != null);
-        layoutField.setValidators(setValidators(field));
-        return layoutField;
-    }
-    /**
-     * Set validators.
-     * @param field field.
-     * @return field validators.
-     * @throws Exception error.
-     */
-    private List<EntityLayout.Validator> setValidators(Field field) throws Exception {
-        List<EntityLayout.Validator> validators = new ArrayList<>();
-        NotEmpty vNotEmpty = field.getAnnotation(NotEmpty.class);
-        if (vNotEmpty != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
-            validator.setType(NotEmpty.class.getSimpleName());
-            validators.add(validator);
-        }
-        Size vSize = field.getAnnotation(Size.class);
-        if (vSize != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
-            validator.setType(Size.class.getSimpleName());
-            Map<String, String> attributes = new HashMap<>();
-            attributes.put("max", String.valueOf(vSize.max()));
-            attributes.put("min", String.valueOf(vSize.min()));
-            validator.setAttributes(attributes);
-            validators.add(validator);
-        }
-        NotNull vNotNull = field.getAnnotation(NotNull.class);
-        if (vNotNull != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
-            validator.setType(NotNull.class.getSimpleName());
-            validators.add(validator);
-        }
-        Email vEmail = field.getAnnotation(Email.class);
-        if (vEmail != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
-            validator.setType(Email.class.getSimpleName());
-            validators.add(validator);
-        }
-        return validators;
-    }
-    /**
-     * Get class fields (include super classes).
-     * @param clazz class.
-     * @return class fields.
-     * @throws Exception error.
-     */
-    private List<Field> getClassFields(Class clazz) throws Exception {
-        List<Field> result = new ArrayList<>();
-        result.addAll(Arrays.asList(clazz.getDeclaredFields()));
-        if (clazz.getSuperclass() != null) {
-            result.addAll(getClassFields(clazz.getSuperclass()));
-        }
-        return result;
     }
 }

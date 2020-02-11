@@ -16,7 +16,6 @@
  */
 package org.ss.ebooking.service.impl;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,16 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.ss.ebooking.anno.ui.ListViewColumn;
-import org.ss.ebooking.anno.ui.MaterialIcon;
-import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.UserPermissions;
 import org.ss.ebooking.core.SecurityContext;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.SystemUser;
+import org.ss.ebooking.service.EntityMetadataService;
 import org.ss.ebooking.service.EntityService;
 import org.ss.ebooking.service.SecurityService;
+import org.ss.ebooking.anno.security.SideBarNavigationItem;
 
 /**
  * Security service implementation.
@@ -49,6 +47,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
+    /** Entity metadata service. */
+    @Autowired
+    private EntityMetadataService entityMetadataService;
     /**
      * Static initialization.
      */
@@ -62,50 +63,21 @@ class SecurityServiceImpl implements SecurityService {
         UserPermissions permissions = new UserPermissions();
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());
-        permissions.setEntityMetadata(new ArrayList<>());
+        permissions.setSideBarNavItems(new ArrayList<>());
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
-                boolean hasAccess = true;
-                StandardRoleAccess roleAccess = dataModelClass.getAnnotation(StandardRoleAccess.class);
-                if (roleAccess != null) {
+                SideBarNavigationItem sideBarNavItem = dataModelClass.getAnnotation(SideBarNavigationItem.class);
+                if (sideBarNavItem != null) {
                     Set<StandardRole> accessibleForRoles = new HashSet<>();
-                    for (StandardRole sRole : roleAccess.roles()) {
+                    for (StandardRole sRole : sideBarNavItem.roles()) {
                         accessibleForRoles.add(sRole);
                     }
-                    hasAccess = accessibleForRoles.contains(currentUser.getStandardRole());
-                }
-                if (hasAccess) {
-                    permissions.getEntityMetadata().add(createMetadata(dataModelClass));
+                    if (accessibleForRoles.contains(currentUser.getStandardRole())) {
+                        permissions.getSideBarNavItems().add(entityMetadataService.getEntityListView(dataModelClass));
+                    }
                 }
             }
         }
         return permissions;
-    }
-    // ========================================= PRIVATE ==============================================================
-    /**
-     * Create entity metadata.
-     * @param dataModelClass data model class.
-     * @return data model metadata.
-     * @throws Exception error.
-     */
-    private UserPermissions.EntityMetadata createMetadata(Class<? extends DataModel> dataModelClass) throws Exception {
-        UserPermissions.EntityMetadata metadata = new UserPermissions.EntityMetadata();
-        metadata.setListViewColumns(new ArrayList());
-        metadata.setClassName(dataModelClass.getSimpleName());
-        MaterialIcon materialIcon = dataModelClass.getAnnotation(MaterialIcon.class);
-        if (materialIcon != null) {
-            metadata.setIcon(materialIcon.icon());
-        }
-        for (Field field : dataModelClass.getDeclaredFields()) {
-            ListViewColumn listViewColumnAnno = field.getAnnotation(ListViewColumn.class);
-            if (listViewColumnAnno != null) {
-                UserPermissions.ListViewColumn listViewColumn = new UserPermissions.ListViewColumn();
-                listViewColumn.setId(field.getName());
-                listViewColumn.setAlign(listViewColumnAnno.align());
-                listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
-                metadata.getListViewColumns().add(listViewColumn);
-            }
-        }
-        return metadata;
     }
 }

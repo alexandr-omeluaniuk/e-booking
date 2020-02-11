@@ -28,7 +28,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.ss.ebooking.entity.Subscription;
-import org.ss.ebooking.service.EntityService;
+import org.ss.ebooking.service.EntityMetadataService;
 import org.ss.ebooking.test.AbstractTest;
 import org.ss.ebooking.wrapper.EntityLayout;
 
@@ -36,14 +36,14 @@ import org.ss.ebooking.wrapper.EntityLayout;
  *
  * @author ss
  */
-public class EntityServiceTest extends AbstractTest {
+public class EntityMetadataServiceTest extends AbstractTest {
     @Autowired
-    private EntityService entityService;
+    private EntityMetadataService entityMetadataService;
     
     @DisplayName("Get entity layout test")
     @Test
     public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityService.getEntityLayout(Subscription.class);
+        EntityLayout layout = entityMetadataService.getEntityLayout(Subscription.class);
         Assertions.assertNotNull(layout);
     }
 }

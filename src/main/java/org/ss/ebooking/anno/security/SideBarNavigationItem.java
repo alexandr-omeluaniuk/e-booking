@@ -30,12 +30,12 @@ import java.lang.annotation.Target;
 import org.ss.ebooking.config.security.StandardRole;
 
 /**
- * Standard role access.
+ * Side bar navigation item.
  * @author ss
  */
 @Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface StandardRoleAccess {
+public @interface SideBarNavigationItem {
     /**
      * One or more standard security roles.
      * @return security roles.

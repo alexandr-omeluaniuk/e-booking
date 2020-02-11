@@ -21,42 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.config.security;
+package org.ss.ebooking.service;
 
-import java.util.List;
+import org.ss.ebooking.entity.DataModel;
+import org.ss.ebooking.wrapper.EntityLayout;
 import org.ss.ebooking.wrapper.EntityListView;
 
 /**
- * User permissions.
+ * Entity metadata service.
  * @author ss
  */
-public class UserPermissions {
-    /** Side bar navigation items. */
-    private List<EntityListView> sideBarNavItems;
-    /** User full name. */
-    private String fullname;
+public interface EntityMetadataService {
     /**
-     * @return the sideBarNavItems
+     * Get entity layout.
+     * @param clazz entity class.
+     * @return entity layout.
+     * @throws Exception layout can not be created.
      */
-    public List<EntityListView> getSideBarNavItems() {
-        return sideBarNavItems;
-    }
+    EntityLayout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
     /**
-     * @param sideBarNavItems the sideBarNavItems to set
+     * Get entity list view.
+     * @param clazz entity class.
+     * @return entity list view.
+     * @throws Exception error.
      */
-    public void setSideBarNavItems(List<EntityListView> sideBarNavItems) {
-        this.sideBarNavItems = sideBarNavItems;
-    }
-    /**
-     * @return the fullname
-     */
-    public String getFullname() {
-        return fullname;
-    }
-    /**
-     * @param fullname the fullname to set
-     */
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
+    EntityListView getEntityListView(Class<? extends DataModel> clazz) throws Exception;
 }
