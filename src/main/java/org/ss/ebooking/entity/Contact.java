@@ -28,6 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import org.ss.ebooking.anno.ui.DashboardTab;
 import org.ss.ebooking.anno.ui.FormField;
 import org.ss.ebooking.anno.ui.ListViewColumn;
 import org.ss.ebooking.anno.ui.MaterialIcon;
@@ -38,6 +39,7 @@ import org.ss.ebooking.constants.ListViewColumnAlign;
  * @author ss
  */
 @Entity
+@DashboardTab
 @Table(name = "contact")
 @MaterialIcon(icon = "perm_identity")
 public class Contact extends TenantEntity{

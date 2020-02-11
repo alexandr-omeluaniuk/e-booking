@@ -4,11 +4,17 @@
  * and open the template in the editor.
  */
 
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect } from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Icon from '@material-ui/core/Icon';
+import DataService from '../service/DataService';
+import SecurityService from '../service/SecurityService';
+import { useTranslation } from 'react-i18next';
+import SwipeableViews from 'react-swipeable-views';
+import ListView from '../view/ListView';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -18,11 +24,53 @@ const useStyles = makeStyles(theme => ({
     }));
 
 function Dashboard(props) {
-    console.log(props);
     const classes = useStyles();
+    const { t } = useTranslation();
+    const theme = useTheme();
+    // ----------------------------------------------------- STATE ------------------------------------------------------------------------
+    const [navItems, setNavItems] = React.useState(null);
+    const [activeTab, setActiveTab] = React.useState(0);
+    // ----------------------------------------------------- HOOKS ------------------------------------------------------------------------
+    useEffect(() => {
+        if (!navItems) {
+            SecurityService.getPermissions().then(permissions => {
+                setNavItems(permissions.dashboardTabItems);
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navItems]);
+    useEffect(() => {
+        return () => {
+            DataService.abort();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    // ----------------------------------------------------- RENDER -----------------------------------------------------------------------
     return (
             <Paper className={classes.root}>
-                TODO
+                {navItems ? (
+                    <React.Fragment>
+                        <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
+                            setActiveTab(index);
+                        }}>
+                            {navItems.map((item, i) => {
+                                const icon = (<Icon>{item.icon}</Icon>);
+                                return (
+                                        <Tab icon={icon} label={t('models.titles.many.' + item.className)} key={i}></Tab>
+                                );
+                            })}
+                        </Tabs>
+                        <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={activeTab} onChangeIndex={(index) => {
+                            setActiveTab(index);
+                        }}>
+                            {navItems.map((item, i) => {
+                                return (
+                                        <ListView metadata={item} key={i}/>
+                                );
+                            })}
+                        </SwipeableViews>
+                    </React.Fragment>
+                ) : null}
             </Paper>
     );
 }

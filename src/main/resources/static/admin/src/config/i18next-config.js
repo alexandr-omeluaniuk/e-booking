@@ -54,9 +54,11 @@ i18n.use(initReactI18next).init({
                     titles: {
                         Subscription: 'Подписка',
                         SystemUser: 'Пользователь',
+                        Contact: 'Контакт',
                         many: {
                             Subscription: 'Подписки',
-                            SystemUser: 'Пользователи'
+                            SystemUser: 'Пользователи',
+                            Contact: 'Контакты'
                         }
                     },
                     Subscription: {
@@ -71,6 +73,12 @@ i18n.use(initReactI18next).init({
                         status: 'Статус',
                         standardRole: 'Стандартная роль',
                         email: 'Email'
+                    },
+                    Contact: {
+                        firstname: 'Имя',
+                        lastname: 'Фамилия',
+                        email: 'Адрес электронной почты',
+                        phoneMobile: 'Мобильный телефон'
                     }
                 },
                 components: {

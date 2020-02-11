@@ -89,7 +89,8 @@ function StandardForm(props) {
     const onChangeFieldValue = (name, value) => {
         formData.set(name, value);
         setFormData(new Map(formData));
-        isFormValid();
+        let validationResult = isFormValid();
+        setInvalidFields(validationResult);
     };
     const renderFormField = (field) => {
         let label = t('models.' + entity + '.' + field.name);
@@ -139,11 +140,11 @@ function StandardForm(props) {
                 }
             });
         });
-        setInvalidFields(newInvalidField);
-        return newInvalidField.size === 0;
+        return newInvalidField;
     };
     const saveChanges = () => {
-        if (invalidFields.size === 0) {
+        let validationResult = isFormValid();
+        if (validationResult.size === 0) {
             let data = {};
             for (const [key, value] of formData.entries()) {
                 let field = layout.fields.filter(f => { return f.name === key; })[0];
@@ -167,6 +168,8 @@ function StandardForm(props) {
                     }
                 });
             }
+        } else {
+            setInvalidFields(validationResult);
         }
     };
     const load = (layout, data) => {
