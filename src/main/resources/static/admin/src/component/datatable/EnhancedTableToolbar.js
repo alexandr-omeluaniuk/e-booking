@@ -71,11 +71,6 @@ function EnhancedTableToolbar(props) {
                                 <Icon>add</Icon>
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title={t('components.datatable.toolbar.filter')}>
-                            <IconButton aria-label="filter list" color="secondary">
-                                <Icon>filter_list</Icon>
-                            </IconButton>
-                        </Tooltip>
                     </React.Fragment>
                 )}
             </Toolbar>

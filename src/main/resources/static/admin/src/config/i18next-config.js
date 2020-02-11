@@ -79,7 +79,6 @@ i18n.use(initReactI18next).init({
                         selectedRecords: 'Выбрано записей',
                         clearSelection: 'Очистить выделение',
                         toolbar: {
-                            filter: 'Фильтр',
                             add: 'Новая запись'
                         }
                     },
