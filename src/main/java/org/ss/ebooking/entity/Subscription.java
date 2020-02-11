@@ -36,11 +36,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.ss.ebooking.anno.ui.ListViewColumn;
 import org.ss.ebooking.anno.ui.MaterialIcon;
-import org.ss.ebooking.anno.ui.UIGrid;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.constants.AppConstants;
 import org.ss.ebooking.constants.ListViewColumnAlign;
+import org.ss.ebooking.anno.ui.FormField;
 
 /**
  * Subscription.
@@ -58,7 +58,7 @@ public class Subscription extends DataModel {
     @NotEmpty
     @Size(max = 255)
     @Column(name = "organization_name")
-    @UIGrid(xs = "12")
+    @FormField(xs = "12")
     @ListViewColumn
     private String organizationName;
     /** Started. */
@@ -66,7 +66,7 @@ public class Subscription extends DataModel {
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "started", nullable = false)
-    @UIGrid(xs = "6")
+    @FormField(xs = "6")
     @ListViewColumn(align = ListViewColumnAlign.right)
     private Date started;
     /** Expiration date. */
@@ -74,13 +74,13 @@ public class Subscription extends DataModel {
     @NotNull
     @Temporal(TemporalType.DATE)
     @Column(name = "expiration_date", nullable = false)
-    @UIGrid(xs = "6")
+    @FormField(xs = "6")
     @ListViewColumn(align = ListViewColumnAlign.right)
     private Date expirationDate;
     /** Subscription admin email. */
     @NotEmpty
     @Email
-    @UIGrid(xs = "12")
+    @FormField(xs = "12")
     @Size(max = 255)
     @Column(name = "admin_email", length = 255, nullable = false, updatable = false)
     private String subscriptionAdminEmail;

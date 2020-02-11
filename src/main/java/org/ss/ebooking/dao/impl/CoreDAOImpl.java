@@ -23,6 +23,9 @@ import java.util.Set;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.ss.ebooking.config.security.StandardRole;
+import org.ss.ebooking.core.SecurityContext;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
@@ -31,7 +34,6 @@ import org.ss.ebooking.entity.DataModel_;
 import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.entity.TenantEntity;
 import org.ss.ebooking.entity.TenantEntity_;
-import org.ss.ebooking.service.SecurityService;
 
 /**
  * Core DAO implementation.
@@ -42,18 +44,35 @@ class CoreDAOImpl implements CoreDAO {
     /** DataModel manager. */
     @PersistenceContext
     private EntityManager em;
-    /** Security service. */
+    /** Security context. */
     @Autowired
-    private SecurityService securityService;
+    private SecurityContext securityContext;
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public <T extends DataModel> T createIgnoreSubscription(final T entity) {
+        if (securityContext.currentUser().getStandardRole() != StandardRole.ROLE_SUPER_ADMIN) {
+            throw new AccessDeniedException("You can't create entity ignore subscription. Access denied!");
+        }
+        em.persist(entity);
+        return entity;
+    }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T create(final T entity) {
+        if (entity instanceof TenantEntity) {
+            TenantEntity tenantEntity = (TenantEntity) entity;
+            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
+        }
         em.persist(entity);
         return entity;
     }
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public <T extends DataModel> T update(final T entity) {
+        if (entity instanceof TenantEntity) {
+            TenantEntity tenantEntity = (TenantEntity) entity;
+            tenantEntity.setSubscription(securityContext.currentUser().getSubscription());
+        }
         T updated = em.merge(entity);
         return updated;
     }
@@ -117,7 +136,7 @@ class CoreDAOImpl implements CoreDAO {
     // =========================================== PRIVATE ============================================================
     private <T extends DataModel> List<Predicate> createSearchCriteria(CriteriaBuilder cb, Root<T> c, Class<T> clazz,
             EntitySearchRequest searchRequest) {
-        Subscription subscription = securityService.currentUser().getSubscription();
+        Subscription subscription = securityContext.currentUser().getSubscription();
         List<Predicate> predicates = new ArrayList<>();
         if (isTenantEntity(clazz)) {
             Root<TenantEntity> cTenant = (Root<TenantEntity>) c;

@@ -42,12 +42,12 @@ import org.ss.ebooking.config.EBookingConfig;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
 import org.ss.ebooking.constants.AppURLs;
+import org.ss.ebooking.core.SecurityContext;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.dao.UserDAO;
 import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.entity.SystemUser;
 import org.ss.ebooking.exception.UserFriendlyException;
-import org.ss.ebooking.service.SecurityService;
 import org.ss.ebooking.service.SystemUserService;
 
 /**
@@ -74,9 +74,9 @@ class SystemUserServiceImpl implements SystemUserService {
     /** E-Booking configuration. */
     @Autowired
     private EBookingConfig config;
-    /** Security service. */
+    /** Security context. */
     @Autowired
-    private SecurityService securityService;
+    private SecurityContext securityContext;
 // =================================================== PUBLIC =========================================================
     @Override
     public void startRegistration(SystemUser systemUser) throws Exception {
@@ -91,7 +91,11 @@ class SystemUserServiceImpl implements SystemUserService {
                 + AppURLs.APP_CRM_FINISH_REGISTRATION + "/" + validationString);
         systemUser.setStatus(SystemUserStatus.REGISTRATION);
         systemUser.setValidationString(validationString);
-        coreDAO.create(systemUser);
+        if (securityContext.currentUser().getStandardRole() == StandardRole.ROLE_SUPER_ADMIN) {
+            coreDAO.createIgnoreSubscription(systemUser);
+        } else {
+            coreDAO.create(systemUser);
+        }
         emailService.send(msg);
     }
     @Override
@@ -118,7 +122,7 @@ class SystemUserServiceImpl implements SystemUserService {
                 superAdminSubscription.setExpirationDate(calendar.getTime());
                 superAdminSubscription.setOrganizationName("Super Admin subscription");
                 superAdminSubscription.setSubscriptionAdminEmail(config.getSuperAdminEmail());
-                superAdminSubscription = coreDAO.create(superAdminSubscription);
+                superAdminSubscription = coreDAO.createIgnoreSubscription(superAdminSubscription);
                 superAdmin = new SystemUser();
                 superAdmin.setSubscription(superAdminSubscription);
                 superAdmin.setEmail(config.getSuperAdminEmail());
@@ -136,7 +140,7 @@ class SystemUserServiceImpl implements SystemUserService {
     @Override
     public SystemUser createSystemUser(SystemUser user) throws Exception {
         user.setStandardRole(StandardRole.ROLE_SUBSCRIPTION_USER);
-        user.setSubscription(securityService.currentUser().getSubscription());
+        user.setSubscription(securityContext.currentUser().getSubscription());
         startRegistration(user);
         return user;
     }

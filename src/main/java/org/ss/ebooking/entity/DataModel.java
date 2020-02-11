@@ -28,7 +28,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import org.ss.ebooking.anno.ui.UIHidden;
+import org.ss.ebooking.anno.ui.HiddenField;
 
 /**
  * DataModel.
@@ -39,7 +39,7 @@ public abstract class DataModel implements Serializable {
     /** Primary key. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @UIHidden
+    @HiddenField
     private Long id;
     /**
      * @return the id

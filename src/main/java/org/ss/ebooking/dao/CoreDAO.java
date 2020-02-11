@@ -17,14 +17,21 @@ import org.ss.ebooking.wrapper.EntitySearchResponse;
  */
 public interface CoreDAO {
     /**
-     * Create entity.
+     * Create entity ignore subscription.
+     * @param <T> entity class.
+     * @param entity entity.
+     * @return created entity.
+     */
+    <T extends DataModel> T createIgnoreSubscription(T entity);
+    /**
+     * Create entity (subscription will be assigned automatically).
      * @param <T> entity class.
      * @param entity entity.
      * @return created entity.
      */
     <T extends DataModel> T create(T entity);
     /**
-     * Update entity.
+     * Update entity (subscription will be assigned automatically).
      * @param <T> entity class.
      * @param entity entity.
      * @return updated entity.

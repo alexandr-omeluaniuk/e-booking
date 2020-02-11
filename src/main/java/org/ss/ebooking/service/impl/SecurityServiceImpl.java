@@ -22,16 +22,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.ss.ebooking.anno.ui.ListViewColumn;
 import org.ss.ebooking.anno.ui.MaterialIcon;
 import org.ss.ebooking.anno.security.StandardRoleAccess;
 import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.UserPermissions;
-import org.ss.ebooking.config.security.UserPrincipal;
+import org.ss.ebooking.core.SecurityContext;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.SystemUser;
 import org.ss.ebooking.service.EntityService;
@@ -46,6 +46,9 @@ import org.ss.ebooking.service.SecurityService;
 class SecurityServiceImpl implements SecurityService {
     /** Data model classes. */
     private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES;
+    /** Security context. */
+    @Autowired
+    private SecurityContext securityContext;
     /**
      * Static initialization.
      */
@@ -54,14 +57,8 @@ class SecurityServiceImpl implements SecurityService {
         DATA_MODEL_CLASSES = reflections.getSubTypesOf(DataModel.class);
     }
     @Override
-    public SystemUser currentUser() {
-        Object auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) auth;
-        return userPrincipal.getUser();
-    }
-    @Override
     public UserPermissions getUserPermissions() throws Exception {
-        SystemUser currentUser = this.currentUser();
+        SystemUser currentUser = securityContext.currentUser();
         UserPermissions permissions = new UserPermissions();
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());

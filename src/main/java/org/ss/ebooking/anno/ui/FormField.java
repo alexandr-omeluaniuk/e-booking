@@ -29,12 +29,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * UI form field. Can be updated via UI.
  * UI 12-columns grid system annotation
  * @author ss
  */
 @Target(value = {ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface UIGrid {
+public @interface FormField {
     /**
      * Defines the number of grids the component is going to use. It's applied for the lg breakpoint 
      * and wider screens if not overridden.

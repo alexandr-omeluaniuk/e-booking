@@ -45,8 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.ss.ebooking.anno.ui.UIGrid;
-import org.ss.ebooking.anno.ui.UIHidden;
 import org.ss.ebooking.dao.CoreDAO;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.Subscription;
@@ -58,6 +56,8 @@ import org.ss.ebooking.service.SubscriptionService;
 import org.ss.ebooking.service.SystemUserService;
 import org.ss.ebooking.wrapper.EntitySearchRequest;
 import org.ss.ebooking.wrapper.EntitySearchResponse;
+import org.ss.ebooking.anno.ui.FormField;
+import org.ss.ebooking.anno.ui.HiddenField;
 
 /**
  * Entity service implementation.
@@ -120,7 +120,9 @@ class EntityServiceImpl implements EntityService {
     }
     @Override
     public <T extends DataModel> T updateEntity(T entity) throws Exception {
-        return coreDAO.update(entity);
+        T fromDB = coreDAO.findById(entity.getId(), (Class<T>) entity.getClass());
+        
+        return coreDAO.update(fromDB);
     }
     @Override
     public <T extends DataModel> void massDeleteEntities(Set<Long> ids, Class<T> cl) throws Exception {
@@ -155,7 +157,7 @@ class EntityServiceImpl implements EntityService {
         } else {
             layoutField.setFieldType(field.getType().getSimpleName());
         }
-        UIGrid grid = field.getAnnotation(UIGrid.class);
+        FormField grid = field.getAnnotation(FormField.class);
         EntityLayout.Grid fieldGridSystem = new EntityLayout.Grid();
         if (grid != null) {
             fieldGridSystem.setLg(grid.lg());
@@ -164,7 +166,7 @@ class EntityServiceImpl implements EntityService {
             fieldGridSystem.setXs(grid.xs());
         }
         layoutField.setGrid(fieldGridSystem);
-        UIHidden hidden = field.getAnnotation(UIHidden.class);
+        HiddenField hidden = field.getAnnotation(HiddenField.class);
         layoutField.setHidden(hidden != null);
         layoutField.setValidators(setValidators(field));
         return layoutField;

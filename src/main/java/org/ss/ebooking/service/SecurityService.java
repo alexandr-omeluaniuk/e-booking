@@ -17,18 +17,12 @@
 package org.ss.ebooking.service;
 
 import org.ss.ebooking.config.security.UserPermissions;
-import org.ss.ebooking.entity.SystemUser;
 
 /**
  * Security service.
  * @author Alexandr Omeluaniuk
  */
 public interface SecurityService {
-    /**
-     * Get current user.
-     * @return current user.
-     */
-    SystemUser currentUser();
     /**
      * Get user permissions.
      * @return user permissions.

@@ -21,39 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.entity;
+package org.ss.ebooking.anno.ui;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import org.ss.ebooking.anno.ui.HiddenField;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Tenant entity.
+ * Field is hidden on user interface.
  * @author ss
  */
-@MappedSuperclass
-public abstract class TenantEntity extends DataModel {
-    /** Subscription. */
-    @JsonIgnore
-    @HiddenField
-    @OneToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "subscription_id", nullable = false)
-    private Subscription subscription;
-    /**
-     * @return the subscription
-     */
-    public Subscription getSubscription() {
-        return subscription;
-    }
-    /**
-     * @param subscription the subscription to set
-     */
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
+@Target(value = {ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface HiddenField {
 }

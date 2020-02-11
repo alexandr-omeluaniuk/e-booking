@@ -21,18 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.anno.ui;
+package org.ss.ebooking.core;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.ss.ebooking.config.security.UserPrincipal;
+import org.ss.ebooking.entity.SystemUser;
 
 /**
- * Field is hidden on user interface.
+ * Security context.
+ * Provided access to current security context.
  * @author ss
  */
-@Target(value = {ElementType.FIELD})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface UIHidden {
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class SecurityContext {
+    /**
+     * Get current user.
+     * @return current user.
+     */
+    public SystemUser currentUser() {
+        Object auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) auth;
+        return userPrincipal.getUser();
+    }
 }
