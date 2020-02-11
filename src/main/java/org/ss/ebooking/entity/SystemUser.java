@@ -39,7 +39,7 @@ import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.config.security.SystemUserStatus;
 import org.ss.ebooking.anno.ui.FormField;
 import org.ss.ebooking.anno.ui.HiddenField;
-import org.ss.ebooking.anno.security.SideBarNavigationItem;
+import org.ss.ebooking.anno.ui.SideBarNavigationItem;
 
 /**
  * SystemUser.

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,21 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package org.ss.ebooking.anno.ui;
 
-import React from 'react';
-import EnhancedTable from './../component/datatable/EnhancedTable';
-import { useTranslation } from 'react-i18next';
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.ss.ebooking.config.security.StandardRole;
 
-function Subscriptions() {
-    const { t } = useTranslation();
-    const headCells = [
-        {id: 'organizationName', align: 'left', disablePadding: true},
-        {id: 'started', align: 'right', disablePadding: false},
-        {id: 'expirationDate', align: 'right', disablePadding: false}
-    ];
-    return (
-            <EnhancedTable headCells={headCells} title={t('models.titles.many.Subscription')} entity={'Subscription'}></EnhancedTable>
-    );
+/**
+ * Side bar navigation item.
+ * @author ss
+ */
+@Target(value = {ElementType.TYPE})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface SideBarNavigationItem {
+    /**
+     * One or more standard security roles.
+     * @return security roles.
+     */
+    public StandardRole[] roles();
 }
-
-export default Subscriptions;

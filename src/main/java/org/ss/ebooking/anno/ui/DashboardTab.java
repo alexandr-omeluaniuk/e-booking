@@ -21,24 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.anno.security;
+package org.ss.ebooking.anno.ui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.ss.ebooking.config.security.StandardRole;
 
 /**
- * Side bar navigation item.
+ * Dashboard tab view.
  * @author ss
  */
 @Target(value = {ElementType.TYPE})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface SideBarNavigationItem {
-    /**
-     * One or more standard security roles.
-     * @return security roles.
-     */
-    public StandardRole[] roles();
+public @interface DashboardTab {
+    
 }

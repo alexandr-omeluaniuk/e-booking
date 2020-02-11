@@ -33,6 +33,8 @@ import org.ss.ebooking.wrapper.EntityListView;
 public class UserPermissions {
     /** Side bar navigation items. */
     private List<EntityListView> sideBarNavItems;
+    /** Dashboard tab items. */
+    private List<EntityListView> dashboardTabItems;
     /** User full name. */
     private String fullname;
     /**
@@ -58,5 +60,17 @@ public class UserPermissions {
      */
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+    /**
+     * @return the dashboardTabItems
+     */
+    public List<EntityListView> getDashboardTabItems() {
+        return dashboardTabItems;
+    }
+    /**
+     * @param dashboardTabItems the dashboardTabItems to set
+     */
+    public void setDashboardTabItems(List<EntityListView> dashboardTabItems) {
+        this.dashboardTabItems = dashboardTabItems;
     }
 }

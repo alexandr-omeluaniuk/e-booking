@@ -40,7 +40,7 @@ import org.ss.ebooking.config.security.StandardRole;
 import org.ss.ebooking.constants.AppConstants;
 import org.ss.ebooking.constants.ListViewColumnAlign;
 import org.ss.ebooking.anno.ui.FormField;
-import org.ss.ebooking.anno.security.SideBarNavigationItem;
+import org.ss.ebooking.anno.ui.SideBarNavigationItem;
 
 /**
  * Subscription.
