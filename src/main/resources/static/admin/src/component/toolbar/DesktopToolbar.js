@@ -38,7 +38,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useTranslation } from 'react-i18next';
 import AppURLs from '../../constants/AppURLs';
-import { history } from '../../index';
 
 const useStyles = makeStyles(theme => ({
     appBar: {
@@ -99,7 +98,7 @@ function DesktopToolbar(props) {
             }
         }).then(function(response) {
             if (response.ok) {
-                history.push(AppURLs.links.welcome);
+                window.location.href = AppURLs.links.welcome;
             }
         }).catch(error => {
             console.error('HTTP error occurred: ' + error);

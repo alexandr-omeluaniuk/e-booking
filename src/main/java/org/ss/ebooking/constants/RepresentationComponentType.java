@@ -29,7 +29,5 @@ package org.ss.ebooking.constants;
  */
 public enum RepresentationComponentType {
     /** List view. */
-    LIST_VIEW,
-    /** Tab. */
-    TAB;
+    LIST_VIEW;
 }

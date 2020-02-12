@@ -25,8 +25,14 @@ package org.ss.ebooking.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +47,7 @@ import org.ss.ebooking.constants.AppConstants;
 import org.ss.ebooking.constants.ListViewColumnAlign;
 import org.ss.ebooking.anno.ui.FormField;
 import org.ss.ebooking.anno.ui.SideBarNavigationItem;
+import org.ss.ebooking.constants.ApplicationModule;
 
 /**
  * Subscription.
@@ -84,6 +91,13 @@ public class Subscription extends DataModel {
     @Size(max = 255)
     @Column(name = "admin_email", length = 255, nullable = false, updatable = false)
     private String subscriptionAdminEmail;
+    /** Application modules. */
+    @ListViewColumn
+    @FormField(xs = "12")
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = ApplicationModule.class)
+    @Enumerated(EnumType.STRING)
+    @JoinTable(name = "subscription_module")
+    private Set<ApplicationModule> modules;
     // =========================================== SET & GET ==========================================================
     /**
      * @return the organizationName
@@ -132,6 +146,18 @@ public class Subscription extends DataModel {
      */
     public void setSubscriptionAdminEmail(String subscriptionAdminEmail) {
         this.subscriptionAdminEmail = subscriptionAdminEmail;
+    }
+    /**
+     * @return the modules
+     */
+    public Set<ApplicationModule> getModules() {
+        return modules;
+    }
+    /**
+     * @param modules the modules to set
+     */
+    public void setModules(Set<ApplicationModule> modules) {
+        this.modules = modules;
     }
     // ================================================================================================================
     @Override

@@ -27,7 +27,7 @@ import java.util.List;
 import org.ss.ebooking.ui.RepresentationComponent;
 
 /**
- * User permissions.
+ * User permissions for UI.
  * @author ss
  */
 public class UserPermissions {

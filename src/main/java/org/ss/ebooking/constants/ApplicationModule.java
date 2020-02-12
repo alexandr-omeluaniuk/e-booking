@@ -23,27 +23,13 @@
  */
 package org.ss.ebooking.constants;
 
-import org.ss.ebooking.entity.Contact;
-import org.ss.ebooking.entity.DataModel;
-
 /**
  * Application module.
  * @author ss
  */
-public enum Module {
-    /** Contacts module */
-    CONTACTS(new Class[] {Contact.class}, new Module[0]);
-    /** Module data models. */
-    private final Class<? extends DataModel>[] dataModel;
-    /** Depends on other modules. */
-    private final Module[] dependsOn;
-    /**
-     * Constructor.
-     * @param dataModel module data models.
-     * @param dependsOn depends on other modules.
-     */
-    private Module(Class<? extends DataModel>[] dataModel, Module[] dependsOn) {
-        this.dataModel = dataModel;
-        this.dependsOn = dependsOn;
-    }
+public enum ApplicationModule {
+    /** Contacts. */
+    CONTACTS,
+    /** Calendar. */
+    CALENDAR;
 }

@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -13,7 +13,6 @@ import Icon from '@material-ui/core/Icon';
 import DataService from '../service/DataService';
 import SecurityService from '../service/SecurityService';
 import { useTranslation } from 'react-i18next';
-import SwipeableViews from 'react-swipeable-views';
 import ListView from '../view/ListView';
 
 const useStyles = makeStyles(theme => ({
@@ -26,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 function Dashboard(props) {
     const classes = useStyles();
     const { t } = useTranslation();
-    const theme = useTheme();
     // ----------------------------------------------------- STATE ------------------------------------------------------------------------
     const [navItems, setNavItems] = React.useState(null);
     const [activeTab, setActiveTab] = React.useState(0);
@@ -60,15 +58,11 @@ function Dashboard(props) {
                                 );
                             })}
                         </Tabs>
-                        <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={activeTab} onChangeIndex={(index) => {
-                            setActiveTab(index);
-                        }}>
-                            {navItems.map((item, i) => {
-                                return (
-                                        <ListView metadata={item} key={i}/>
-                                );
-                            })}
-                        </SwipeableViews>
+                        {navItems.map((item, i) => {
+                            return (
+                                    <ListView metadata={item} key={i}/>
+                            );
+                        })}
                     </React.Fragment>
                 ) : null}
             </Paper>
