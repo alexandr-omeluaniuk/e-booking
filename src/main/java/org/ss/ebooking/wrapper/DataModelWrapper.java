@@ -23,6 +23,7 @@
  */
 package org.ss.ebooking.wrapper;
 
+import org.ss.ebooking.ui.Layout;
 import org.ss.ebooking.entity.DataModel;
 
 /**
@@ -33,7 +34,7 @@ public class DataModelWrapper {
     /** Data. */
     private DataModel data;
     /** Layout. */
-    private EntityLayout layout;
+    private Layout layout;
     /**
      * @return the data
      */
@@ -49,13 +50,13 @@ public class DataModelWrapper {
     /**
      * @return the layout
      */
-    public EntityLayout getLayout() {
+    public Layout getLayout() {
         return layout;
     }
     /**
      * @param layout the layout to set
      */
-    public void setLayout(EntityLayout layout) {
+    public void setLayout(Layout layout) {
         this.layout = layout;
     }
 }

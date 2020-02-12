@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.wrapper;
+package org.ss.ebooking.ui;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ import java.util.Map;
  * Entity layout.
  * @author ss
  */
-public class EntityLayout {
+public class Layout {
     /** Fields. */
     private List<Field> fields;
     // ====================================== SET & GET ===============================================================

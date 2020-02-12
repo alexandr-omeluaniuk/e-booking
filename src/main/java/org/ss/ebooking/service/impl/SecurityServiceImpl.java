@@ -25,9 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
-import org.ss.ebooking.anno.ui.DashboardTab;
 import org.ss.ebooking.config.security.StandardRole;
-import org.ss.ebooking.config.security.UserPermissions;
+import org.ss.ebooking.wrapper.UserPermissions;
 import org.ss.ebooking.core.SecurityContext;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.entity.SystemUser;
@@ -69,7 +68,6 @@ class SecurityServiceImpl implements SecurityService {
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
                 SideBarNavigationItem sideBarNavItem = dataModelClass.getAnnotation(SideBarNavigationItem.class);
-                DashboardTab dashboardTab = dataModelClass.getAnnotation(DashboardTab.class);
                 if (sideBarNavItem != null) {
                     Set<StandardRole> accessibleForRoles = new HashSet<>();
                     for (StandardRole sRole : sideBarNavItem.roles()) {
@@ -78,9 +76,6 @@ class SecurityServiceImpl implements SecurityService {
                     if (accessibleForRoles.contains(currentUser.getStandardRole())) {
                         permissions.getSideBarNavItems().add(entityMetadataService.getEntityListView(dataModelClass));
                     }
-                }
-                if (dashboardTab != null) {
-                    permissions.getDashboardTabItems().add(entityMetadataService.getEntityListView(dataModelClass));
                 }
             }
         }

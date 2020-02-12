@@ -21,29 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.service;
-
-import org.ss.ebooking.entity.DataModel;
-import org.ss.ebooking.ui.Layout;
-import org.ss.ebooking.ui.ListView;
+package org.ss.ebooking.constants;
 
 /**
- * Entity metadata service.
+ * UI representation component type.
  * @author ss
  */
-public interface EntityMetadataService {
-    /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
-     */
-    Layout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get entity list view.
-     * @param clazz entity class.
-     * @return entity list view.
-     * @throws Exception error.
-     */
-    ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception;
+public enum RepresentationComponentType {
+    /** List view. */
+    LIST_VIEW,
+    /** Tab. */
+    TAB;
 }

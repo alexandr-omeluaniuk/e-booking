@@ -16,7 +16,7 @@
  */
 package org.ss.ebooking.service;
 
-import org.ss.ebooking.config.security.UserPermissions;
+import org.ss.ebooking.wrapper.UserPermissions;
 
 /**
  * Security service.

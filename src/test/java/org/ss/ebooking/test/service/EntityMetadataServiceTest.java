@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.ss.ebooking.entity.Subscription;
 import org.ss.ebooking.service.EntityMetadataService;
 import org.ss.ebooking.test.AbstractTest;
-import org.ss.ebooking.wrapper.EntityLayout;
+import org.ss.ebooking.ui.Layout;
 
 /**
  *
@@ -43,7 +43,7 @@ public class EntityMetadataServiceTest extends AbstractTest {
     @DisplayName("Get entity layout test")
     @Test
     public void testGetEntityLayout() throws Exception {
-        EntityLayout layout = entityMetadataService.getEntityLayout(Subscription.class);
+        Layout layout = entityMetadataService.getEntityLayout(Subscription.class);
         Assertions.assertNotNull(layout);
     }
 }

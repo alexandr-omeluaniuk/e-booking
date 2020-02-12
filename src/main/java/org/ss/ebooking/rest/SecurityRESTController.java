@@ -28,7 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.ss.ebooking.config.security.UserPermissions;
+import org.ss.ebooking.wrapper.UserPermissions;
 import org.ss.ebooking.constants.AppURLs;
 import org.ss.ebooking.service.SecurityService;
 

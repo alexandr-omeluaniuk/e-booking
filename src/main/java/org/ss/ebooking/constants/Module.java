@@ -21,29 +21,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.service;
+package org.ss.ebooking.constants;
 
+import org.ss.ebooking.entity.Contact;
 import org.ss.ebooking.entity.DataModel;
-import org.ss.ebooking.ui.Layout;
-import org.ss.ebooking.ui.ListView;
 
 /**
- * Entity metadata service.
+ * Application module.
  * @author ss
  */
-public interface EntityMetadataService {
+public enum Module {
+    /** Contacts module */
+    CONTACTS(new Class[] {Contact.class}, new Module[0]);
+    /** Module data models. */
+    private final Class<? extends DataModel>[] dataModel;
+    /** Depends on other modules. */
+    private final Module[] dependsOn;
     /**
-     * Get entity layout.
-     * @param clazz entity class.
-     * @return entity layout.
-     * @throws Exception layout can not be created.
+     * Constructor.
+     * @param dataModel module data models.
+     * @param dependsOn depends on other modules.
      */
-    Layout getEntityLayout(Class<? extends DataModel> clazz) throws Exception;
-    /**
-     * Get entity list view.
-     * @param clazz entity class.
-     * @return entity list view.
-     * @throws Exception error.
-     */
-    ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception;
+    private Module(Class<? extends DataModel>[] dataModel, Module[] dependsOn) {
+        this.dataModel = dataModel;
+        this.dependsOn = dependsOn;
+    }
 }

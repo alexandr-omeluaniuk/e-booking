@@ -21,18 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.anno.ui;
+package org.ss.ebooking.ui;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.ss.ebooking.constants.RepresentationComponentType;
 
 /**
- * Dashboard tab view.
+ * UI representation component.
  * @author ss
  */
-@Target(value = {ElementType.TYPE})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface DashboardTab {
+public interface RepresentationComponent {
+    /**
+     * Representation component type.
+     * @return 
+     */
+    RepresentationComponentType type();
 }

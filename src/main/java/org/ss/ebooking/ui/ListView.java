@@ -21,22 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.wrapper;
+package org.ss.ebooking.ui;
 
 import java.util.List;
 import org.ss.ebooking.constants.ListViewColumnAlign;
+import org.ss.ebooking.constants.RepresentationComponentType;
 
 /**
  * Entity list view metadata.
  * @author ss
  */
-public class EntityListView {
+public class ListView implements RepresentationComponent {
     /** Entity class id. */
     private String className;
     /** Data model material icon. */
     private String icon;
     /** List view columns. */
     private List<ListViewColumn> listViewColumns;
+    @Override
+    public RepresentationComponentType type() {
+        return RepresentationComponentType.LIST_VIEW;
+    }
     /**
      * @return the icon
      */

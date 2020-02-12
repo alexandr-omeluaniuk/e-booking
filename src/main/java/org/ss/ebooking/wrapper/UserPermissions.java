@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.ss.ebooking.config.security;
+package org.ss.ebooking.wrapper;
 
 import java.util.List;
-import org.ss.ebooking.wrapper.EntityListView;
+import org.ss.ebooking.ui.RepresentationComponent;
 
 /**
  * User permissions.
@@ -32,21 +32,21 @@ import org.ss.ebooking.wrapper.EntityListView;
  */
 public class UserPermissions {
     /** Side bar navigation items. */
-    private List<EntityListView> sideBarNavItems;
+    private List<RepresentationComponent> sideBarNavItems;
     /** Dashboard tab items. */
-    private List<EntityListView> dashboardTabItems;
+    private List<RepresentationComponent> dashboardTabItems;
     /** User full name. */
     private String fullname;
     /**
      * @return the sideBarNavItems
      */
-    public List<EntityListView> getSideBarNavItems() {
+    public List<RepresentationComponent> getSideBarNavItems() {
         return sideBarNavItems;
     }
     /**
      * @param sideBarNavItems the sideBarNavItems to set
      */
-    public void setSideBarNavItems(List<EntityListView> sideBarNavItems) {
+    public void setSideBarNavItems(List<RepresentationComponent> sideBarNavItems) {
         this.sideBarNavItems = sideBarNavItems;
     }
     /**
@@ -64,13 +64,13 @@ public class UserPermissions {
     /**
      * @return the dashboardTabItems
      */
-    public List<EntityListView> getDashboardTabItems() {
+    public List<RepresentationComponent> getDashboardTabItems() {
         return dashboardTabItems;
     }
     /**
      * @param dashboardTabItems the dashboardTabItems to set
      */
-    public void setDashboardTabItems(List<EntityListView> dashboardTabItems) {
+    public void setDashboardTabItems(List<RepresentationComponent> dashboardTabItems) {
         this.dashboardTabItems = dashboardTabItems;
     }
 }

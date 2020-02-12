@@ -49,8 +49,8 @@ import org.ss.ebooking.anno.ui.MaterialIcon;
 import org.ss.ebooking.entity.DataModel;
 import org.ss.ebooking.exception.EBookingException;
 import org.ss.ebooking.service.EntityMetadataService;
-import org.ss.ebooking.wrapper.EntityLayout;
-import org.ss.ebooking.wrapper.EntityListView;
+import org.ss.ebooking.ui.Layout;
+import org.ss.ebooking.ui.ListView;
 
 /**
  * Entity metadata service implementation.
@@ -61,7 +61,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(EntityMetadataService.class);
     /** Layouts cache. */
-    private static final Map<Class<? extends DataModel>, EntityLayout> LAYOUTS_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends DataModel>, Layout> LAYOUTS_CACHE = new ConcurrentHashMap<>();
     /** Excluded fields. */
     private static final Set<String> EXCLUDED_FIELDS = new HashSet<>();
     /**
@@ -71,12 +71,12 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         EXCLUDED_FIELDS.add("serialVersionUID");
     }
     @Override
-    public EntityLayout getEntityLayout(Class<? extends DataModel> clazz) throws Exception {
+    public Layout getEntityLayout(Class<? extends DataModel> clazz) throws Exception {
         if (LAYOUTS_CACHE.containsKey(clazz)) {
             return LAYOUTS_CACHE.get(clazz);
         }
         LOG.debug("get entity layout [" + clazz.getSimpleName() + "]");
-        EntityLayout layout = new EntityLayout();
+        Layout layout = new Layout();
         layout.setFields(new ArrayList<>());
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
@@ -87,8 +87,8 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         return layout;
     }
     @Override
-    public EntityListView getEntityListView(Class<? extends DataModel> clazz) throws Exception {
-        EntityListView metadata = new EntityListView();
+    public ListView getEntityListView(Class<? extends DataModel> clazz) throws Exception {
+        ListView metadata = new ListView();
         metadata.setListViewColumns(new ArrayList());
         metadata.setClassName(clazz.getSimpleName());
         MaterialIcon materialIcon = clazz.getAnnotation(MaterialIcon.class);
@@ -98,7 +98,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         for (Field field : clazz.getDeclaredFields()) {
             ListViewColumn listViewColumnAnno = field.getAnnotation(ListViewColumn.class);
             if (listViewColumnAnno != null) {
-                EntityListView.ListViewColumn listViewColumn = new EntityListView.ListViewColumn();
+                ListView.ListViewColumn listViewColumn = new ListView.ListViewColumn();
                 listViewColumn.setId(field.getName());
                 listViewColumn.setAlign(listViewColumnAnno.align());
                 listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
@@ -114,12 +114,12 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
      * @return layout field.
      * @throws Exception error.
      */
-    private EntityLayout.Field createEntityLayoutField(Field field) throws Exception {
+    private Layout.Field createEntityLayoutField(Field field) throws Exception {
         Annotation[] annotations = field.getAnnotations();
         if (LOG.isTraceEnabled()) {
             LOG.trace("field [" + field.getName() + "], annotations [" + annotations.length + "]");
         }
-        EntityLayout.Field layoutField = new EntityLayout.Field();
+        Layout.Field layoutField = new Layout.Field();
         layoutField.setName(field.getName());
         if (Date.class.equals(field.getType())) {
             Temporal temporal = field.getAnnotation(Temporal.class);
@@ -133,7 +133,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             layoutField.setFieldType(field.getType().getSimpleName());
         }
         FormField grid = field.getAnnotation(FormField.class);
-        EntityLayout.Grid fieldGridSystem = new EntityLayout.Grid();
+        Layout.Grid fieldGridSystem = new Layout.Grid();
         if (grid != null) {
             fieldGridSystem.setLg(grid.lg());
             fieldGridSystem.setMd(grid.lg());
@@ -152,17 +152,17 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
      * @return field validators.
      * @throws Exception error.
      */
-    private List<EntityLayout.Validator> setValidators(Field field) throws Exception {
-        List<EntityLayout.Validator> validators = new ArrayList<>();
+    private List<Layout.Validator> setValidators(Field field) throws Exception {
+        List<Layout.Validator> validators = new ArrayList<>();
         NotEmpty vNotEmpty = field.getAnnotation(NotEmpty.class);
         if (vNotEmpty != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
+            Layout.Validator validator = new Layout.Validator();
             validator.setType(NotEmpty.class.getSimpleName());
             validators.add(validator);
         }
         Size vSize = field.getAnnotation(Size.class);
         if (vSize != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
+            Layout.Validator validator = new Layout.Validator();
             validator.setType(Size.class.getSimpleName());
             Map<String, String> attributes = new HashMap<>();
             attributes.put("max", String.valueOf(vSize.max()));
@@ -172,13 +172,13 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         }
         NotNull vNotNull = field.getAnnotation(NotNull.class);
         if (vNotNull != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
+            Layout.Validator validator = new Layout.Validator();
             validator.setType(NotNull.class.getSimpleName());
             validators.add(validator);
         }
         Email vEmail = field.getAnnotation(Email.class);
         if (vEmail != null) {
-            EntityLayout.Validator validator = new EntityLayout.Validator();
+            Layout.Validator validator = new Layout.Validator();
             validator.setType(Email.class.getSimpleName());
             validators.add(validator);
         }
