@@ -88,6 +88,10 @@ public class ListView implements RepresentationComponent {
         private ListViewColumnAlign align;
         /** Is enum constant. */
         private String enumField;
+        /** Generic class. */
+        private String genericClass;
+        /** Is generic class enum?. */
+        private boolean genericClassEnum;
         /**
          * @return the id
          */
@@ -123,6 +127,30 @@ public class ListView implements RepresentationComponent {
          */
         public void setEnumField(String enumField) {
             this.enumField = enumField;
+        }
+        /**
+         * @return the genericClass
+         */
+        public String getGenericClass() {
+            return genericClass;
+        }
+        /**
+         * @param genericClass the genericClass to set
+         */
+        public void setGenericClass(String genericClass) {
+            this.genericClass = genericClass;
+        }
+        /**
+         * @return the genericClassEnum
+         */
+        public boolean isGenericClassEnum() {
+            return genericClassEnum;
+        }
+        /**
+         * @param genericClassEnum the genericClassEnum to set
+         */
+        public void setGenericClassEnum(boolean genericClassEnum) {
+            this.genericClassEnum = genericClassEnum;
         }
     }
 }

@@ -105,6 +105,15 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                 listViewColumn.setId(field.getName());
                 listViewColumn.setAlign(listViewColumnAnno.align());
                 listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
+                Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
+                genericTypes.ifPresent((gt) -> {
+                    if (gt instanceof ParameterizedType) {
+                        ParameterizedType parType = (ParameterizedType) gt;
+                        Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
+                        listViewColumn.setGenericClass(genericClass.getSimpleName());
+                        listViewColumn.setGenericClassEnum(genericClass.isEnum());
+                    }
+                });
                 metadata.getListViewColumns().add(listViewColumn);
             }
         }

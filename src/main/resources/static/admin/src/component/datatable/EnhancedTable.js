@@ -122,10 +122,17 @@ function EnhancedTable(props) {
         setFormOpen(true);
     };
     const renderCell = (fieldMeta, value) => {
-        console.log(fieldMeta);
-        console.log(value);
         if (fieldMeta.enumField) {
             return t('enum.' + fieldMeta.enumField + '.' + value);
+        } else if (fieldMeta.genericClassEnum) {
+            let sb = '';
+            value.forEach(v => {
+                sb += t('enum.' + fieldMeta.genericClass + '.' + v) + ' | ';
+            });
+            if (sb.length > 3) {
+                sb = sb.substring(0, sb.length - 3);
+            }
+            return sb;
         } else {
             return value;
         }
