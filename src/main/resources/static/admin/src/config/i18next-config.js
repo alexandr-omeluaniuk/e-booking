@@ -65,7 +65,8 @@ i18n.use(initReactI18next).init({
                         organizationName: 'Название организации',
                         started: 'Начало подписки',
                         expirationDate: 'Окончание подписки',
-                        subscriptionAdminEmail: 'Адрес электронной почты администратора'
+                        subscriptionAdminEmail: 'Адрес электронной почты администратора',
+                        modules: 'Доступные приложения'
                     },
                     SystemUser: {
                         firstname: 'Имя',
@@ -108,6 +109,9 @@ i18n.use(initReactI18next).init({
                         ROLE_SUPER_ADMIN: 'Супер админстратор',
                         ROLE_SUBSCRIPTION_ADMINISTRATOR: 'Администратор',
                         ROLE_SUBSCRIPTION_USER: 'Пользователь'
+                    },
+                    ApplicationModule: {
+                        CRM: 'Система управления клиентами'
                     }
                 }
             }

@@ -23,6 +23,7 @@
  */
 package ss.martin.platform.service;
 
+import java.util.List;
 import java.util.Set;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.wrapper.EntitySearchRequest;
@@ -77,5 +78,13 @@ public interface EntityService {
      * @throws Exception error.
      */
     <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception;
-    
+    /**
+     * Get data for entity collection field.
+     * @param <T> entity type.
+     * @param cl entity class.
+     * @param fieldName field name.
+     * @return list of possible data for entity field.
+     * @throws Exception error.
+     */
+    <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception;
 }

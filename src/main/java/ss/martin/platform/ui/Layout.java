@@ -169,6 +169,10 @@ public class Layout {
         private Grid grid;
         /** Validators. */
         private List<Validator> validators;
+        /** Generic class. */
+        private String genericClass;
+        /** Is generic class enum?. */
+        private boolean genericClassEnum;
         /**
          * @return the name
          */
@@ -228,6 +232,30 @@ public class Layout {
          */
         public void setValidators(List<Validator> validators) {
             this.validators = validators;
+        }
+        /**
+         * @return the genericClass
+         */
+        public String getGenericClass() {
+            return genericClass;
+        }
+        /**
+         * @param genericClass the genericClass to set
+         */
+        public void setGenericClass(String genericClass) {
+            this.genericClass = genericClass;
+        }
+        /**
+         * @return the genericClassEnum
+         */
+        public boolean isGenericClassEnum() {
+            return genericClassEnum;
+        }
+        /**
+         * @param genericClassEnum the genericClassEnum to set
+         */
+        public void setGenericClassEnum(boolean genericClassEnum) {
+            this.genericClassEnum = genericClassEnum;
         }
     }
 }

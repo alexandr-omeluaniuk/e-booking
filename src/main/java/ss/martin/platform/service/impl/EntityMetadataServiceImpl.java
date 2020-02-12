@@ -25,6 +25,8 @@ package ss.martin.platform.service.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -32,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.Temporal;
@@ -144,6 +147,15 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         HiddenField hidden = field.getAnnotation(HiddenField.class);
         layoutField.setHidden(hidden != null);
         layoutField.setValidators(setValidators(field));
+        Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
+        genericTypes.ifPresent((gt) -> {
+            if (gt instanceof ParameterizedType) {
+                ParameterizedType parType = (ParameterizedType) gt;
+                Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
+                layoutField.setGenericClass(genericClass.getSimpleName());
+                layoutField.setGenericClassEnum(genericClass.isEnum());
+            }
+        });
         return layoutField;
     }
     /**

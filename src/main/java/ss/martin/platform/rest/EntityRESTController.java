@@ -25,6 +25,7 @@ package ss.martin.platform.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -131,5 +132,19 @@ public class EntityRESTController {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         entityService.massDeleteEntities(ids, entityClass);
         return new RESTResponse();
+    }
+    /**
+     * Get data for entity collection field.
+     * @param entityName entity name.
+     * @param field field name.
+     * @return data.
+     * @throws Exception error.
+     */
+    @RequestMapping(value = "/collection/{entity}/{field}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public List getDataForCollectionField(@PathVariable("entity") String entityName,
+            @PathVariable("field") String field) throws Exception {
+        Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
+        return entityService.getDataForCollectionField(entityClass, field);
     }
 }

@@ -118,9 +118,12 @@ function EnhancedTable(props) {
         setFormOpen(true);
     };
     const createEntry = () => {
+        setEditId(null);
         setFormOpen(true);
     };
     const renderCell = (fieldMeta, value) => {
+        console.log(fieldMeta);
+        console.log(value);
         if (fieldMeta.enumField) {
             return t('enum.' + fieldMeta.enumField + '.' + value);
         } else {

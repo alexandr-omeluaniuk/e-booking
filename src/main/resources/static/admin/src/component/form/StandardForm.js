@@ -42,8 +42,9 @@ import moment from 'moment';
 import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
-import { TYPE_STRING, TYPE_DATE } from '../../config/datatypes';
+import { TYPE_STRING, TYPE_DATE, TYPE_SET } from '../../config/datatypes';
 import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL } from '../../config/validators';
+import MultiChoiceInput from '../input/MultiChoiceInput';
 
 moment.locale(i18n.language);
 
@@ -87,7 +88,18 @@ function StandardForm(props) {
         }
     };
     const onChangeFieldValue = (name, value) => {
-        formData.set(name, value);
+        let field = layout.fields.filter(f => {return f.name === name;})[0];
+        if (field.fieldType === TYPE_SET) {
+            let arr = formData.get(name);
+            if (arr.includes(value)) {
+                arr = arr.filter(v => { return v !== value; });
+            } else {
+                arr.push(value);
+            }
+            formData.set(name, arr);
+        } else {
+            formData.set(name, value);
+        }
         setFormData(new Map(formData));
         let validationResult = isFormValid();
         setInvalidFields(validationResult);
@@ -113,6 +125,12 @@ function StandardForm(props) {
                             label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
                             className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
                     </MuiPickersUtilsProvider>
+            );
+        } else if (field.fieldType === TYPE_SET) {
+            let value = formData.has(name) ? new Set(formData.get(name)) : new Set();
+            return (
+                    <MultiChoiceInput entity={entity} field={name} label={label} genericClass={field.genericClass}
+                        isEnum={field.genericClassEnum} selected={value} onChange={onChangeFieldValue}/>
             );
         }
         return null;

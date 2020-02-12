@@ -24,6 +24,12 @@
 package ss.martin.platform.service.impl;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,6 +95,22 @@ class EntityServiceImpl implements EntityService {
     @Override
     public <T extends DataModel> T findEntityByID(Long id, Class<T> cl) throws Exception {
         return coreDAO.findById(id, cl);
+    }
+    @Override
+    public <T extends DataModel> List getDataForCollectionField(Class<T> cl, String fieldName) throws Exception {
+        List result = new ArrayList();
+        Field field = cl.getDeclaredField(fieldName);
+        Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
+        genericTypes.ifPresent((gt) -> {
+            if (gt instanceof ParameterizedType) {
+                ParameterizedType parType = (ParameterizedType) gt;
+                Class<?> genericClass = (Class<?>) parType.getActualTypeArguments()[0];
+                if (genericClass.isEnum()) {
+                    result.addAll(Arrays.asList(genericClass.getEnumConstants()));
+                }
+            }
+        });
+        return result;
     }
     // ==================================== PRIVATE ===================================================================
     /**

@@ -26,4 +26,6 @@ export const TYPE_STRING = 'String';
 
 export const TYPE_DATE = 'DATE';
 
+export const TYPE_SET = "Set";
+
 
