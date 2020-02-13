@@ -27,6 +27,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.spring.security.StandardRole;
 
 /**
@@ -41,4 +42,9 @@ public @interface SideBarNavigationItem {
      * @return security roles.
      */
     public StandardRole[] roles();
+    /**
+     * Representation component type.
+     * @return component type.
+     */
+    public RepresentationComponentType component();
 }

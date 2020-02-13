@@ -18,18 +18,22 @@ package ss.martin.platform.service.impl;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.service.EntityMetadataService;
-import ss.martin.platform.service.EntityService;
 import ss.martin.platform.service.SecurityService;
 import ss.martin.platform.spring.security.SecurityContext;
 import ss.martin.platform.spring.security.StandardRole;
@@ -42,8 +46,10 @@ import ss.martin.platform.wrapper.UserPermissions;
 @Service
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 class SecurityServiceImpl implements SecurityService {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(SecurityService.class);
     /** Data model classes. */
-    private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES;
+    private static final Set<Class<? extends DataModel>> DATA_MODEL_CLASSES = new HashSet<>();
     /** Security context. */
     @Autowired
     private SecurityContext securityContext;
@@ -54,8 +60,8 @@ class SecurityServiceImpl implements SecurityService {
      * Static initialization.
      */
     static {
-        Reflections reflections = new Reflections(EntityService.ENTITY_PACKAGE);
-        DATA_MODEL_CLASSES = reflections.getSubTypesOf(DataModel.class);
+        DATA_MODEL_CLASSES.add(SystemUser.class);
+        DATA_MODEL_CLASSES.add(Subscription.class);
     }
     @Override
     public UserPermissions getUserPermissions() throws Exception {
@@ -64,19 +70,23 @@ class SecurityServiceImpl implements SecurityService {
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());
         permissions.setSideBarNavItems(new ArrayList<>());
-        permissions.setDashboardTabItems(new ArrayList<>());
+        // side bar navigation
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
-                SideBarNavigationItem sideBarNavItem = dataModelClass.getAnnotation(SideBarNavigationItem.class);
-                if (sideBarNavItem != null) {
-                    Set<StandardRole> accessibleForRoles = new HashSet<>();
-                    for (StandardRole sRole : sideBarNavItem.roles()) {
-                        accessibleForRoles.add(sRole);
-                    }
+                Optional.ofNullable(dataModelClass.getAnnotation(SideBarNavigationItem.class))
+                        .ifPresent(sideBarNavItem -> {
+                    Set<StandardRole> accessibleForRoles = new HashSet<>(Arrays.asList(sideBarNavItem.roles()));
                     if (accessibleForRoles.contains(currentUser.getStandardRole())) {
-                        permissions.getSideBarNavItems().add(entityMetadataService.getEntityListView(dataModelClass));
+                        try {
+                            if (sideBarNavItem.component() == RepresentationComponentType.LIST_VIEW) {
+                                permissions.getSideBarNavItems()
+                                        .add(entityMetadataService.getEntityListView(dataModelClass));
+                            }
+                        } catch (Exception e) {
+                            LOG.warn("impossible to create a side nav bar item!", e);
+                        }
                     }
-                }
+                });
             }
         }
         return permissions;

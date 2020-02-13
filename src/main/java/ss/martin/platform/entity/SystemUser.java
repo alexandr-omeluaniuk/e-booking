@@ -38,6 +38,7 @@ import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.spring.security.StandardRole;
 import ss.martin.platform.spring.security.SystemUserStatus;
 
@@ -48,7 +49,8 @@ import ss.martin.platform.spring.security.SystemUserStatus;
 @Entity
 @Table(name = "users")
 @MaterialIcon(icon = "supervisor_account")
-@SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR })
+@SideBarNavigationItem(roles = { StandardRole.ROLE_SUBSCRIPTION_ADMINISTRATOR },
+        component = RepresentationComponentType.LIST_VIEW)
 public class SystemUser extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

@@ -47,6 +47,7 @@ import ss.martin.platform.anno.ui.SideBarNavigationItem;
 import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.platform.constants.ListViewColumnAlign;
+import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.spring.security.StandardRole;
 
 /**
@@ -56,7 +57,7 @@ import ss.martin.platform.spring.security.StandardRole;
 @Entity
 @Table(name = "subscription")
 @MaterialIcon(icon = "subscriptions")
-@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN })
+@SideBarNavigationItem(roles = { StandardRole.ROLE_SUPER_ADMIN }, component = RepresentationComponentType.LIST_VIEW)
 public class Subscription extends DataModel {
     /** Default UID. */
     private static final long serialVersionUID = 1L;

@@ -33,8 +33,6 @@ import ss.martin.platform.ui.RepresentationComponent;
 public class UserPermissions {
     /** Side bar navigation items. */
     private List<RepresentationComponent> sideBarNavItems;
-    /** Dashboard tab items. */
-    private List<RepresentationComponent> dashboardTabItems;
     /** User full name. */
     private String fullname;
     /**
@@ -60,17 +58,5 @@ public class UserPermissions {
      */
     public void setFullname(String fullname) {
         this.fullname = fullname;
-    }
-    /**
-     * @return the dashboardTabItems
-     */
-    public List<RepresentationComponent> getDashboardTabItems() {
-        return dashboardTabItems;
-    }
-    /**
-     * @param dashboardTabItems the dashboardTabItems to set
-     */
-    public void setDashboardTabItems(List<RepresentationComponent> dashboardTabItems) {
-        this.dashboardTabItems = dashboardTabItems;
     }
 }
