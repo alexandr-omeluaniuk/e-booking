@@ -108,6 +108,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                 listViewColumn.setAlign(listViewColumnAnno.align());
                 listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
                 listViewColumn.setLayoutField(createEntityLayoutField(field));
+                listViewColumn.setLink(listViewColumnAnno.link());
                 Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
                 genericTypes.ifPresent((gt) -> {
                     if (gt instanceof ParameterizedType) {

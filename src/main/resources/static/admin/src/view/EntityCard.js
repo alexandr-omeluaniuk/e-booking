@@ -22,19 +22,15 @@
  * THE SOFTWARE.
  */
 
-const context = '/crm';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
-const AppURLs = {
-    context: context,
-    links: {
-        welcome: '/welcome',
-        logout: '/logout',
-        login: '/login',
-        registration: '/finish-registration/:validationString',
-        rest: context + '/api',
-        view: context + '/view',
-        entity: context + '/view/entity'
-    }
-};
+function EntityCard(props) {
+    const { entity, id } = props.match.params;
+    const { t } = useTranslation();
+    return (
+            <div>{entity} {id}</div>
+    );
+}
 
-export default AppURLs;
+export default EntityCard;

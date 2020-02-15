@@ -96,6 +96,8 @@ public class ListView extends RepresentationComponent {
         private boolean genericClassEnum;
         /** Layout field metadata. */
         private Layout.Field layoutField;
+        /** Is link. */
+        private boolean link;
         /**
          * @return the id
          */
@@ -167,6 +169,18 @@ public class ListView extends RepresentationComponent {
          */
         public void setLayoutField(Layout.Field layoutField) {
             this.layoutField = layoutField;
+        }
+        /**
+         * @return the link
+         */
+        public boolean isLink() {
+            return link;
+        }
+        /**
+         * @param link the link to set
+         */
+        public void setLink(boolean link) {
+            this.link = link;
         }
     }
 }

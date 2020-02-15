@@ -41,4 +41,9 @@ public @interface ListViewColumn {
      * @return column align.
      */
     public ListViewColumnAlign align() default ListViewColumnAlign.left;
+    /**
+     * Is link.
+     * @return true if is link.
+     */
+    public boolean link() default false;
 }

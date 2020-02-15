@@ -32,6 +32,7 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import ListView from '../../view/ListView';
 import TabPanel from '../../view/TabPanel';
+import EntityCard from '../../view/EntityCard';
 import background from '../../assets/main-background.jpg';
 
 const useStyles = makeStyles(theme => ({
@@ -73,6 +74,7 @@ function MainContent(props) {
             <Route exact path={AppURLs.context}>
                 <Redirect to={AppURLs.links.view + '/dashboard'}/>
             </Route>
+            <Route path={AppURLs.links.entity + '/:entity/:id'} component={EntityCard}/>
             {navItems.map((prop, key) => {
                 if (prop.metadata) {
                     return (

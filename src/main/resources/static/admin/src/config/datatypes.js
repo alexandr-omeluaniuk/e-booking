@@ -25,6 +25,8 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
+import { NavLink } from "react-router-dom";
+import AppURLs from '../constants/AppURLs';
 
 export const TYPE_STRING = 'String';
 
@@ -35,8 +37,9 @@ export const TYPE_SET = "Set";
 export const TYPE_AVATAR = "Avatar";
 
 export const renderTableCell = (fieldMeta, value,t) => {
+    let renderValue = value;
     if (fieldMeta.enumField) {
-        return t('enum.' + fieldMeta.enumField + '.' + value);
+        renderValue = t('enum.' + fieldMeta.enumField + '.' + value);
     } else if (fieldMeta.genericClassEnum) {
         let sb = '';
         value.forEach(v => {
@@ -45,10 +48,16 @@ export const renderTableCell = (fieldMeta, value,t) => {
         if (sb.length > 3) {
             sb = sb.substring(0, sb.length - 3);
         }
-        return sb;
+        renderValue = sb;
     } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
-        return value ? (<Avatar src={value} />) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
-    } else {
-        return value;
+        renderValue = value ? (<Avatar src={value} />) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
     }
+    return renderValue;
+};
+
+export const renderLinkTableCell = (entity, entityData, cellValue) => {
+    let link = AppURLs.links.entity + '/' + entity + '/' + entityData.id;
+    return (
+            <NavLink to={link}>{cellValue}</NavLink>
+    );
 };

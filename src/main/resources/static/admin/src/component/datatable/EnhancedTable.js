@@ -25,7 +25,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
 import StandardForm from '../form/StandardForm';
-import { renderTableCell } from '../../config/datatypes';
+import { renderTableCell, renderLinkTableCell } from '../../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -171,15 +171,19 @@ function EnhancedTable(props) {
                                                     onClick={event => handleCheckboxClick(event, row)}/>
                                         </TableCell>
                                         {headCells.map((column, i) => {
+                                            let cellValue = renderTableCell(column, row[column.id], t);
+                                            if (column.link) {
+                                                cellValue = renderLinkTableCell(entity, row, cellValue);
+                                            }
                                             if (i === 0) {
                                                 return (
                                                     <TableCell component="th" scope="row" padding="none" key={i} id={labelId}>
-                                                        { renderTableCell(column, row[column.id], t) }
+                                                        {cellValue}
                                                     </TableCell> 
                                                 );
                                             } else {
                                                 return (
-                                                    <TableCell align={column.align} key={i}>{renderTableCell(column, row[column.id], t)}</TableCell>
+                                                    <TableCell align={column.align} key={i}>{cellValue}</TableCell>
                                                 );
                                             }
                                         })}
