@@ -29,8 +29,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -47,36 +45,36 @@ import { REGEX_EMAIL } from './config/validators';
 import background from './assets/login-background.jpg'
 
 const useStyles = makeStyles(theme => ({
-        background: {
-            backgroundImage: 'url(' + background + ')',
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-        },
-        paper: {
-            marginTop: theme.spacing(8),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: theme.spacing(4),
-            backgroundColor: '#ffffffed'
-        },
-        avatar: {
-            margin: theme.spacing(1),
-            backgroundColor: theme.palette.secondary.main
-        },
-        form: {
-            width: '100%', // Fix IE 11 issue.
-            marginTop: theme.spacing(1)
-        },
-        submit: {
-            margin: theme.spacing(3, 0, 2)
-        }
-    }));
+    background: {
+        backgroundImage: 'url(' + background + ')',
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: theme.spacing(4),
+        backgroundColor: '#ffffffed'
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1)
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2)
+    }
+}));
 
 export default function Welcome() {
     const classes = useStyles();
@@ -160,8 +158,6 @@ export default function Welcome() {
                                 setPassword(e.target.value);
                                 validate(email, e.target.value);
                             }} helperText={passwordValid ? null : t('validation.minLength', {length: 8})} error={!passwordValid}/>
-                        <FormControlLabel control={ < Checkbox value = "remember" color = "primary" / > }
-                            label={t('loginPage.rememberMe')} />
                         <Button type="button" fullWidth variant="contained" color="primary" className={classes.submit} onClick={login}>
                             { t('loginPage.signIn') }
                         </Button>

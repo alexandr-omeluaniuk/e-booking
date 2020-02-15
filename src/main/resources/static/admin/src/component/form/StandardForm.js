@@ -43,29 +43,30 @@ import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
 import { TYPE_STRING, TYPE_DATE, TYPE_SET } from '../../config/datatypes';
-import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL } from '../../config/validators';
+import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL, MOBILE_PHONE_NUMBER, REGEX_MOBILE_PHONE_NUMBER } from '../../config/validators';
 import MultiChoiceInput from '../input/MultiChoiceInput';
+import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
 
 moment.locale(i18n.language);
 
 const useStyles = makeStyles(theme => ({
-        fullWidth: {
-            width: '100%'
-        },
-        root: {
-            margin: 0,
-            padding: theme.spacing(2)
-        },
-        closeButton: {
-            position: 'absolute',
-            right: theme.spacing(1),
-            top: theme.spacing(1),
-            color: theme.palette.grey[500]
-        },
-        saveButton: {
-            color: green[500]
-        }
-    }));
+    fullWidth: {
+        width: '100%'
+    },
+    root: {
+        margin: 0,
+        padding: theme.spacing(2)
+    },
+    closeButton: {
+        position: 'absolute',
+        right: theme.spacing(1),
+        top: theme.spacing(1),
+        color: theme.palette.grey[500]
+    },
+    saveButton: {
+        color: green[500]
+    }
+}));
 
 function StandardForm(props) {
     const classes = useStyles();
@@ -112,11 +113,20 @@ function StandardForm(props) {
         label += isRequired ? ' *' : '';
         let name = field.name;
         if (field.fieldType === TYPE_STRING) {
-            return (
-                    <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
-                            value={formData.has(name) ? formData.get(name) : ''} name={name} error={invalidFields.has(name)}
+            let isMobilePhoneNumber = field.validators.filter(v => { return v.type === MOBILE_PHONE_NUMBER; }).length > 0;
+            if (isMobilePhoneNumber) {
+                return (
+                        <MobilePhoneNumberInput label={label} value={formData.has(name) ? formData.get(name) : ''}
+                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
                             helperText={invalidFields.get(name)}/>
-            );
+                );
+            } else {
+                return (
+                        <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
+                                value={formData.has(name) ? formData.get(name) : ''} name={name} error={invalidFields.has(name)}
+                                helperText={invalidFields.get(name)}/>
+                );
+            }
         } else if (field.fieldType === TYPE_DATE) {
             let value = formData.has(name) ? formData.get(name) : null;
             return (
@@ -155,6 +165,9 @@ function StandardForm(props) {
                 }
                 if (v.type === EMAIL && value && !REGEX_EMAIL.test(value)) {
                     newInvalidField.set(fieldName, t('validation.email'));
+                }
+                if (v.type === MOBILE_PHONE_NUMBER && value && !REGEX_MOBILE_PHONE_NUMBER.test(value)) {
+                    newInvalidField.set(fieldName, t('validation.phone'));
                 }
             });
         });

@@ -32,11 +32,14 @@ import { useTranslation } from 'react-i18next';
 import ListView from '../view/ListView';
 
 const useStyles = makeStyles(theme => ({
-        root: {
-            padding: theme.spacing(2),
-            width: '100%'
-        }
-    }));
+    root: {
+        padding: theme.spacing(1),
+        width: '100%'
+    },
+    tabs: {
+        marginBottom: theme.spacing(1)
+    }
+}));
 
 function TabPanel(props) {
     const classes = useStyles();
@@ -49,7 +52,8 @@ function TabPanel(props) {
             <Paper className={classes.root}>
                 {metadata ? (
                     <React.Fragment>
-                        <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
+                        <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} 
+                                className={classes.tabs} onChange={(e, index) => {
                             setActiveTab(index);
                         }}>
                             {metadata.tabs.map((item, i) => {

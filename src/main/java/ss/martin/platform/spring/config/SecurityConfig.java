@@ -5,7 +5,6 @@
  */
 package ss.martin.platform.spring.config;
 
-import java.util.concurrent.TimeUnit;
 import javax.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -48,9 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** Logout success handler. */
     @Autowired
     private LogoutSuccessHandler logoutSuccesshandler;
-    /** Platform configuration. */
-    @Autowired
-    private PlatformConfiguration config;
     /** System user service. */
     @Autowired
     private SystemUserService systemUserService;
@@ -64,9 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().deleteCookies("JSESSIONID").logoutUrl(AppURLs.APP_CRM_LOGOUT)
                 .logoutSuccessHandler(logoutSuccesshandler)
                 .invalidateHttpSession(true)
-                .and().exceptionHandling().authenticationEntryPoint(authEntryPoint)
-                .and().rememberMe().key(config.getRememberMeKey()).tokenValiditySeconds(
-                        Integer.valueOf(String.valueOf(TimeUnit.DAYS.toMillis(1))));
+                .and().exceptionHandling().authenticationEntryPoint(authEntryPoint);
         systemUserService.superUserCheck();
     }
     @Override

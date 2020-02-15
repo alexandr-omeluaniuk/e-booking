@@ -48,7 +48,8 @@ i18n.use(initReactI18next).init({
                     minLength: 'Не короче {{length}} символов',
                     maxLength: 'Не более {{length}} символов',
                     notnull: 'Обязательное поле',
-                    notempty: 'Обязательное поле'
+                    notempty: 'Обязательное поле',
+                    phone: 'Неверный номер телефона'
                 },
                 models: {
                     titles: {

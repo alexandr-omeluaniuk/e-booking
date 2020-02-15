@@ -26,11 +26,13 @@ package ss.martin.platform.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
+import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.ListViewColumnAlign;
 
 /**
@@ -60,14 +62,15 @@ public class Contact extends EntityAudit {
     /** Email. */
     @ListViewColumn
     @FormField(xs = "6")
+    @Email
     @Size(max = 255)
     @Column(name = "email", length = 255)
     private String email;
     /** Mobile phone. */
     @ListViewColumn(align = ListViewColumnAlign.right)
     @FormField(xs = "6")
-    @Size(max = 11)
-    @Column(name = "phone_mobile", length = 11)
+    @MobilePhoneNumber
+    @Column(name = "phone_mobile", length = 17)
     private String phoneMobile;
 // ========================================== SET & GET ===============================================================
     /**

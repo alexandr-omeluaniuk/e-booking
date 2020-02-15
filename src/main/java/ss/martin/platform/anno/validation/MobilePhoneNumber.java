@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,17 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package ss.martin.platform.anno.validation;
 
-export const REGEX_EMAIL = /\S+@\S+\.\S+/;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
-export const REGEX_MOBILE_PHONE_NUMBER = /(^$|^[\+]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{2}$)/;
-
-export const NOT_NULL = 'NotNull';
-
-export const NOT_EMPTY = 'NotEmpty';
-
-export const SIZE = 'Size';
-
-export const EMAIL = 'Email';
-
-export const MOBILE_PHONE_NUMBER = 'MobilePhoneNumber';
+/**
+ * Mobile phone number validation.
+ * @author ss
+ */
+@Target(value = {ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+@Pattern(regexp="(^$|^[\\+]{1}[0-9]{3}[\\s]{1}[0-9]{2}[\\s]{1}[0-9]{3}[\\s]{1}[0-9]{2}[\\s]{1}[0-9]{2}$)")
+@Size(max = 17)
+public @interface MobilePhoneNumber {
+}

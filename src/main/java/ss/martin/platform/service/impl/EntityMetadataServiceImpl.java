@@ -49,6 +49,7 @@ import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
+import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.exception.PlatformException;
 import ss.martin.platform.service.EntityMetadataService;
@@ -191,18 +192,21 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             validator.setAttributes(attributes);
             validators.add(validator);
         }
-        NotNull vNotNull = field.getAnnotation(NotNull.class);
-        if (vNotNull != null) {
+        Optional.ofNullable(field.getAnnotation(NotNull.class)).ifPresent((a) -> {
             Layout.Validator validator = new Layout.Validator();
             validator.setType(NotNull.class.getSimpleName());
             validators.add(validator);
-        }
-        Email vEmail = field.getAnnotation(Email.class);
-        if (vEmail != null) {
+        });
+        Optional.ofNullable(field.getAnnotation(Email.class)).ifPresent((a) -> {
             Layout.Validator validator = new Layout.Validator();
             validator.setType(Email.class.getSimpleName());
             validators.add(validator);
-        }
+        });
+        Optional.ofNullable(field.getAnnotation(MobilePhoneNumber.class)).ifPresent((a) -> {
+            Layout.Validator validator = new Layout.Validator();
+            validator.setType(MobilePhoneNumber.class.getSimpleName());
+            validators.add(validator);
+        });
         return validators;
     }
     /**

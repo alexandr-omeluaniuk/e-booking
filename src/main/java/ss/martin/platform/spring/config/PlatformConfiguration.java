@@ -33,8 +33,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "platform")
 public class PlatformConfiguration {
-    /** Remember me key. */
-    private String rememberMeKey;
     /** Super admin email. */
     private String superAdminEmail;
     /** Super admin first name. */
@@ -46,18 +44,6 @@ public class PlatformConfiguration {
     /** External server domain. Uses for access to public resources. */
     private String serverDomain;
     // ========================================== SET & GET ===========================================================
-    /**
-     * @return the rememberMeKey
-     */
-    public String getRememberMeKey() {
-        return rememberMeKey;
-    }
-    /**
-     * @param rememberMeKey the rememberMeKey to set
-     */
-    public void setRememberMeKey(String rememberMeKey) {
-        this.rememberMeKey = rememberMeKey;
-    }
     /**
      * @return the superAdminEmail
      */
