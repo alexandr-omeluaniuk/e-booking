@@ -34,9 +34,10 @@ import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.ListViewColumnAlign;
+import ss.martin.platform.anno.ui.Avatar;
 
 /**
- * Contact
+ * Contact.
  * @author ss
  */
 @Entity
@@ -46,6 +47,12 @@ public class Contact extends EntityAudit {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================
+    /** Contact avatar. Image as base64 string. */
+    @Avatar
+    @ListViewColumn
+    @FormField(xs = "12")
+    @Column(name = "avatar", length = 65536)
+    private String avatar;
     /** First name. */
     @ListViewColumn
     @FormField(xs = "6")
@@ -120,6 +127,18 @@ public class Contact extends EntityAudit {
      */
     public void setPhoneMobile(String phoneMobile) {
         this.phoneMobile = phoneMobile;
+    }
+    /**
+     * @return the avatar
+     */
+    public String getAvatar() {
+        return avatar;
+    }
+    /**
+     * @param avatar the avatar to set
+     */
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 // ====================================================================================================================
     @Override

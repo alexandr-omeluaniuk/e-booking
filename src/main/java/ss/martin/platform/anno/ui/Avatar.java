@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2020 ss.
@@ -21,34 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package ss.martin.platform.anno.ui;
 
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Icon from '@material-ui/core/Icon';
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-export const TYPE_STRING = 'String';
-
-export const TYPE_DATE = 'DATE';
-
-export const TYPE_SET = "Set";
-
-export const TYPE_AVATAR = "Avatar";
-
-export const renderTableCell = (fieldMeta, value,t) => {
-    if (fieldMeta.enumField) {
-        return t('enum.' + fieldMeta.enumField + '.' + value);
-    } else if (fieldMeta.genericClassEnum) {
-        let sb = '';
-        value.forEach(v => {
-            sb += t('enum.' + fieldMeta.genericClass + '.' + v) + ' | ';
-        });
-        if (sb.length > 3) {
-            sb = sb.substring(0, sb.length - 3);
-        }
-        return sb;
-    } else if (fieldMeta.layoutField.fieldType === TYPE_AVATAR) {
-        return value ? (<Avatar src={value} />) : (<Avatar><Icon>perm_identity</Icon></Avatar>);
-    } else {
-        return value;
-    }
-};
+/**
+ * Avatar field.
+ * @author ss
+ */
+@Target(value = {ElementType.FIELD})
+@Retention(value = RetentionPolicy.RUNTIME)
+public @interface Avatar {
+}

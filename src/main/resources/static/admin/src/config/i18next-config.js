@@ -77,6 +77,7 @@ i18n.use(initReactI18next).init({
                         email: 'Email'
                     },
                     Contact: {
+                        avatar: 'Аватар',
                         firstname: 'Имя',
                         lastname: 'Фамилия',
                         email: 'Адрес электронной почты',
@@ -98,7 +99,9 @@ i18n.use(initReactI18next).init({
                 },
                 common: {
                     delete: 'Удалить',
-                    edit: 'Редактировать'
+                    edit: 'Редактировать',
+                    upload: 'Загрузить',
+                    clear: 'Очистить'
                 },
                 enum: {
                     SystemUserStatus: {

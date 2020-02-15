@@ -45,6 +45,7 @@ import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ss.martin.platform.anno.ui.Avatar;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
@@ -106,6 +107,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
                 listViewColumn.setId(field.getName());
                 listViewColumn.setAlign(listViewColumnAnno.align());
                 listViewColumn.setEnumField(field.getType().isEnum() ? field.getType().getSimpleName() : null);
+                listViewColumn.setLayoutField(createEntityLayoutField(field));
                 Optional<Type> genericTypes = Optional.ofNullable(field).map(Field::getGenericType);
                 genericTypes.ifPresent((gt) -> {
                     if (gt instanceof ParameterizedType) {
@@ -134,6 +136,7 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         }
         Layout.Field layoutField = new Layout.Field();
         layoutField.setName(field.getName());
+        Avatar avatar = field.getAnnotation(Avatar.class);
         if (Date.class.equals(field.getType())) {
             Temporal temporal = field.getAnnotation(Temporal.class);
             if (temporal == null || temporal.value() == null) {
@@ -142,18 +145,19 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
             } else {
                 layoutField.setFieldType(temporal.value().name());
             }
+        } else if (avatar != null) {
+            layoutField.setFieldType(Avatar.class.getSimpleName());
         } else {
             layoutField.setFieldType(field.getType().getSimpleName());
         }
-        FormField grid = field.getAnnotation(FormField.class);
-        Layout.Grid fieldGridSystem = new Layout.Grid();
-        if (grid != null) {
+        Optional.ofNullable(field.getAnnotation(FormField.class)).ifPresent((grid) -> {
+            Layout.Grid fieldGridSystem = new Layout.Grid();
             fieldGridSystem.setLg(grid.lg());
             fieldGridSystem.setMd(grid.lg());
             fieldGridSystem.setSm(grid.sm());
             fieldGridSystem.setXs(grid.xs());
-        }
-        layoutField.setGrid(fieldGridSystem);
+            layoutField.setGrid(fieldGridSystem);
+        });
         HiddenField hidden = field.getAnnotation(HiddenField.class);
         layoutField.setHidden(hidden != null);
         layoutField.setValidators(setValidators(field));

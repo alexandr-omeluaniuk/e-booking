@@ -24,7 +24,7 @@
 
 export const REGEX_EMAIL = /\S+@\S+\.\S+/;
 
-export const REGEX_MOBILE_PHONE_NUMBER = /(^$|^[\+]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{2}$)/;
+export const REGEX_MOBILE_PHONE_NUMBER = /(^$|^[+]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{3}[\s]{1}[0-9]{2}[\s]{1}[0-9]{2}$)/;
 
 export const NOT_NULL = 'NotNull';
 

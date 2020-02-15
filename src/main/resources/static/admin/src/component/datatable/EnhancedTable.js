@@ -25,6 +25,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DataService from '../../service/DataService';
 import { useTranslation } from 'react-i18next';
 import StandardForm from '../form/StandardForm';
+import { renderTableCell } from '../../config/datatypes';
 
 const useStyles = makeStyles(theme => ({
         root: {
@@ -121,22 +122,6 @@ function EnhancedTable(props) {
         setEditId(null);
         setFormOpen(true);
     };
-    const renderCell = (fieldMeta, value) => {
-        if (fieldMeta.enumField) {
-            return t('enum.' + fieldMeta.enumField + '.' + value);
-        } else if (fieldMeta.genericClassEnum) {
-            let sb = '';
-            value.forEach(v => {
-                sb += t('enum.' + fieldMeta.genericClass + '.' + v) + ' | ';
-            });
-            if (sb.length > 3) {
-                sb = sb.substring(0, sb.length - 3);
-            }
-            return sb;
-        } else {
-            return value;
-        }
-    };
     const isSelected = row => selected.has(row.id);
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length);
     // --------------------------------------------------- HOOKS --------------------------------------------------------------------------
@@ -189,12 +174,12 @@ function EnhancedTable(props) {
                                             if (i === 0) {
                                                 return (
                                                     <TableCell component="th" scope="row" padding="none" key={i} id={labelId}>
-                                                        { renderCell(column, row[column.id]) }
+                                                        { renderTableCell(column, row[column.id], t) }
                                                     </TableCell> 
                                                 );
                                             } else {
                                                 return (
-                                                    <TableCell align={column.align} key={i}>{renderCell(column, row[column.id])}</TableCell>
+                                                    <TableCell align={column.align} key={i}>{renderTableCell(column, row[column.id], t)}</TableCell>
                                                 );
                                             }
                                         })}

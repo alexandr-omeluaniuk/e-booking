@@ -42,10 +42,11 @@ import moment from 'moment';
 import "moment/locale/ru";
 import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
-import { TYPE_STRING, TYPE_DATE, TYPE_SET } from '../../config/datatypes';
+import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR } from '../../config/datatypes';
 import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL, MOBILE_PHONE_NUMBER, REGEX_MOBILE_PHONE_NUMBER } from '../../config/validators';
 import MultiChoiceInput from '../input/MultiChoiceInput';
 import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
+import AvatarInput from '../input/AvatarInput';
 
 moment.locale(i18n.language);
 
@@ -142,6 +143,11 @@ function StandardForm(props) {
                     <MultiChoiceInput entity={entity} field={name} label={label} genericClass={field.genericClass}
                         isEnum={field.genericClassEnum} selected={value} onChange={onChangeFieldValue}/>
             );
+        } else if (field.fieldType === TYPE_AVATAR) {
+            return (
+                    <AvatarInput label={label} value={formData.has(name) ? formData.get(name) : ''}
+                        onChange={(data) => onChangeFieldValue(name, data)}/>
+            );
         }
         return null;
     };
@@ -225,6 +231,7 @@ function StandardForm(props) {
     // ------------------------------------------ HOOKS -----------------------------------------------------------------------------------
     useEffect(() => {
         if (open) {
+            setInvalidFields(new Map());
             setFormData(new Map());
             DataService.requestGet('/entity/' + entity + '/' + (id ? id : 0)).then(resp => {
                 load(resp.layout, resp.data);
@@ -247,7 +254,7 @@ function StandardForm(props) {
                 <DialogContent dividers={true}>
                     <Grid container spacing={2}>
                         {layout.fields.map((field, idx) => {
-                            if (field.hidden) {
+                            if (field.hidden || !field.grid) {
                                 return null;
                             }
                             return (

@@ -94,6 +94,8 @@ public class ListView extends RepresentationComponent {
         private String genericClass;
         /** Is generic class enum?. */
         private boolean genericClassEnum;
+        /** Layout field metadata. */
+        private Layout.Field layoutField;
         /**
          * @return the id
          */
@@ -153,6 +155,18 @@ public class ListView extends RepresentationComponent {
          */
         public void setGenericClassEnum(boolean genericClassEnum) {
             this.genericClassEnum = genericClassEnum;
+        }
+        /**
+         * @return the layoutField
+         */
+        public Layout.Field getLayoutField() {
+            return layoutField;
+        }
+        /**
+         * @param layoutField the layoutField to set
+         */
+        public void setLayoutField(Layout.Field layoutField) {
+            this.layoutField = layoutField;
         }
     }
 }
