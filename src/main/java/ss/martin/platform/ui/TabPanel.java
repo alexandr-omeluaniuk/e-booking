@@ -31,20 +31,20 @@ import ss.martin.platform.constants.RepresentationComponentType;
  * Tab panel.
  * @author ss
  */
-public class TabPanel implements RepresentationComponent {
+public class TabPanel extends RepresentationComponent {
     /** Tabs. */
     private List<RepresentationComponent> tabs = new ArrayList<>();
     /** Icon. */
     private String icon;
-    /** Icon color. */
-    private String iconColor;
     /** Class name. */
     private String className;
-// ========================================== METHODS =================================================================
-    @Override
-    public RepresentationComponentType type() {
-        return RepresentationComponentType.TAB_PANEL;
+    /**
+     * Constructor.
+     */
+    public TabPanel() {
+        this.type = RepresentationComponentType.TAB_PANEL;
     }
+// ========================================== METHODS =================================================================
     /**
      * @return the tabs
      */
@@ -80,17 +80,5 @@ public class TabPanel implements RepresentationComponent {
      */
     public void setClassName(String className) {
         this.className = className;
-    }
-    /**
-     * @return the iconColor
-     */
-    public String getIconColor() {
-        return iconColor;
-    }
-    /**
-     * @param iconColor the iconColor to set
-     */
-    public void setIconColor(String iconColor) {
-        this.iconColor = iconColor;
     }
 }

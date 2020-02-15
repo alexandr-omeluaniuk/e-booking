@@ -40,7 +40,7 @@ import ss.martin.platform.constants.ListViewColumnAlign;
 @Entity
 @Table(name = "contact")
 @MaterialIcon(icon = "perm_identity")
-public class Contact extends TenantEntity{
+public class Contact extends EntityAudit {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ========================================== FIELDS ==================================================================

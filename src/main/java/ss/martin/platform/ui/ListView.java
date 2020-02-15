@@ -31,16 +31,18 @@ import ss.martin.platform.constants.RepresentationComponentType;
  * Entity list view metadata.
  * @author ss
  */
-public class ListView implements RepresentationComponent {
+public class ListView extends RepresentationComponent {
     /** Entity class id. */
     private String className;
     /** Data model material icon. */
     private String icon;
     /** List view columns. */
     private List<ListViewColumn> listViewColumns;
-    @Override
-    public RepresentationComponentType type() {
-        return RepresentationComponentType.LIST_VIEW;
+    /**
+     * Constructor.
+     */
+    public ListView() {
+        this.type = RepresentationComponentType.LIST_VIEW;
     }
     /**
      * @return the icon

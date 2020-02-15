@@ -40,7 +40,7 @@ import ss.martin.platform.ui.TabPanel;
  * CRM application module.
  * @author ss
  */
-@MaterialIcon(icon = "eco", color = "green")
+@MaterialIcon(icon = "face")
 @Component("CRM")
 class CRM implements ApplicationModuleProvider {
     /** Logger. */
@@ -61,7 +61,6 @@ class CRM implements ApplicationModuleProvider {
         TabPanel component = new TabPanel();
         MaterialIcon icon = getClass().getAnnotation(MaterialIcon.class);
         component.setIcon(icon.icon());
-        component.setIconColor(icon.color());
         component.setClassName(module().name());
         for (Class<? extends DataModel> model : dataModel()) {
             try {

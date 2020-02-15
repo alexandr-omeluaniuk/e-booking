@@ -31,6 +31,7 @@ import Copyright from '../Copyright';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import ListView from '../../view/ListView';
+import TabPanel from '../../view/TabPanel';
 import background from '../../assets/main-background.jpg';
 
 const useStyles = makeStyles(theme => ({
@@ -75,7 +76,15 @@ function MainContent(props) {
             {navItems.map((prop, key) => {
                 if (prop.metadata) {
                     return (
-                        <Route path={prop.path} render={() => <ListView metadata={prop.metadata}/>} key={key}/>
+                        <Route path={prop.path} render={() => {
+                            if (prop.metadata.type === 'LIST_VIEW') {
+                                return (<ListView metadata={prop.metadata}/>);
+                            } else if (prop.metadata.type === 'TAB_PANEL') {
+                                return (<TabPanel metadata={prop.metadata}/>);
+                            } else {
+                                return null;
+                            }
+                        }} key={key}/>
                     );
                 } else {
                     return (

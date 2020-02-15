@@ -29,10 +29,13 @@ import ss.martin.platform.constants.RepresentationComponentType;
  * UI representation component.
  * @author ss
  */
-public interface RepresentationComponent {
+public abstract class RepresentationComponent {
+    /** Representation component type. */
+    protected RepresentationComponentType type;
     /**
-     * Representation component type.
-     * @return 
+     * @return the type
      */
-    RepresentationComponentType type();
+    public RepresentationComponentType getType() {
+        return type;
+    }
 }
