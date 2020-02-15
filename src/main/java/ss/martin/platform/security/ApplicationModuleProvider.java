@@ -21,17 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.spring.security;
+package ss.martin.platform.security;
+
+import ss.martin.platform.constants.ApplicationModule;
+import ss.martin.platform.entity.DataModel;
 
 /**
- * System user status.
+ * Application module provider.
  * @author ss
  */
-public enum SystemUserStatus {
-    /** Active. */
-    ACTIVE,
-    /** Inactive. */
-    INACTIVE,
-    /** Registration. */
-    REGISTRATION;
+public interface ApplicationModuleProvider {
+    /**
+     * Get application module.
+     * @return application module.
+     */
+    ApplicationModule module();
+    /**
+     * Get application data models.
+     * @return data models.
+     */
+    Class<? extends DataModel>[] dataModel();
 }

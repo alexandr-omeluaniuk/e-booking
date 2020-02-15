@@ -16,6 +16,7 @@
  */
 package ss.martin.platform.spring.security;
 
+import ss.martin.platform.security.SystemUserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;

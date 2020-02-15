@@ -46,9 +46,9 @@ import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.exception.RegistrationUserException;
 import ss.martin.platform.service.SystemUserService;
 import ss.martin.platform.spring.config.PlatformConfiguration;
-import ss.martin.platform.spring.security.SecurityContext;
-import ss.martin.platform.spring.security.StandardRole;
-import ss.martin.platform.spring.security.SystemUserStatus;
+import ss.martin.platform.security.SecurityContext;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.security.SystemUserStatus;
 
 /**
  * System user service implementation.

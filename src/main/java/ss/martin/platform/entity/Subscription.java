@@ -48,7 +48,7 @@ import ss.martin.platform.constants.AppConstants;
 import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.constants.RepresentationComponentType;
-import ss.martin.platform.spring.security.StandardRole;
+import ss.martin.platform.security.StandardRole;
 
 /**
  * Subscription.

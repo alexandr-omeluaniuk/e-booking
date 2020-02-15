@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.martin.platform.dao.CoreDAO;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.SubscriptionService;
 import ss.martin.platform.service.SystemUserService;
-import ss.martin.platform.spring.security.StandardRole;
 
 /**
  * Subscription service implementation.

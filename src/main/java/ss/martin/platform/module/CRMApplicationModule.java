@@ -21,29 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.spring.security;
+package ss.martin.platform.module;
 
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import ss.martin.platform.entity.SystemUser;
+import org.springframework.stereotype.Component;
+import ss.martin.platform.constants.ApplicationModule;
+import ss.martin.platform.entity.Contact;
+import ss.martin.platform.entity.DataModel;
+import ss.martin.platform.security.ApplicationModuleProvider;
 
 /**
- * Security context.
- * Provided access to current security context.
+ * CRM application module.
  * @author ss
  */
-@Service
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class SecurityContext {
-    /**
-     * Get current user.
-     * @return current user.
-     */
-    public SystemUser currentUser() {
-        Object auth = SecurityContextHolder.getContext().getAuthentication();
-        UserPrincipal userPrincipal = (UserPrincipal) auth;
-        return userPrincipal.getUser();
+@Component("CRM")
+class CRMApplicationModule implements ApplicationModuleProvider {
+    @Override
+    public ApplicationModule module() {
+        return ApplicationModule.CRM;
+    }
+    @Override
+    public Class<? extends DataModel>[] dataModel() {
+        return new Class[] {Contact.class};
     }
 }

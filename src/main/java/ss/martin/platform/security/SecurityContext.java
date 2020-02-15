@@ -21,17 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.spring.security;
+package ss.martin.platform.security;
+
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.spring.security.UserPrincipal;
 
 /**
- * Standard user role.
+ * Security context.
+ * Provided access to current security context.
  * @author ss
  */
-public enum StandardRole {
-    /** Super administrator. */
-    ROLE_SUPER_ADMIN,
-    /** Subscription administrator. */
-    ROLE_SUBSCRIPTION_ADMINISTRATOR,
-    /** Subscription user role. */
-    ROLE_SUBSCRIPTION_USER;
+@Service
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+public class SecurityContext {
+    /**
+     * Get current user.
+     * @return current user.
+     */
+    public SystemUser currentUser() {
+        Object auth = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal userPrincipal = (UserPrincipal) auth;
+        return userPrincipal.getUser();
+    }
 }

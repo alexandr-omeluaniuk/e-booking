@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ss.martin.platform.dao.UserDAO;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.entity.SystemUser_;
-import ss.martin.platform.spring.security.StandardRole;
+import ss.martin.platform.security.StandardRole;
 
 /**
  * SystemUser DAO implementation.

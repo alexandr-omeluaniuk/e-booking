@@ -39,8 +39,8 @@ import ss.martin.platform.anno.ui.ListViewColumn;
 import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.ui.SideBarNavigationItem;
 import ss.martin.platform.constants.RepresentationComponentType;
-import ss.martin.platform.spring.security.StandardRole;
-import ss.martin.platform.spring.security.SystemUserStatus;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.security.SystemUserStatus;
 
 /**
  * SystemUser.

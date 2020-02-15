@@ -21,30 +21,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package ss.martin.platform.anno.ui;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import ss.martin.platform.constants.RepresentationComponentType;
-import ss.martin.platform.security.StandardRole;
+package ss.martin.platform.security;
 
 /**
- * Side bar navigation item.
+ * System user status.
  * @author ss
  */
-@Target(value = {ElementType.TYPE})
-@Retention(value = RetentionPolicy.RUNTIME)
-public @interface SideBarNavigationItem {
-    /**
-     * One or more standard security roles.
-     * @return security roles.
-     */
-    public StandardRole[] roles();
-    /**
-     * Representation component type.
-     * @return component type.
-     */
-    public RepresentationComponentType component();
+public enum SystemUserStatus {
+    /** Active. */
+    ACTIVE,
+    /** Inactive. */
+    INACTIVE,
+    /** Registration. */
+    REGISTRATION;
 }

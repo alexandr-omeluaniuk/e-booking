@@ -29,8 +29,8 @@ import ss.martin.platform.entity.DataModel_;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.TenantEntity;
 import ss.martin.platform.entity.TenantEntity_;
-import ss.martin.platform.spring.security.SecurityContext;
-import ss.martin.platform.spring.security.StandardRole;
+import ss.martin.platform.security.StandardRole;
+import ss.martin.platform.security.SecurityContext;
 import ss.martin.platform.wrapper.EntitySearchRequest;
 import ss.martin.platform.wrapper.EntitySearchResponse;
 
