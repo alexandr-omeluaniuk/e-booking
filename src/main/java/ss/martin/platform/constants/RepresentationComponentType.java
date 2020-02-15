@@ -29,5 +29,7 @@ package ss.martin.platform.constants;
  */
 public enum RepresentationComponentType {
     /** List view. */
-    LIST_VIEW;
+    LIST_VIEW,
+    /** Tab panel. */
+    TAB_PANEL;
 }

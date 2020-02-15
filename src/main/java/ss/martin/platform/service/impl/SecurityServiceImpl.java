@@ -20,6 +20,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ import ss.martin.platform.constants.RepresentationComponentType;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
+import ss.martin.platform.security.ApplicationModuleProvider;
 import ss.martin.platform.security.StandardRole;
 import ss.martin.platform.service.EntityMetadataService;
 import ss.martin.platform.service.SecurityService;
@@ -56,6 +58,9 @@ class SecurityServiceImpl implements SecurityService {
     /** Entity metadata service. */
     @Autowired
     private EntityMetadataService entityMetadataService;
+    /** Modules. */
+    @Autowired
+    private List<ApplicationModuleProvider> modules;
     /**
      * Static initialization.
      */
@@ -70,7 +75,14 @@ class SecurityServiceImpl implements SecurityService {
         permissions.setFullname((currentUser.getFirstname() == null ? "" : currentUser.getFirstname() + " ")
                 + currentUser.getLastname());
         permissions.setSideBarNavItems(new ArrayList<>());
-        // side bar navigation
+        // side bar navigation (application modules)
+        Subscription subscription = securityContext.subscription();
+        modules.stream().filter((m) -> {
+            return subscription.getModules().contains(m.module());
+        }).forEach((provider) -> {
+            permissions.getSideBarNavItems().add(provider.representationComponent());
+        });
+        // side bar navigation (static)
         for (Class<? extends DataModel> dataModelClass : DATA_MODEL_CLASSES) {
             if (!Modifier.isAbstract(dataModelClass.getModifiers())) {
                 Optional.ofNullable(dataModelClass.getAnnotation(SideBarNavigationItem.class))

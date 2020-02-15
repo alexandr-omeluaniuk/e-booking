@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ss.martin.platform.entity.Subscription;
 import ss.martin.platform.entity.SystemUser;
 import ss.martin.platform.spring.security.UserPrincipal;
 
@@ -46,5 +47,12 @@ public class SecurityContext {
         Object auth = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal userPrincipal = (UserPrincipal) auth;
         return userPrincipal.getUser();
+    }
+    /**
+     * Get current user subscription.
+     * @return subscription.
+     */
+    public Subscription subscription() {
+        return currentUser().getSubscription();
     }
 }

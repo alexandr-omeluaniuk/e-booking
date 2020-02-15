@@ -23,18 +23,31 @@
  */
 package ss.martin.platform.module;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.constants.ApplicationModule;
 import ss.martin.platform.entity.Contact;
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.security.ApplicationModuleProvider;
+import ss.martin.platform.service.EntityMetadataService;
+import ss.martin.platform.ui.RepresentationComponent;
+import ss.martin.platform.ui.TabPanel;
 
 /**
  * CRM application module.
  * @author ss
  */
+@MaterialIcon(icon = "eco", color = "green")
 @Component("CRM")
-class CRMApplicationModule implements ApplicationModuleProvider {
+class CRM implements ApplicationModuleProvider {
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(CRM.class);
+    /** Entity metadata service. */
+    @Autowired
+    private EntityMetadataService entityMetadataService;
     @Override
     public ApplicationModule module() {
         return ApplicationModule.CRM;
@@ -42,5 +55,21 @@ class CRMApplicationModule implements ApplicationModuleProvider {
     @Override
     public Class<? extends DataModel>[] dataModel() {
         return new Class[] {Contact.class};
+    }
+    @Override
+    public RepresentationComponent representationComponent() {
+        TabPanel component = new TabPanel();
+        MaterialIcon icon = getClass().getAnnotation(MaterialIcon.class);
+        component.setIcon(icon.icon());
+        component.setIconColor(icon.color());
+        component.setClassName(module().name());
+        for (Class<? extends DataModel> model : dataModel()) {
+            try {
+                component.getTabs().add(entityMetadataService.getEntityListView(model));
+            } catch (Exception ex) {
+                LOG.warn("having problem with metadata creation for class [" + model.getSimpleName() + "]", ex);
+            }
+        }
+        return component;
     }
 }
