@@ -1,98 +1,18 @@
 import React, {useEffect} from 'react';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import List from '@material-ui/core/List';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import { NavLink, BrowserRouter as Router } from "react-router-dom";
-import Copyright from './component/Copyright';
+import { BrowserRouter as Router } from "react-router-dom";
 import SecurityService from './service/SecurityService';
-import AppURLs from './constants/AppURLs';
-import { Switch, Route, Redirect } from "react-router-dom";
-import ListView from './view/ListView';
-import { drawerWidth } from './constants/style';
 import DesktopToolbar from './component/toolbar/DesktopToolbar';
 import DataService from './service/DataService';
 import Notification from './component/window/Notification';
-import background from './assets/main-background.jpg';
+import SideNavBar from './component/toolbar/SideNavBar';
+import MainContent from './component/toolbar/MainContent';
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex'
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar
-  },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9)
+    root: {
+        display: 'flex'
     }
-  },
-  appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-        "&:after": {
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: "-1",
-            content: '""',
-            display: "block",
-            opacity: ".3",
-            backgroundImage: 'url(' + background + ')',
-            backgroundSize: "cover",
-            backgroundPosition: "center center"
-        }
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-        maxWidth: 'none'
-    },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column'
-  },
-  fixedHeight: {
-    height: 240
-  },
-  navLink: {
-      textDecoration: 'none',
-      color: 'inherit'
-  }
 }));
 
 
@@ -116,80 +36,6 @@ function App() {
         setOpenNotification(true);
     };
     DataService.setNotification(showNotification);
-    const createSideBarNavigation = () => {
-        if (!navItems) {
-            return null;
-        }
-        return (
-                <div>
-                    {navItems.map((item, i) => {
-                        return (
-                            <NavLink to={item.path} key={i} className={classes.navLink} onClick={() => {
-                                setTitle(item.label);
-                                setIcon(item.icon);
-                            }}>
-                                <ListItem button selected={window.location.pathname === item.path}>
-                                    <ListItemIcon>
-                                        <Icon>{item.icon}</Icon>
-                                    </ListItemIcon>
-                                    <ListItemText primary={item.label} />
-                                </ListItem>
-                            </NavLink>
-                        );
-                    })}
-                </div>
-        );
-    };
-    const createSideBar = () => {
-        return (
-            <Drawer variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
-                }} open={open}>
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={() => {setOpen(false);}}>
-                        <Icon>chevron_left</Icon>
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>{createSideBarNavigation()}</List>
-            </Drawer>
-        );
-    };
-    const createMain = () => {
-        if (!navItems) {
-            return null;
-        }
-        let routes = (
-            <Switch>
-                <Route exact path={AppURLs.context}>
-                    <Redirect to={AppURLs.links.view + '/dashboard'}/>
-                </Route>
-                {navItems.map((prop, key) => {
-                    if (prop.metadata) {
-                        return (
-                            <Route path={prop.path} render={() => <ListView metadata={prop.metadata}/>} key={key}/>
-                        );
-                    } else {
-                        return (
-                            <Route path={prop.path} component={prop.component} key={key}/>
-                        );
-                    }
-                })}
-            </Switch>
-        );
-        return (
-                <main className={classes.content}>
-                    <div className={classes.appBarSpacer} />
-                    <Container maxWidth="lg" className={classes.container}>
-                        { routes }
-                        <Box pt={4}>
-                            <Copyright />
-                        </Box>
-                    </Container>
-                </main>
-        );
-    };
     // -------------------------------------------------------- HOOKS ---------------------------------------------------------------------
     useEffect(() => {
         if (!navItems) {
@@ -218,8 +64,11 @@ function App() {
                     <CssBaseline />
                     <DesktopToolbar title={title} open={open} setOpen={setOpen} fullname={permissions ? permissions.fullname : ''}
                             icon={icon}/>
-                    { createSideBar() }
-                    { createMain() }
+                    <SideNavBar open={open} setOpen={setOpen} navItems={navItems} onItemSelected={(item) => {
+                        setTitle(item.label);
+                        setIcon(item.icon);
+                    }}/>
+                    <MainContent navItems={navItems} />
                 </div>
                 <Notification open={openNotification} setOpen={setOpenNotification} message={notificationMessage} 
                         details={notificationDetails} severity={notificationType}/>
