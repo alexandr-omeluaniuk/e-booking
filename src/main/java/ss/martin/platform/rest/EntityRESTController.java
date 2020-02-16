@@ -83,6 +83,7 @@ public class EntityRESTController {
         Class entityClass = (Class<? extends Serializable>) Class.forName(EntityService.ENTITY_PACKAGE + entityName);
         DataModelWrapper wrapper = new DataModelWrapper();
         wrapper.setLayout(entityMetadataService.getEntityLayout(entityClass));
+        wrapper.setListView(entityMetadataService.getEntityListView(entityClass));
         if (id > 0) {
             wrapper.setData(entityService.findEntityByID(id, entityClass));
         }

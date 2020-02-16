@@ -22,14 +22,59 @@
  * THE SOFTWARE.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar';
+import DataService from '../service/DataService';
+import { TYPE_AVATAR } from '../config/datatypes';
+
+const useStyles = makeStyles(theme => ({
+
+}));
 
 function EntityCard(props) {
     const { entity, id } = props.match.params;
     const { t } = useTranslation();
+    const classes = useStyles();
+    // --------------------------------------------------- STATE --------------------------------------------------------------------------
+    const [entityData, setEntityData] = React.useState(null);
+    // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
+    useEffect(() => {
+        DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
+            console.log(resp);
+            setEntityData(resp);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entity, id]);
+    useEffect(() => {
+        return () => {
+            DataService.abort();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    // ---------------------------------------------------- RENDERING ---------------------------------------------------------------------
+    if (!entityData) {
+        return null;
+    }
+    let avaField = entityData.layout.fields.filter(f => { return f.fieldType === TYPE_AVATAR; });
+    let ava = avaField.length > 0 && entityData.data[avaField[0].name] ? (<Avatar src={entityData.data[avaField[0].name]} />)
+            : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
     return (
-            <div>{entity} {id}</div>
+            <Card>
+                <CardHeader avatar={ava}>
+            
+                </CardHeader>
+                <CardContent>
+            
+                </CardContent>
+            </Card>
     );
 }
 

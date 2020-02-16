@@ -25,6 +25,7 @@ package ss.martin.platform.wrapper;
 
 import ss.martin.platform.entity.DataModel;
 import ss.martin.platform.ui.Layout;
+import ss.martin.platform.ui.ListView;
 
 /**
  * Data model wrapper.
@@ -35,6 +36,8 @@ public class DataModelWrapper {
     private DataModel data;
     /** Layout. */
     private Layout layout;
+    /** List view. */
+    private ListView listView;
     /**
      * @return the data
      */
@@ -58,5 +61,17 @@ public class DataModelWrapper {
      */
     public void setLayout(Layout layout) {
         this.layout = layout;
+    }
+    /**
+     * @return the listView
+     */
+    public ListView getListView() {
+        return listView;
+    }
+    /**
+     * @param listView the listView to set
+     */
+    public void setListView(ListView listView) {
+        this.listView = listView;
     }
 }
