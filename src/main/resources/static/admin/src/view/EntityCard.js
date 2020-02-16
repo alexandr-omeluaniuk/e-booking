@@ -48,7 +48,6 @@ function EntityCard(props) {
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
-            console.log(resp);
             setEntityData(resp);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,13 +65,17 @@ function EntityCard(props) {
     let avaField = entityData.layout.fields.filter(f => { return f.fieldType === TYPE_AVATAR; });
     let ava = avaField.length > 0 && entityData.data[avaField[0].name] ? (<Avatar src={entityData.data[avaField[0].name]} />)
             : (<Avatar><Icon>{entityData.listView.icon}</Icon></Avatar>);
+    let title = entityData.layout.cardTitle && entityData.data[entityData.layout.cardTitle]
+            ? entityData.data[entityData.layout.cardTitle] : '';
+    let subHeader = entityData.layout.cardSubTitle && entityData.data[entityData.layout.cardSubTitle]
+            ? entityData.data[entityData.layout.cardSubTitle] : '';
     return (
             <Card>
-                <CardHeader avatar={ava}>
+                <CardHeader avatar={ava} title={title} subheader={subHeader}>
             
                 </CardHeader>
                 <CardContent>
-            
+                    
                 </CardContent>
             </Card>
     );

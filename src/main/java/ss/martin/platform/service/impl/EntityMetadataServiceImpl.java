@@ -46,6 +46,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ss.martin.platform.anno.ui.Avatar;
+import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
@@ -86,6 +88,12 @@ class EntityMetadataServiceImpl implements EntityMetadataService {
         for (Field field : getClassFields(clazz)) {
             if (!EXCLUDED_FIELDS.contains(field.getName())) {
                 layout.getFields().add(createEntityLayoutField(field));
+                Optional.ofNullable(field.getAnnotation(CardTitle.class)).ifPresent((a) -> {
+                    layout.setCardTitle(field.getName());
+                });
+                Optional.ofNullable(field.getAnnotation(CardSubTitle.class)).ifPresent((a) -> {
+                    layout.setCardSubTitle(field.getName());
+                });
             }
         }
         LAYOUTS_CACHE.put(clazz, layout);

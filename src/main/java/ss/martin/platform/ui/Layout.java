@@ -33,6 +33,10 @@ import java.util.Map;
 public class Layout {
     /** Fields. */
     private List<Field> fields;
+    /** Card title. */
+    private String cardTitle;
+    /** Card sub title. */
+    private String cardSubTitle;
     // ====================================== SET & GET ===============================================================
     /**
      * @return the fields
@@ -45,6 +49,30 @@ public class Layout {
      */
     public void setFields(List<Field> fields) {
         this.fields = fields;
+    }
+    /**
+     * @return the cardTitle
+     */
+    public String getCardTitle() {
+        return cardTitle;
+    }
+    /**
+     * @param cardTitle the cardTitle to set
+     */
+    public void setCardTitle(String cardTitle) {
+        this.cardTitle = cardTitle;
+    }
+    /**
+     * @return the cardSubTitle
+     */
+    public String getCardSubTitle() {
+        return cardSubTitle;
+    }
+    /**
+     * @param cardSubTitle the cardSubTitle to set
+     */
+    public void setCardSubTitle(String cardSubTitle) {
+        this.cardSubTitle = cardSubTitle;
     }
     // ====================================== PRIVATE CLASSES =========================================================
     /**

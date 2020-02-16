@@ -35,6 +35,8 @@ import ss.martin.platform.anno.ui.MaterialIcon;
 import ss.martin.platform.anno.validation.MobilePhoneNumber;
 import ss.martin.platform.constants.ListViewColumnAlign;
 import ss.martin.platform.anno.ui.Avatar;
+import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTitle;
 
 /**
  * Contact.
@@ -56,12 +58,14 @@ public class Contact extends EntityAudit {
     /** First name. */
     @ListViewColumn
     @FormField(xs = "6")
+    @CardSubTitle
     @Size(max = 255)
     @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
     @ListViewColumn
     @FormField(xs = "6")
+    @CardTitle
     @NotEmpty
     @Size(max = 255)
     @Column(name = "lastname", length = 255, nullable = false)

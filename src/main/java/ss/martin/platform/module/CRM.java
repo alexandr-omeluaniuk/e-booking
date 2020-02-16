@@ -40,7 +40,7 @@ import ss.martin.platform.ui.TabPanel;
  * CRM application module.
  * @author ss
  */
-@MaterialIcon(icon = "face")
+@MaterialIcon(icon = "supervised_user_circle")
 @Component("CRM")
 class CRM implements ApplicationModuleProvider {
     /** Logger. */
