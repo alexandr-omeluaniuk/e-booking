@@ -101,7 +101,8 @@ i18n.use(initReactI18next).init({
                     delete: 'Удалить',
                     edit: 'Редактировать',
                     upload: 'Загрузить',
-                    clear: 'Очистить'
+                    clear: 'Очистить',
+                    open: 'Открыть'
                 },
                 enum: {
                     SystemUserStatus: {

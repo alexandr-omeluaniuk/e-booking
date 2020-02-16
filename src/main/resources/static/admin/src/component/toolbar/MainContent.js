@@ -74,7 +74,6 @@ function MainContent(props) {
             <Route exact path={AppURLs.context}>
                 <Redirect to={AppURLs.links.view + '/dashboard'}/>
             </Route>
-            <Route path={AppURLs.links.entity + '/:entity/:id'} component={EntityCard}/>
             {navItems.map((prop, key) => {
                 if (prop.metadata) {
                     return (
@@ -94,6 +93,7 @@ function MainContent(props) {
                     );
                 }
             })}
+            <Route path={AppURLs.links.entity + '/:entity/:id'} component={EntityCard}/>
         </Switch>
     );
     return (

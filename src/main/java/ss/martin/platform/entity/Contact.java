@@ -60,7 +60,7 @@ public class Contact extends EntityAudit {
     @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
-    @ListViewColumn(link = true)
+    @ListViewColumn
     @FormField(xs = "6")
     @NotEmpty
     @Size(max = 255)

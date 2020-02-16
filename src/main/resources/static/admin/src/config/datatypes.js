@@ -36,7 +36,7 @@ export const TYPE_SET = "Set";
 
 export const TYPE_AVATAR = "Avatar";
 
-export const renderTableCell = (fieldMeta, value,t) => {
+export const renderTableCell = (fieldMeta, value, t) => {
     let renderValue = value;
     if (fieldMeta.enumField) {
         renderValue = t('enum.' + fieldMeta.enumField + '.' + value);
