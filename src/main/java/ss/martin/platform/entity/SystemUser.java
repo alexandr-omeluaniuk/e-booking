@@ -33,6 +33,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import ss.martin.platform.anno.ui.Avatar;
+import ss.martin.platform.anno.ui.CardSubTitle;
+import ss.martin.platform.anno.ui.CardTitle;
 import ss.martin.platform.anno.ui.FormField;
 import ss.martin.platform.anno.ui.HiddenField;
 import ss.martin.platform.anno.ui.ListViewColumn;
@@ -55,6 +58,12 @@ public class SystemUser extends TenantEntity {
     /** Default UID. */
     private static final long serialVersionUID = 1L;
 // ==================================== FIELDS ====================================================
+    /** Avatar. Image as base64 string. */
+    @Avatar
+    @ListViewColumn
+    @FormField(xs = "12")
+    @Column(name = "avatar", length = 65536)
+    private String avatar;
     /** Email. */
     @Email
     @FormField(xs = "12")
@@ -72,12 +81,14 @@ public class SystemUser extends TenantEntity {
     /** First name. */
     @Size(max = 255)
     @FormField(xs = "6")
+    @CardSubTitle
     @ListViewColumn
     @Column(name = "firstname", length = 255)
     private String firstname;
     /** Last name. */
     @Size(max = 255)
     @FormField(xs = "6")
+    @CardTitle
     @ListViewColumn
     @NotEmpty
     @Column(name = "lastname", nullable = false, length = 255)
@@ -184,6 +195,18 @@ public class SystemUser extends TenantEntity {
      */
     public void setStatus(SystemUserStatus status) {
         this.status = status;
+    }
+    /**
+     * @return the avatar
+     */
+    public String getAvatar() {
+        return avatar;
+    }
+    /**
+     * @param avatar the avatar to set
+     */
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 // ================================================================================================
     @Override

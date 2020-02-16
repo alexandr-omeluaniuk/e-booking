@@ -27,11 +27,11 @@ import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Icon from '@material-ui/core/Icon';
 import Avatar from '@material-ui/core/Avatar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import DataService from '../service/DataService';
 import { TYPE_AVATAR } from '../config/datatypes';
 
@@ -45,6 +45,7 @@ function EntityCard(props) {
     const classes = useStyles();
     // --------------------------------------------------- STATE --------------------------------------------------------------------------
     const [entityData, setEntityData] = React.useState(null);
+    const [activeTab, setActiveTab] = React.useState(0);
     // --------------------------------------------------- USE EFFECT ---------------------------------------------------------------------
     useEffect(() => {
         DataService.requestGet('/entity/' + entity + '/' + id).then(resp => {
@@ -75,6 +76,11 @@ function EntityCard(props) {
             
                 </CardHeader>
                 <CardContent>
+                    <Tabs indicatorColor="secondary" textColor="secondary" value={activeTab} onChange={(e, index) => {
+                        setActiveTab(index);
+                    }}>
+                        <Tab icon={<Icon>{entityData.listView.icon}</Icon>} label={t('models.titles.' + entity)}></Tab>
+                    </Tabs>
                     
                 </CardContent>
             </Card>

@@ -70,6 +70,7 @@ i18n.use(initReactI18next).init({
                         modules: 'Доступные приложения'
                     },
                     SystemUser: {
+                        avatar: 'Аватар',
                         firstname: 'Имя',
                         lastname: 'Фамилия',
                         status: 'Статус',

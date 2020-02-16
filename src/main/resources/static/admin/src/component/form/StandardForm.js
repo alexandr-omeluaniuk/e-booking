@@ -35,25 +35,14 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider, /*KeyboardTimePicker,*/ KeyboardDatePicker } from '@material-ui/pickers';
 import moment from 'moment';
 import "moment/locale/ru";
-import i18n from '../../config/i18next-config';
 import { green } from '@material-ui/core/colors';
-import { TYPE_STRING, TYPE_DATE, TYPE_SET, TYPE_AVATAR } from '../../config/datatypes';
+import { TYPE_STRING, TYPE_DATE, TYPE_SET } from '../../config/datatypes';
 import { NOT_NULL, NOT_EMPTY, SIZE, EMAIL, REGEX_EMAIL, MOBILE_PHONE_NUMBER, REGEX_MOBILE_PHONE_NUMBER } from '../../config/validators';
-import MultiChoiceInput from '../input/MultiChoiceInput';
-import MobilePhoneNumberInput from '../input/MobilePhoneNumberInput';
-import AvatarInput from '../input/AvatarInput';
-
-moment.locale(i18n.language);
+import FormField from './FormField';
 
 const useStyles = makeStyles(theme => ({
-    fullWidth: {
-        width: '100%'
-    },
     root: {
         margin: 0,
         padding: theme.spacing(2)
@@ -78,17 +67,6 @@ function StandardForm(props) {
     const [formData, setFormData] = React.useState(new Map());
     const [invalidFields, setInvalidFields] = React.useState(new Map());
     // ------------------------------------------ FUNCTIONS -------------------------------------------------------------------------------
-    const sizeOf = (val) => {
-        if (val === "false") {
-            return false;
-        } else if (val === "true") {
-            return true;
-        } else if (val === "auto") {
-            return val;
-        } else {
-            return parseInt(val);
-        }
-    };
     const onChangeFieldValue = (name, value) => {
         let field = layout.fields.filter(f => {return f.name === name;})[0];
         if (field.fieldType === TYPE_SET) {
@@ -105,51 +83,6 @@ function StandardForm(props) {
         setFormData(new Map(formData));
         let validationResult = isFormValid();
         setInvalidFields(validationResult);
-    };
-    const renderFormField = (field) => {
-        let label = t('models.' + entity + '.' + field.name);
-        var isRequired = field.validators.filter(v => {
-            return v.type === NOT_NULL || v.type === NOT_EMPTY;
-        }).length > 0;
-        label += isRequired ? ' *' : '';
-        let name = field.name;
-        if (field.fieldType === TYPE_STRING) {
-            let isMobilePhoneNumber = field.validators.filter(v => { return v.type === MOBILE_PHONE_NUMBER; }).length > 0;
-            if (isMobilePhoneNumber) {
-                return (
-                        <MobilePhoneNumberInput label={label} value={formData.has(name) ? formData.get(name) : ''}
-                            onChange={(e) => onChangeFieldValue(name, e.target.value)} fullWidth={true}
-                            helperText={invalidFields.get(name)}/>
-                );
-            } else {
-                return (
-                        <TextField label={label} fullWidth={true} onChange={(e) => onChangeFieldValue(name, e.target.value)}
-                                value={formData.has(name) ? formData.get(name) : ''} name={name} error={invalidFields.has(name)}
-                                helperText={invalidFields.get(name)}/>
-                );
-            }
-        } else if (field.fieldType === TYPE_DATE) {
-            let value = formData.has(name) ? formData.get(name) : null;
-            return (
-                    <MuiPickersUtilsProvider utils={MomentUtils} libInstance={moment} locale={i18n.language}>
-                        <KeyboardDatePicker disableToolbar variant="inline" format={t('constants.momentJsDateFormat')} margin="normal"
-                            label={label} onChange={(date) => onChangeFieldValue(name, date)} name={name} value={value} autoOk={true}
-                            className={classes.fullWidth} error={invalidFields.has(name)} helperText={invalidFields.get(name)}/>
-                    </MuiPickersUtilsProvider>
-            );
-        } else if (field.fieldType === TYPE_SET) {
-            let value = formData.has(name) ? new Set(formData.get(name)) : new Set();
-            return (
-                    <MultiChoiceInput entity={entity} field={name} label={label} genericClass={field.genericClass}
-                        isEnum={field.genericClassEnum} selected={value} onChange={onChangeFieldValue}/>
-            );
-        } else if (field.fieldType === TYPE_AVATAR) {
-            return (
-                    <AvatarInput label={label} value={formData.has(name) ? formData.get(name) : ''}
-                        onChange={(data) => onChangeFieldValue(name, data)}/>
-            );
-        }
-        return null;
     };
     const isFormValid = () => {
         let newInvalidField = new Map();
@@ -223,7 +156,6 @@ function StandardForm(props) {
                     dataMap.set(field.name, value);
                 }
             });
-            //console.log(dataMap);
             setFormData(dataMap);
         }
         setLayout(layout);
@@ -258,10 +190,8 @@ function StandardForm(props) {
                                 return null;
                             }
                             return (
-                                    <Grid item xs={sizeOf(field.grid.xs)} lg={sizeOf(field.grid.lg)} md={sizeOf(field.grid.md)}
-                                                sm={sizeOf(field.grid.sm)} key={idx}>
-                                        {renderFormField(field)}
-                                    </Grid>
+                                    <FormField field={field} key={idx} onChangeFieldValue={onChangeFieldValue}
+                                        invalidFields={invalidFields} entity={entity} fieldValue={formData.get(field.name)}/>
                             );
                         })}
                     </Grid>
